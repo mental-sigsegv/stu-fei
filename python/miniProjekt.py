@@ -44,8 +44,9 @@ def kvet(T, S, B, tur):
     draw_bottom(*B, tur)
 
 
-def kvety(k1 = turtle.Turtle()):
-        penup(); fd(1000)
+def kvety():
+        k1 = turtle.Turtle()
+        # penup(); fd(1000)
         k1.penup(); k1.back(400); k1.left(90); k1.fd(150); k1.pendown(); k1.right(90)
         kvet([7, 6, 14], [8, 40], [30, 4, 10], k1) # Prvy kvet
         # return None
@@ -57,9 +58,14 @@ def kvety(k1 = turtle.Turtle()):
         kvet([20, 2, 12], [1, 30], [45, 7, 20], k1) # Treti kvet
 kvety()
 
+# hideturtle()
+# k1 = turtle.Turtle()
+# k1.penup(); k1.home(); k1.left(90); k1.fd(150); k1.pendown(); k1.right(90)
+# kvet([7, 6, 14], [8, 40], [30, 4, 10], k1) # Prvy kvet
+
 import threading
 def multi_tasking():
-    penup(); fd(1000)
+    hideturtle()
     k1 = turtle.Turtle()
     k1.penup(); k1.back(400); k1.left(90); k1.fd(150); k1.pendown(); k1.right(90)
     k2 = turtle.Turtle()

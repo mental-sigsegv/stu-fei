@@ -1,11 +1,20 @@
 # Uloha 10
 def foo(n):
-    if n == 0:
+    if n < 2:
         return None
-    elif n == 1:
-        return int(input())
     return sorted([int(input()) for num in range(n)])[-2]
-# print(foo(1))
+print(foo(5))
+
+def foo(n):
+    if n < 2:
+        return None
+    l = []
+    for num in range(n):
+        l.append(int(input()))
+    return sorted(l)[-2]
+print(foo(5))
+# print(sorted(list(map(int, input().split())))[-2])
+
 
 # Uloha 13
 def isprime(n):
@@ -57,7 +66,7 @@ def pohyb_strelca(x1, y1, x2, y2):
 
 # Uloha 18
 def pohyb_damy(x1, y1, x2, y2):
-    if pohyb_strelca(x1, y1, x2, y2) and pohyb_veze(x1, y1, x2, y2) and pohyb_krala(x1, y1, x2, y2):
+    if pohyb_strelca(x1, y1, x2, y2) and pohyb_veze(x1, y1, x2, y2):
         return True
     return False
 # print(pohyb_damy(5, 5, 1, 2))
