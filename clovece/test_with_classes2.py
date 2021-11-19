@@ -16,7 +16,9 @@ class board():
         self.n = size_of_board
         self.matrix = None
         self.podmienka = self.check_podmienky()
-        self.array = ['*' for i in range((self.n-1)*4)]
+        self.array = list('*'*(self.n-1)*4)
+        self.hracAdomcek = [str(i) for i in range(DLZKA_DOMCEKA)][::-1]
+        self.hracBdomcek = [str(i) for i in range(DLZKA_DOMCEKA)][::-1]
         if self.podmienka is False:
             self.gensachovnicu()
             self.update_matrix()
@@ -41,8 +43,8 @@ class board():
         for d in range(1, DLZKA_DOMCEKA+1):
             self.matrix[s][s+d] = "D"    #domceky na pravo od stredu
             self.matrix[s][s-d] = "D"    #domceky na lavo od stredu
-            self.matrix[s+d][s] = "D"    #domceky na hore od stredu
-            self.matrix[s-d][s] = "D"    #domceky na dole od stredu
+            self.matrix[s+d][s] = self.hracAdomcek[d-1]    #domceky na hore od stredu
+            self.matrix[s-d][s] = self.hracBdomcek[d-1]    #domceky na dole od stredu
         self.matrix[s][s] = "X"
 
     def tlacsachovnicu(self):
@@ -74,7 +76,13 @@ class board():
             matrix[s-1][s-2-i] = array[3*n+n//2-2-i]
             matrix[s+1][s+2+i] = array[n+n//2-i-2]
             matrix[s+1][s-2-i] = array[2*n+n//2+i]
+
         return matrix
+    def update_array(self, panacik, position):
+        self.array = " ".join(self.array).replace(panacik, '*').split()
+        self.array[position] = panacik
+        self.update_matrix()
+        self.tlacsachovnicu()
 
 def game(n):
     global DLZKA_DOMCEKA
@@ -83,63 +91,63 @@ def game(n):
     global hracB
     global sachovnica
     DLZKA_DOMCEKA = n//2-1
+
     MATRIX_STRED = n//2+1
     sachovnica = board(n)
     hracA = player(n, "A")
     hracB = player(n, "B")
 
-    hracA.panacikovia.update({'A1':hracA.starting_point})
-    hracB.panacikovia.update({'B1':hracB.starting_point})
-
-    for panacik, position in hracA.panacikovia.items():
-        if position is not None:
-            sachovnica.array[position] = panacik
-
-    for panacik, position in hracB.panacikovia.items():
-        if position is not None:
-            sachovnica.array[position] = panacik
-
     sachovnica.update_matrix()
     sachovnica.tlacsachovnicu()
-
+    #
     hrac_A()
-    hrac_B()
-
-    # while True:
-    #     panacik_name = 'A1'
-    #
-    #     try:
-    #
-    #         print('-'*43)
-    #         r = randint(1, 6)
-    #         print("Random integer: ", r)
-    #         sachovnica.array = list(''.join(sachovnica.array).replace(panacik_name, '*'))
-    #         hracA.panacikovia.update({panacik_name : hracA.panacikovia.get(panacik_name)+r})
-    #         for panacik, position in hracA.panacikovia.items():
-    #             if position is not None:
-    #                 sachovnica.array[position] = panacik
-    #         sachovnica.update_matrix()
-    #         sachovnica.tlacsachovnicu()
-    #     except IndexError:
-    #        break
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
+    hrac_A()
 
 def hrac_A():
     r = randint(1, 6)
-    print("Random integer: ", r)
-    for panacik, position in hracA.panacikovia.items():
-        if position is not None:
-            sachovnica.array = ' '.join(sachovnica.array).replace(panacik, '*').split(' ')
-            hracA.panacikovia.update({panacik : hracA.panacikovia.get(panacik)+r})
-            for panacik, position in hracA.panacikovia.items():
-                if position is not None:
-                    sachovnica.array[position] = panacik
-            sachovnica.update_matrix()
-            sachovnica.tlacsachovnicu()
+    moveable = dict(filter(lambda x: isinstance(x[1], int) and x[1]+r<=len(sachovnica.array)+DLZKA_DOMCEKA, hracA.panacikovia.items()))
+    if 'A' not in ''.join(sachovnica.array):
+        tri_hody = randint(1, 6), randint(1, 6), randint(1, 6)
+        print(tri_hody)
+        if 6 in tri_hody:
+            hracA.panacikovia.update({'A1':0})
+            sachovnica.update_array('A1', hracA.starting_point)
+            hrac_A()
+
+    elif r == 6 and sachovnica.array[hracA.starting_point] == '*':
+        print("Random integer: ", r)
+        panacik = input(f"{sorted(set(hracA.panacikovia | moveable))}"+'\n').upper()
+        hracA.panacikovia.update({panacik:0})
+        sachovnica.update_array(panacik, hracA.starting_point)
+        hrac_A()
+
+    elif len(moveable) == 1 and r != 6:
+        print("Random integer: ", r)
+        hracA.panacikovia.update({list(moveable)[0]:hracA.panacikovia.get(list(moveable)[0])+r})
+        sachovnica.update_array(list(moveable)[0], moveable.get(list(moveable)[0])+r)
+
+
+    elif len(moveable) > 1:
+        print("Random integer: ", r)
+        panacik = input(f'{sorted(set(moveable))}'+'\n').upper()
+        hracA.panacikovia.update({panacik:hracA.panacikovia.get(panacik)+r})
+        sachovnica.update_array(panacik, moveable.get(panacik)+r)
 
 
 def hrac_B():
     r = randint(1, 6)
-    print("Random integer: ", r)
+    print("B Random integer: ", r)
     for panacik, position in hracB.panacikovia.items():
         if position is not None:
             sachovnica.array = ' '.join(sachovnica.array).replace(panacik, '*').split(' ')
@@ -148,7 +156,7 @@ def hrac_B():
                 if position is not None:
                     sachovnica.array[position] = panacik
             sachovnica.update_matrix()
-            sachovnica.tlacsachovnicu()
+            # sachovnica.tlacsachovnicu()
 
 def main():
     # print('-'*43)
