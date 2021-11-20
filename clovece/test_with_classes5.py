@@ -3,9 +3,9 @@ from random import randint
 class Board():
     def __init__(self):
         self.n = size_of_board
+        self.empty = '()'
+        self.array = {i:f'{self.empty}' for i in range((self.n-1)*4)}
         self.matrix = []
-        self.array = ['()' for _ in range((self.n-1)*4)]
-        self.figurky = {}
         self.gen_board()
 
     def gen_board(self):
@@ -22,11 +22,7 @@ class Board():
 
     def update_board(self):
         s, d = MATRIX_STRED, DLZKA_DOMCEKA
-        array, n, matrix = self.array, self.n - 1, self.matrix
-
-        #update array
-        for key, value in self.figurky:
-            array[key] = value
+        array, n, matrix = list(self.array.values()), self.n - 1, self.matrix
 
         #priradenie matrixovym suradniciam array hodnoty
         matrix[1][s-1:s+2] = array[-2:]+[array[0]]
@@ -70,7 +66,7 @@ class Player():
     def __init__(self, name):
         self.home = ['DD' for i in range(DLZKA_DOMCEKA)]
         self.name = name
-        self.figurky = {f'{self.name}{i}' for i in range(DLZKA_DOMCEKA)}
+        self.figurky = {f'{self.name}{i+1}' for i in range(DLZKA_DOMCEKA)}
         self.define_starting_point()
 
     def define_starting_point(self):
@@ -85,39 +81,38 @@ class Player():
 
     def move(self):
         print(f'Na rade je hrac {self.name}')
-        if self.name not in ''.join(board.array):
+        if self.name not in ''.join(board.array.values()):
             tri_hody = randint(1, 6), randint(1, 6), randint(1, 6), 6 # TODO: remove this 6
             print("tri_hody: ", tri_hody)
             if 6 in tri_hody:
-                board.figurky.update({self.starting_point:f'{self.name}1'})
-                board.array[self.starting_point] = f'{self.name}1'
+                board.array.update({self.starting_point:f'{self.name}1'})
                 board.print_board()
                 self.move()
 
         hod_kockou = randint(1,6)
         # moveable = dict(filter(lambda x: isinstance(x[1], int) and x[1]+hod_kockou<=len(sachovnica.array)+DLZKA_DOMCEKA, hracA.panacikovia.items()))
-        moveable = list(filter(lambda x: x in board.array and board.array.index(x)+hod_kockou <= len(board.array)+DLZKA_DOMCEKA, self.figurky))
+        moveable = list(filter(lambda x: x in list(board.array.values()) and list(board.array.values()).index(x)+hod_kockou <= len(board.array)+DLZKA_DOMCEKA, self.figurky))
         if hod_kockou == 6 and f'{self.name}' not in board.array[self.starting_point]:
             print(f"Hod kouckou hraca {self.name}:", hod_kockou) # TODO: while loop ak by input bol nespravny
             figurka = input(f"{sorted(self.figurky)}"+'\n').upper()
-            board.figurky.update({self.starting_point:figurka})
+            board.array.update({self.starting_point:figurka})
             board.print_board()
             self.move()
 
         elif len(moveable) == 1 and hod_kockou != 6:
             figurka = moveable[0]
-            position = board.array.index(figurka)
+            position = list(board.array.values()).index(figurka)
             print(f"Hod kouckou hraca {self.name}:", hod_kockou)
-            board.figurky.pop(position)
-            board.figurky.update({position+hod_kockou:figurka})
+            board.array.update({position:board.empty})
+            board.array.update({position+hod_kockou:figurka})
             board.print_board()
 
         elif len(moveable) > 1:
             print(f"Hod kouckou hraca {self.name}:", hod_kockou)
             figurka = input(f'{moveable}'+'\n').upper() #TODO: while loop ak by input bol nespravny
-            position = board.array.index(figurka)
-            board.figurky.pop(position)
-            board.figurky.update({position+hod_kockou:figurka})
+            position = list(board.array.values()).index(figurka)
+            board.array.update({position:board.empty})
+            board.array.update({position+hod_kockou:figurka})
             board.print_board()
 
 def pravidla_hry():
@@ -203,7 +198,7 @@ if __name__ == '__main__':
 
     board.print_board()
 
-    for i in range(5):
+    for i in range(15):
         player_A.move()
 
 
