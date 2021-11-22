@@ -3,7 +3,7 @@ from random import randint
 class Board():
     def __init__(self):
         self.n = size_of_board
-        self.empty = '--'
+        self.empty = '- '
         self.array = {i:f'{self.empty}' for i in range((self.n-1)*4)}
         self.matrix = []
         self.gen_board()
@@ -176,7 +176,7 @@ if __name__ == '__main__':
                 raise ValueError('ERROR: Napis cele cislo (1/2/3/4)')
             break
         except ValueError as error:
-            print(R+repr(error.args[0])+W)
+            print(R+f'{error.args[0]}'+W)
     num_of_players = 4
 
 
