@@ -23,8 +23,8 @@ class Board():
 
         self.matrix[1][s+2] = '↓ '
         self.matrix[-1][s-2] = ' ↑'
-        self.matrix[s-2][1] = '-→'
-        self.matrix[s+2][-1] = '←-'
+        self.matrix[s-2][1] = '→ '
+        self.matrix[s+2][-1] = '← '
 
     def update_board(self):
         s, d = MATRIX_STRED, DLZKA_DOMCEKA
@@ -91,54 +91,80 @@ class Player():
         board.print_board()
 
     def move(self):
-        hod_kockou = randint(1,6)
-        # print(f'Na rade je hrac {G+self.name} {str(hod_kockou)+W}')
-
+        self.not_moveable = list(filter(lambda x: x not in (self.array + self.home), self.figurky))
         self.array = board.array[self.starting_point:] + board.array[:self.starting_point]
-        self.moveable = [f for f in self.figurky if f in self.array and self.array.index(f) + hod_kockou < len(board.array)]
-        self.moveable_domcek = [f for f in self.figurky if f in self.array and len(board.array)+DLZKA_DOMCEKA >= self.array.index(f) + hod_kockou >= len(board.array)]
-        # print('Moveable ', self.moveable)
 
         if self.name not in ''.join(board.array):
-            tri_hody = randint(1, 6), randint(1, 6), randint(1, 6), 6 # TODO: remove this 6
+            tri_hody = randint(1, 6), randint(1, 6), randint(1, 6) #, 6 # TODO: remove this 6
             print(f"Tri hody hraca {G+self.name+W}:", ', '.join(map(str, tri_hody)))
             if 6 in tri_hody:
-                self.array[0] = f'{self.name}1'
+                self.array[0] = sorted(self.not_moveable)[0]
+                self.export_array()
+                self.move()
+            return None
+
+        hod_kockou = randint(1,6)
+
+        self.moveable = [f for f in self.figurky if f in self.array and self.array.index(f) + hod_kockou < len(board.array)]
+        self.moveable_domcek = [f for f in self.figurky
+                                if f in (self.array + self.home)
+                                and (len(self.array + self.home) > (self.array + self.home).index(f) + hod_kockou >= len(self.array))
+                                and ((self.array + self.home)[(self.array + self.home).index(f) + hod_kockou] == f'{self.name}-')]
+
+        self.filtered = self.moveable + self.moveable_domcek
+
+        if hod_kockou == 6 and self.array[0] == f'{board.empty}':
+            self.filtered = self.moveable + self.moveable_domcek + self.not_moveable
+
+        print(self.moveable, self.moveable_domcek, self.not_moveable)
+
+        print(f'Na rade je hrac {self.name} a hodil cislo {G+str(hod_kockou)+W}')
+
+        if len(self.filtered) == 0:
+            return
+
+        figurka = self.filtered[0]
+        while len(self.filtered) > 1:
+            figurka = input(f"{self.filtered!r}"+'\n').upper()
+            if figurka in self.filtered:
+                break
+            print('Nespravne zadany panacik')
+
+        if figurka in self.moveable_domcek:
+            if figurka in self.array:
+                position = self.array.index(figurka)
+                self.array[position] = board.empty
+                self.home[position-len(self.array)+hod_kockou] = figurka
+            else:
+                position = self.home.index(figurka)
+                self.home[position] = f'{self.name}-'
+                self.home[position+hod_kockou] = figurka
+            self.export_array()
+
+        else:
+            if hod_kockou == 6 and f'{self.name}' not in self.array[0]:
+                # print(f"Hod kockou hraca {G+self.name+W}:", hod_kockou)
+                # self.filtered = sorted(self.moveable + list(filter(lambda x: x not in board.array, self.figurky)))
+
+                if figurka not in board.array:
+                    self.array[0] = figurka
+                else:
+                    position = self.array.index(figurka)
+                    self.array[position] = board.empty
+                    self.array[position+hod_kockou] = figurka
                 self.export_array()
                 self.move()
 
-        elif hod_kockou == 6 and f'{self.name}' not in board.array[self.starting_point]:
-            print(f"Hod kockou hraca {G+self.name+W}:", hod_kockou)
-            self.filtered = sorted(self.moveable + list(filter(lambda x: x not in board.array, self.figurky)))
-            while True:
-                figurka = input(f"{self.filtered}"+'\n').upper()
-                if figurka in self.filtered:
-                    break
-                print('Nespravny input')
-            if figurka not in board.array:
-                self.array[0] = figurka
-            else:
+            elif len(self.moveable) != 0:
                 position = self.array.index(figurka)
                 self.array[position] = board.empty
                 self.array[position+hod_kockou] = figurka
-            self.export_array()
-            self.move()
+                self.export_array()
+                if hod_kockou == 6:
+                    self.move()
+            else:
+                print(f"Hod kockou hraca bol {G+self.name+W}: {hod_kockou} a nemal sa s cim pohnut", )
 
-        elif len(self.moveable) != 0:
-            print(f"Hod kockou hraca {G+self.name+W}:", hod_kockou)
-            while True:
-                figurka = self.moveable[0] if len(self.moveable) == 1 else input(f'{self.moveable}'+'\n').upper()
-                if figurka in self.moveable:
-                    break
-                print('Nespravny input')
-            position = self.array.index(figurka)
-            self.array[position] = board.empty
-            self.array[position+hod_kockou] = figurka
-            self.export_array()
-            if hod_kockou == 6:
-                self.move()
-        else:
-            print(f"Hod kockou hraca bol {G+self.name+W}: {hod_kockou} a nemal sa s cim pohnut", )
 
 def pravidla_hry():
     print('-'*15+' PRAVIDLA HRY '+'-'*16)
@@ -208,7 +234,7 @@ if __name__ == '__main__':
     #     except ValueError as error:
     #         print(repr(error.args[0]))
     # print(f'Hracia plocha: {size_of_board}x{size_of_board}')
-    size_of_board = 13
+    size_of_board = 11
 
     #zadeklarovat basic global variables
     DLZKA_DOMCEKA = size_of_board//2-1
@@ -230,10 +256,12 @@ if __name__ == '__main__':
         player.home = [f'{player.name}-' for i in range(DLZKA_DOMCEKA)]
 
     # board.array[10] = 'B1'
-    # board.array[-1] = 'B2'
+    # board.array[-1] = 'A2'
     # board.array[9] = 'B3'
     # board.array[7] = 'B4'
+    # player_A.home[0] = 'A1'
     board.print_board()
+
     # print(list(board.array.values()))
 
     # player_B.move()
@@ -245,7 +273,7 @@ if __name__ == '__main__':
 
 
     #
-    for i in range(50):
+    while sorted(player_A.home) != sorted(player_A.figurky):
         player_A.move()
         # player_B.move()
         # player_C.move()
