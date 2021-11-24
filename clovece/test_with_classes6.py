@@ -2,6 +2,7 @@ from random import randint
 
 class Board():
     def __init__(self):
+        self.winner = None
         self.n = size_of_board
         self.empty = '- '
         # self.array = {i:f'{self.empty}' for i in range((self.n-1)*4)}
@@ -66,7 +67,6 @@ class Board():
             print(' '.join(row))
         print(P+'-'*45+W)
 
-
 class Player():
     def __init__(self, name):
         self.home = ['DD' for i in range(DLZKA_DOMCEKA)]
@@ -85,17 +85,26 @@ class Player():
         else:
             self.starting_point = (size_of_board-1)*2+size_of_board-1
 
+    def check_winner(self):
+        if sorted(self.home) == sorted(self.figurky):
+            board.winner = self.name
+            print(O+'-'*45+W)
+            print(f'WINNER IS PLAYER {O+self.name+W}')
+            print(O+'-'*45+W)
+            quit()
+
     def export_array(self):
         self.array = self.array[-self.starting_point:] + self.array[:-self.starting_point]
         board.array = self.array
         board.print_board()
+        self.check_winner()
 
     def move(self):
-        self.not_moveable = list(filter(lambda x: x not in (self.array + self.home), self.figurky))
         self.array = board.array[self.starting_point:] + board.array[:self.starting_point]
+        self.not_moveable = list(filter(lambda x: x not in (self.array + self.home), self.figurky))
 
         if self.name not in ''.join(board.array):
-            tri_hody = randint(1, 6), randint(1, 6), randint(1, 6) #, 6 # TODO: remove this 6
+            tri_hody = randint(1, 6), randint(1, 6), randint(1, 6)
             print(f"Tri hody hraca {G+self.name+W}:", ', '.join(map(str, tri_hody)))
             if 6 in tri_hody:
                 self.array[0] = sorted(self.not_moveable)[0]
@@ -116,16 +125,16 @@ class Player():
         if hod_kockou == 6 and self.array[0] == f'{board.empty}':
             self.filtered = self.moveable + self.moveable_domcek + self.not_moveable
 
-        print(self.moveable, self.moveable_domcek, self.not_moveable)
+        # print(self.moveable, self.moveable_domcek, self.not_moveable)
 
         print(f'Na rade je hrac {self.name} a hodil cislo {G+str(hod_kockou)+W}')
 
         if len(self.filtered) == 0:
             return
 
-        figurka = self.filtered[0]
+        figurka = sorted(self.filtered)[0]
         while len(self.filtered) > 1:
-            figurka = input(f"{self.filtered!r}"+'\n').upper()
+            # figurka = input(f"{sorted(self.filtered)}"+'\n').upper()
             if figurka in self.filtered:
                 break
             print('Nespravne zadany panacik')
@@ -164,7 +173,6 @@ class Player():
                     self.move()
             else:
                 print(f"Hod kockou hraca bol {G+self.name+W}: {hod_kockou} a nemal sa s cim pohnut", )
-
 
 def pravidla_hry():
     print('-'*15+' PRAVIDLA HRY '+'-'*16)
@@ -208,7 +216,7 @@ if __name__ == '__main__':
     #         break
     #     except ValueError as error:
     #         print(R+f'{error.args[0]}'+W)
-    num_of_players = 1
+    num_of_players = 4
 
 
     # print(f'Hraci: {", ".join(player.name for player in all_players)}')
@@ -262,24 +270,10 @@ if __name__ == '__main__':
     # player_A.home[0] = 'A1'
     board.print_board()
 
-    # print(list(board.array.values()))
-
-    # player_B.move()
-    # player_C.move()
-    # print(player_B.array)
-    # print(player_B.moveable)
-    # print(player_B.moveable_domcek)
-    # print(player_C.array)
-
-
-    #
-    while sorted(player_A.home) != sorted(player_A.figurky):
+    while board.winner == None:
         player_A.move()
-        # player_B.move()
-        # player_C.move()
-        # player_D.move()
+        player_B.move()
+        player_C.move()
+        player_D.move()
 
-
-
-
-
+    print(board.winner)
