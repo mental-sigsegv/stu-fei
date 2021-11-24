@@ -198,51 +198,46 @@ P = '\033[35m' # purple
 if __name__ == '__main__':
 
 
-    # print('Vitaj')
-    # pravidla_hry()
-    # print('-'*45)
-    # print()
+    print('Vitaj')
+    pravidla_hry()
+    print(O+'-'*45+W)
+    print()
 
     # urcit pocet hracov
-    # print('Zvolte si pocet hracov od 1 do 4')
-    # while True:
-    #     try:
-    #         num_of_players = input()
-    #         if num_of_players == '' or not num_of_players.isnumeric():
-    #             raise ValueError('ERROR: Nebolo zadane cislo od 1 do 4')
-    #         num_of_players = int(num_of_players)
-    #         if not 1 <= num_of_players <= 4:
-    #             raise ValueError('ERROR: Napis cele cislo (1/2/3/4)')
-    #         break
-    #     except ValueError as error:
-    #         print(R+f'{error.args[0]}'+W)
-    num_of_players = 4
-
-
-    # print(f'Hraci: {", ".join(player.name for player in all_players)}')
-    # print('-'*45)
-
+    print('Zvolte si pocet hracov od 1 do 4')
+    while True:
+        try:
+            num_of_players = input()
+            if num_of_players == '' or not num_of_players.isnumeric():
+                raise ValueError('ERROR: Nebolo zadane cislo od 1 do 4')
+            num_of_players = int(num_of_players)
+            if not 1 <= num_of_players <= 4:
+                raise ValueError('ERROR: Napis cele cislo (1/2/3/4)')
+            break
+        except ValueError as error:
+            print(R+f'{error.args[0]}'+W)
+    # num_of_players = 4
 
     # urcit velkost hracej plochy
-    # print('Zvolte si velkost hracej plochy (neparne cislo, vacsie/rovne ako 5)')
-    # while True:
-    #     try:
-    #         size_of_board = input()
-    #         if size_of_board == '':
-    #             raise ValueError('ERROR: Nebolo zadane nic')
-    #         size_of_board = int(size_of_board)
-    #         if not isinstance(size_of_board, int):
-    #             raise ValueError(f"ERROR: Vstup ma byt typu integer (bolo zadane {type(size_of_board)})")
-    #         elif size_of_board < 5:
-    #             raise ValueError(f"ERROR: Vstup ma byt vacsi ako 5 (bolo zadane {size_of_board})")
-    #         elif size_of_board % 2 == 0:
-    #             raise ValueError(f"ERROR: Vstup ma byt neparne cislo (bolo zadane {size_of_board})")
-    #         else:
-    #             break
-    #     except ValueError as error:
-    #         print(repr(error.args[0]))
-    # print(f'Hracia plocha: {size_of_board}x{size_of_board}')
-    size_of_board = 11
+    print('Zvolte si velkost hracej plochy (neparne cislo, vacsie/rovne ako 5)')
+    while True:
+        try:
+            size_of_board = input()
+            if size_of_board == '':
+                raise ValueError('ERROR: Nebolo zadane nic')
+            size_of_board = int(size_of_board)
+            if not isinstance(size_of_board, int):
+                raise ValueError(f"ERROR: Vstup ma byt typu integer (bolo zadane {type(size_of_board)})")
+            elif size_of_board < 5:
+                raise ValueError(f"ERROR: Vstup ma byt vacsi ako 5 (bolo zadane {size_of_board})")
+            elif size_of_board % 2 == 0:
+                raise ValueError(f"ERROR: Vstup ma byt neparne cislo (bolo zadane {size_of_board})")
+            else:
+                break
+        except ValueError as error:
+            print(repr(error.args[0]))
+
+    # size_of_board = 11
 
     #zadeklarovat basic global variables
     DLZKA_DOMCEKA = size_of_board//2-1
@@ -263,6 +258,10 @@ if __name__ == '__main__':
     for player in all_players:
         player.home = [f'{player.name}-' for i in range(DLZKA_DOMCEKA)]
 
+    print(f'Hraci: {", ".join(player.name for player in all_players)}')
+    print(O+'-'*45+W)
+    print(f'Hracia plocha: {size_of_board}x{size_of_board}')
+    print(O+'-'*45+W)
     # board.array[10] = 'B1'
     # board.array[-1] = 'A2'
     # board.array[9] = 'B3'
