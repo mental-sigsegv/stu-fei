@@ -89,7 +89,7 @@ class Player():
         if sorted(self.home) == sorted(self.figurky):
             board.winner = self.name
             print(O+'-'*45+W)
-            print(f'WINNER IS PLAYER {O+self.name+W}')
+            print(f'WINNER IS PLAYER {O+self.name+W}'.center(55))
             print(O+'-'*45+W)
             quit()
 
