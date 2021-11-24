@@ -47,15 +47,21 @@ def intervals2():
         return False
     return (start, end)
 
-while True:
-    interval2 = intervals2()
-    print(interval2)
-    print('\033[33m'+"-"*75+'\033[0m')
-    if interval2 is not False:
-        break
+# while True:
+#     interval2 = intervals2()
+#     print(interval2)
+#     print('\033[33m'+"-"*75+'\033[0m')
+#     if interval2 is not False:
+#         break
 
 #test
 # custom_test_list = [(7, 14), (4, 13), (9, 12), (9, 11), (2, 13), (4, 13)]
 # print(intervals())
 # print('\033[33m'+"-"*75+'\033[0m')
 # print(intervals2())
+
+# shortest
+def intervals3(lst):
+    start, end = max([i[0] for i in lst]), min([i[1] for i in lst])
+    return False if end-start < 0 else (start, end)
+# print(intervals3([(7, 14), (4, 13), (9, 12), (9, 11), (2, 13), (4, 13)]))
