@@ -6,12 +6,12 @@ class Board:
     def __init__(self):
         self.winner = None
         self.n = size_of_board
-        self.empty = '- '
-        # self.array = {i:f'{self.empty}' for i in range((self.n-1)*4)}
-        self.array = [f'{self.empty}' for _ in range((self.n-1)*4)]
+        self.empty = '- '  # defines empty slot on movable path
+        self.array = [f'{self.empty}' for _ in range((self.n-1)*4)]  # array of length of movable path
         self.matrix = []
         self.gen_board()
 
+    # define basic look of board into 2d metrix
     def gen_board(self):
         self.matrix = [["  "] + [str(i)[-1]+' ' if i < 10 else str(i)[-2:] for i in range(self.n)]] + \
                       [[' ' + str(i)[-1] if i < 10 else str(i)[-2:]] +
@@ -19,6 +19,7 @@ class Board:
 
         s = MATRIX_STRED  # middle of matrix
 
+        # define fancy look (XX, arrows
         self.matrix[s][s] = "XX"
 
         self.matrix[1][s+2] = '↓ '
@@ -26,11 +27,13 @@ class Board:
         self.matrix[s-2][1] = '→ '
         self.matrix[s+2][-1] = '← '
 
+    # update of board
     def update_board(self):
         s, d = MATRIX_STRED, home_length
         array, n, matrix = list(self.array), self.n - 1, self.matrix
 
-        # update matrix by array values
+        # TODO try to optimize look of that
+        # update matrix by array values (movable path)
         matrix[1][s-1:s+2] = array[-2:]+[array[0]]
         matrix[-1][s-1:s+2] = [array[n*2]]+array[n*2-1:n*2-3:-1]
         matrix[s][1] = array[3*n-1]
@@ -47,18 +50,19 @@ class Board:
             matrix[s+1][s+2+i] = array[n+n//2-i-2]
             matrix[s+1][s-2-i] = array[2*n+n//2+i]
 
-        # update matrix's houses by players home values
+        # update matrix's houses values by players home values
         for i in range(d):
             matrix[s-i-1][s] = player_A.home[d-1-i]
             matrix[s+i+1][s] = player_C.home[d-1-i]
         matrix[s][s+1:s+1+d] = player_B.home[::-1]
         matrix[s][s-d:s] = player_D.home
 
+    # function for printing board into console
     def print_board(self):
-        self.update_board()
-        for row in self.matrix:
+        self.update_board()  # updating board before printing
+        for row in self.matrix:  # printing rows in matrix
             print(' '.join(row))
-        print_line(Purple)
+        print_line(Purple)  # add fancy line to divide text into parts in console
 
 
 class Player:
@@ -73,6 +77,7 @@ class Player:
         self.starting_point = None
         self.define_starting_point()
 
+    # define starting points of every player
     def define_starting_point(self):
         if self.name == 'A':
             self.starting_point = 0
@@ -83,14 +88,16 @@ class Player:
         else:
             self.starting_point = (size_of_board-1)*2+size_of_board-1
 
+    # define winner, if winner exists, quit program
     def check_winner(self):
         if sorted(self.home) == sorted(self.pieces):
             board.winner = self.name
             print_line(Yellow)
             print(f'WINNER IS PLAYER {Yellow+self.name+White}')
             print_line(Yellow)
-            quit()
+            quit()  # TODO experiment with default IDEL + add this to disclaimer
 
+    # export values of player.array into matrix and print board
     def export_array(self):
         self.home = self.array[-home_length:]
         self.array = self.array[-self.starting_point-home_length:-home_length] + self.array[:-self.starting_point-home_length]
@@ -98,6 +105,7 @@ class Player:
         board.print_board()
         self.check_winner()
 
+    # move function of player TODO comment how it's working in depth
     def move(self):
         self.array = board.array[self.starting_point:] + board.array[:self.starting_point] + self.home
         self.not_movable = list(filter(lambda x: x not in self.array, self.pieces))
@@ -147,7 +155,8 @@ class Player:
         if dice_roll == 6:
             self.move()
 
-def pravidla_hry():
+# rules
+def rules():
     print('-'*15+' PRAVIDLA HRY '+'-'*16)
     rules = [
         "Ak nema hrac ziadneho panacika na hracej ploche, hadze 3x alebo pokial nehodi 6tku",
@@ -159,11 +168,11 @@ def pravidla_hry():
     for i, text in enumerate(rules):
         print(f"{i+1}. pravidlo - {text}")
 
-
+# function to print line with defined color
 def print_line(color):
     print(Strikethrough_on+color+' '*65+Strikethrough_off+White)
 
-
+# ANSI colors
 White = '\033[0m'  # normal
 Red = '\033[31m'
 Green = '\033[32m'
@@ -172,17 +181,16 @@ Purple = '\033[35m'
 Strikethrough_on = '\033[9m'
 Strikethrough_off = '\033[29m'
 # source http://pueblo.sourceforge.net/doc/manual/ansi_color_codes.html
-# ANSI colors
-# \033 - ESC
 
 
 if __name__ == '__main__':
+    # welcome message, rules, disclaimer
     print('Vitaj')
-    pravidla_hry()
+    rules()
     print_line(Purple)
     print()
 
-    # urcit pocet hracov
+    # define numbers of players
     print('Zvolte si pocet hracov od 1 do 4')
     while True:
         try:
@@ -195,9 +203,8 @@ if __name__ == '__main__':
             break
         except ValueError as error:
             print(Red+f'{error.args[0]}'+White)
-    # num_of_players = 4
 
-    # urcit velkost hracej plochy
+    # define size of the board
     print('Zvolte si velkost hracej plochy (neparne cislo, vacsie/rovne ako 5)')
     while True:
         try:
@@ -216,8 +223,6 @@ if __name__ == '__main__':
         except ValueError as error:
             print(Red+f'{error.args[0]}'+White)
 
-    # size_of_board = 11
-
     # zadeklarovat basic global variables
     home_length = size_of_board//2-1
     MATRIX_STRED = size_of_board//2+1
@@ -225,25 +230,30 @@ if __name__ == '__main__':
     # create board
     board = Board()
 
-    # create players
+    # create player objects
     player_A = Player('A')
     player_B = Player('B')
     player_C = Player('C')
     player_D = Player('D')
 
+    # define all players that play
     all_players = [player_A, player_B, player_C, player_D]
     all_players = all_players[:num_of_players]
 
+    # show 'active' home on board (players that dont play will have 'DD' sign as home)
     for player in all_players:
         player.home = [f'{player.name}-' for i in range(home_length)]
 
+    # print players and board size
     print(f'Hraci: {", ".join(player.name for player in all_players)}')
     print_line(Purple)
     print(f'Hracia plocha: {size_of_board}x{size_of_board}')
     print_line(Purple)
 
+    # defualt look of board
     board.print_board()
 
+    # waiting for winner of the game
     while board.winner is None:
         for player in all_players:
             player.move()
