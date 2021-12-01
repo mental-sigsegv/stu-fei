@@ -1,7 +1,6 @@
 from random import randint
 
 
-AUTOMATIC = True  # TODO fix that
 class Board:
     def __init__(self):
         self.winner = None
@@ -95,7 +94,8 @@ class Player:
             print_line(Yellow)
             print(f'WINNER IS PLAYER {Yellow+self.name+White}')
             print_line(Yellow)
-            quit()  # TODO experiment with default IDEL + add this to disclaimer
+            input('Press ENTER to quit!')
+            quit()
 
     # export values of player.array into matrix and print board
     def export_array(self):
@@ -118,7 +118,7 @@ class Player:
                 self.export_array()
                 self.move()
             else:
-                print(f'Na rade bol hrac {self.name} a nehodil cislo 6tku\n')
+                print(f'Na rade bol hrac {self.name} a nehodil cislo 6\n')
             return None
 
         dice_roll = randint(1, 6)
@@ -140,7 +140,7 @@ class Player:
         piece = sorted(self.movable)[0]  # only 1 piece we can move
         while len(self.movable) > 1:
             if not AUTOMATIC:
-                piece = input(f"{sorted(self.movable)}"+'\n').upper()  # TODO: nastavenie automatickeho posuvana
+                piece = input(f"{sorted(self.movable)}"+'\n').upper()
             if piece in self.movable:
                 break
             print('Zly input/s tymto panacikom nejde pohnut.')
@@ -155,38 +155,68 @@ class Player:
         if dice_roll == 6:
             self.move()
 
+
 # rules
 def rules():
     print('-'*15+' PRAVIDLA HRY '+'-'*16)
     rules = [
-        "Ak nema hrac ziadneho panacika na hracej ploche, hadze 3x alebo pokial nehodi 6tku",
-        "Ak hrac stupi na panacika ineho hraca (alebo aj na svojho), vybije ho a teda panacik ineho hraca (alebo seba sameho) sa vrati do stajne",
-        "Kazdy hrac ma na zaciatku rovnaky pocet panacikov v stajni ako je pocet domcekov"
-        "Vitazom za stava hrac, kt. prvy dostane vsetky svoje pieces do domceka",
-        "Ak hrac hodi 6tku, ma pravo na dalsi hod",
+        "Pohyb panáčika je v protismere hodinových ručičiek.",
+        "Každý hráč má rovnaký počet panáčikov ako je počet jeho domčekov.",
+        "Ak nemá hráč žiadneho panáčika na hracej ploche a v domčeku, hádže kockou 3-krát.",
+        "Ak hráč hodí 6-tku, ide znova.",
+        "Ak hráč stúpi na panáčika mimo domčeka, vybije ho.",
+        "Panáčik, ktorý je v domčeko sa nedá vybiť.",
+        "Víťazom sa stáva hráč, ktorý prvý dostane všetkćh svojich panáčikov do domčeka."
     ]
     for i, text in enumerate(rules):
-        print(f"{i+1}. pravidlo - {text}")
+        print(f"{i+1}. {text}")
+    print()
+
 
 # function to print line with defined color
 def print_line(color):
-    print(Strikethrough_on+color+' '*65+Strikethrough_off+White)
+    print(Strikethrough_on+color+f'{" " if COLORS else "-"}'*65+Strikethrough_off+White)
 
-# ANSI colors
-White = '\033[0m'  # normal
-Red = '\033[31m'
-Green = '\033[32m'
-Yellow = '\033[33m'
-Purple = '\033[35m'
-Strikethrough_on = '\033[9m'
-Strikethrough_off = '\033[29m'
-# source http://pueblo.sourceforge.net/doc/manual/ansi_color_codes.html
+
+def disclaimer():
+    print(f'Disclaimer: tento program bol písaný v pythone v. {3.9}, '
+          f'použité knižnice [random]. '
+          f'Ideálne je použitie IDE ako PyCharm alebo VScode (inak sa farmy nemusia v konzoli zobraziť, potom doporučujem farby vypnúť.)')
+    print()
 
 
 if __name__ == '__main__':
-    # welcome message, rules, disclaimer
-    print('Vitaj')
+    AUTOMATIC = False
+    COLORS = False
+
+    disclaimer()
+    while True:
+        answer = input('Do you want to use console colors (ANSI colors, doesnt work in default py IDLE) (yes/no)?\n')
+        if isinstance(answer, str) and answer.lower() in ['yes', 'y', 'ano', 'áno']:
+            COLORS = True
+            break
+        elif isinstance(answer, str) and answer.lower() in ['no', 'n', 'nie']:
+            break
+
+    # ANSI colors
+    White = '\033[0m' if COLORS else ''  # normal
+    Red = '\033[31m' if COLORS else ''
+    Green = '\033[32m' if COLORS else ''
+    Yellow = '\033[33m' if COLORS else ''
+    Purple = '\033[35m' if COLORS else ''
+    Strikethrough_on = '\033[9m' if COLORS else ''
+    Strikethrough_off = '\033[29m' if COLORS else ''
+    # source http://pueblo.sourceforge.net/doc/manual/ansi_color_codes.html
+
+    print('Vitaj v hre človeče nehnevaj sa')
     rules()
+    while True:
+        answer = input('Would you like to play the game, or let it finish automaticly (play/automatic)?\n')
+        if isinstance(answer, str) and answer.lower() in ['play', 'p']:
+            break
+        elif isinstance(answer, str) and answer.lower() in ['auto', 'automatic', 'a']:
+            AUTOMATIC = True
+            break
     print_line(Purple)
     print()
 
@@ -199,7 +229,7 @@ if __name__ == '__main__':
                 raise ValueError('ERROR: Nebolo zadane cislo od 1 do 4')
             num_of_players = int(num_of_players)
             if not 1 <= num_of_players <= 4:
-                raise ValueError('ERROR: Napis cele cislo (1/2/3/4)')
+                raise ValueError('ERROR: Napis cele cislo 1 / 2 / 3 / 4')
             break
         except ValueError as error:
             print(Red+f'{error.args[0]}'+White)
@@ -211,7 +241,10 @@ if __name__ == '__main__':
             size_of_board = input()
             if size_of_board == '':
                 raise ValueError('ERROR: Nebolo zadane nic')
-            size_of_board = int(size_of_board)
+            try:
+                size_of_board = int(size_of_board)
+            except ValueError:
+                raise ValueError(f'ERROR: Nebolo zadane cislo')
             if not isinstance(size_of_board, int):
                 raise ValueError(f"ERROR: Vstup ma byt typu integer (bolo zadane {type(size_of_board)})")
             elif size_of_board < 5:
