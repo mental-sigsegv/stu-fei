@@ -68,10 +68,8 @@ class Player:
     def __init__(self, name):
         self.home = ['DD' for _ in range(home_length)]
         self.name = name
-        self.array = []
+        self.array, self.movable, self.not_movable = [], [], []
         self.pieces = {f'{self.name}{i+1}' for i in range(home_length)}
-        self.movable = []
-        self.not_movable = []
         self.empty_home = f'{self.name}-'
         self.starting_point = None
         self.define_starting_point()
@@ -87,15 +85,14 @@ class Player:
         else:
             self.starting_point = (size_of_board-1)*2+size_of_board-1
 
-    # define winner, if winner exists, quit program
+    # define winner, if winner exists, exit program
     def check_winner(self):
         if sorted(self.home) == sorted(self.pieces):
             board.winner = self.name
             print_line(Yellow)
             print(f'WINNER IS PLAYER {Yellow+self.name+White}')
             print_line(Yellow)
-            input(Red+'Press ENTER to quit!'+White)
-            quit()
+            exit()
 
     # export values of player.array into matrix and print board
     def export_array(self):
@@ -110,10 +107,11 @@ class Player:
         self.array = board.array[self.starting_point:] + board.array[:self.starting_point] + self.home
         self.not_movable = list(filter(lambda x: x not in self.array, self.pieces))
 
+        # throw a dice three times if none piece on board
         if self.name not in ''.join(self.array).replace(f'{self.name}-', '- '):
             three_dice_rolls = randint(1, 6), randint(1, 6), randint(1, 6)
             print(f"Tri hody hraca {Green+self.name+White}:", ', '.join(map(str, three_dice_rolls)), '\n')
-            if 6 in three_dice_rolls:
+            if 6 in three_dice_rolls:  # if 6 in throws add piece at player's starting_point
                 self.array[0] = sorted(self.not_movable)[0]
                 self.export_array()
                 self.move()
@@ -153,6 +151,7 @@ class Player:
         if piece not in self.array:
             self.array[0] = piece
         else:
+            # get position of piece, clear that position and 'move' piece to another position (last position+dice_roll)
             position = self.array.index(piece)
             self.array[position] = board.empty if position < len(self.array) - home_length else self.empty_home
             self.array[position+dice_roll] = piece
@@ -173,7 +172,7 @@ def rules():
         "Ak hráč stúpi na panáčika mimo domčeka, vybije ho.",
         "Panáčik, ktorý je v domčeko sa nedá vybiť.",
         "Víťazom sa stáva hráč, ktorý prvý dostane všetkćh svojich panáčikov do domčeka."
-        "Ak je aktivované hranie (nie automatické), tak vyzve na vstup panáčika, s ktorým sa chce hrác pohnúť (ak je na výber z viacerých panáčikov)"
+        "Ak je aktivované hranie (nie automatické), tak hra vyzve hráča aby na vstup zadal panáčika, s ktorým sa chce hrác pohnúť (ak je na výber z viacerých panáčikov)"
     ]
     # print rules with order number
     for i, text in enumerate(rules):
@@ -208,13 +207,13 @@ if __name__ == '__main__':
         elif isinstance(answer, str) and answer.lower() in ['no', 'n', 'nie']:
             break
 
-    # ANSI colors
-    White = '\033[0m' if COLORS else ''  # normal
+    # ANSI colors - doesnt work in default python IDLE, use VScode or PyCharm instead
+    White = '\033[0m' if COLORS else ''  # default color
     Red = '\033[31m' if COLORS else ''
     Green = '\033[32m' if COLORS else ''
     Yellow = '\033[33m' if COLORS else ''
     Purple = '\033[35m' if COLORS else ''
-    Strikethrough_on = '\033[9m' if COLORS else ''
+    Strikethrough_on = '\033[9m' if COLORS else ''  # it makes line clear
     Strikethrough_off = '\033[29m' if COLORS else ''
     # source http://pueblo.sourceforge.net/doc/manual/ansi_color_codes.html
 
