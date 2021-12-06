@@ -14,7 +14,7 @@ def intervals():
     for _ in range(nums):
         x = randint(0, max_range)
         y = randint(x+1, max_range+1)
-        lst.append((x,y))
+        lst.append((x, y))
     # lst = custom_test_list
     print(lst)
     print_interval(lst)
