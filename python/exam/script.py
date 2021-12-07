@@ -4,5 +4,5 @@ with open('run.py') as f:
 with open('run_formatted.py', 'r+') as f:
     f.truncate(0)
     for line in lines:
-        f.write(line.lower().replace('_', ' ')+'\n')
+        f.write(line.lower().replace('_', ' ').replace("' '", "''")+'\n')
 
