@@ -91,6 +91,7 @@ class Player:
             print_line(Yellow)
             print(f'WINNER IS PLAYER {Yellow+self.name+White}')
             print_line(Yellow)
+            input('GG WP, press enter to exit - (if run through .py console)')  # feel free to comment if you dont use .py console
             exit()
 
     # export values of player.array into matrix, print board and check if we got a winner
