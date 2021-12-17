@@ -1,4 +1,5 @@
-import random
+n = 11
+grid = [['*']*n for i in range(n)]
 
-x = [random.randint(1, 100) for _ in range(10_000)] + [0]
-print(x)
+for row in grid:
+    print(''.join(row))

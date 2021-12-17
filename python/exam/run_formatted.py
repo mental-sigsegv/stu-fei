@@ -1,7 +1,6 @@
-def f(n):
-    if n<1:
-        print('start!', end='')
-    else:
-        print(n, end='')
-        f(n-1)
-f(5)
+ret1='vecera'
+ret2=''
+for i in range(len(ret1)):
+   if ret1[i] not in ret1[i+1:]:
+      ret2=ret2+ret1[i]
+print(ret2)

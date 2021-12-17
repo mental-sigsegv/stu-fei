@@ -152,7 +152,7 @@ def hrac_B():
 
 def main():
     # print('-'*43)
-    game(15)
+    game(7)
     # print('-'*43)
     # game(15)
 main()
