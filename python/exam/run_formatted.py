@@ -1,6 +1,12 @@
-ret1='vecera'
-ret2=''
-for i in range(len(ret1)):
-   if ret1[i] not in ret1[i+1:]:
-      ret2=ret2+ret1[i]
-print(ret2)
+def f(n):
+   if n==0:
+      return 0
+   else:
+      if n%2==1:
+         rec=f(n-1)
+         return rec
+      if n%2==0:
+         rec=f(n-2)
+         return rec+n
+a=f(7)
+print(a)

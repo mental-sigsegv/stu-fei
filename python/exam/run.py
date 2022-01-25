@@ -1,6 +1,12 @@
-# ret1='vecera'
-# ret2=''
-# For_i_in_Range(len(ret1)):
-# ___if_ret1[i]_not_in_ret1[i+1:]:
-# ______ret2=ret2+ret1[i]
-# Print(ret2)
+Def_f(n):
+_if n==0:
+__return 0
+_else:
+__if n%2==1:
+_rec=f(n-1)
+_Return rec
+__if n%2==0:
+_rec=f(n-2)
+_Return rec+n
+a=f(7)
+Print(a)
