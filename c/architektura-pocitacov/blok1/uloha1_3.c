@@ -15,5 +15,5 @@ void fibonaci(int k) {
 }
 
 int main() {
-    fibonaci(15);
+    fibonaci(1);
 }

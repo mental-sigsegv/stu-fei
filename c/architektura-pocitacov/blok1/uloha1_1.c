@@ -1,25 +1,28 @@
 #include <stdio.h>
 
-unsigned long long  toBin(int x) {  
-    
-    unsigned long long result=0, i=1;
-    while (x > 0) {
-        result += i*(x%2);
-        x = x/2;
-        i = i * 10;
+void toBin(int x) {  
+    int arr[100], i = 0, num = x;
+    while (num > 0) {
+        arr[i] = num%2;
+        i++;
+        num = num/2;
     }
-    return result;
+    for (int n=i-1; n >= 0; n--) {
+        printf("%d", arr[n]);
+        if (n%4 == 0) {
+            printf(" ");
+        }
+    }
 }
 
 int main() {
-    int num = 2;  // max num 1 048 575
-    char chr = 'A';
+    int num = 76723905;
+    char chr = 'z';
 
-    int intChar = chr; 
+    int intChr = chr; 
     
-    printf("---------------------------------------");
-    printf("\nCharacter: '%c'\nBin: %llu\nDec: %d\nHex: %x\n", chr, toBin(intChar), chr, chr);
-
-    printf("---------------------------------------");
-    printf("\nNumber: '%d'\nBin: %llu\nDec: %d\nHex: %x", num, toBin(num), num, num);
+    printf("\nCharacter: '%c'\nDec: %d\nHex: %X\nBin: ", chr, chr, chr);
+    toBin(intChr);
+    printf("\n\nNumber: '%d' \nDec: %d\nHex: %x\nBin: ", num, num, num);
+    toBin(num);
 }
