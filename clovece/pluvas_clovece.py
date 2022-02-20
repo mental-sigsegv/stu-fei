@@ -1,17 +1,17 @@
-import random, time
+import random
 
 
 class Pole:
 	def __init__(self, *args, **kwargs):
 		self.rozmer = args[0]
-		self.pole = [[Policko(x, y) for y in range(self.rozmer+1)] for x in range(self.rozmer+1)] #inicializuje prazdny 2d list s prazdnymi polickami 
+		self.pole = [[Policko(x, y) for y in range(self.rozmer+1)] for x in range(self.rozmer+1)]  # inicializuje prazdny 2d list s prazdnymi polickami
 
 	def print_pole(self):
 		#vypise cele pole po riadku
 		for riadok in self.pole:
 			for policko in riadok:
 				#ak na policku je postavicka, vypise tu, ktora tam prisla posledna
-				print(policko.hodnota, end = " ") if not policko.postavicka else print(policko.postavicka[-1].hodnota, end = " ")
+				print(policko.hodnota, end=" ") if not policko.postavicka else print(policko.postavicka[-1].hodnota, end = " ")
 			print()
 		print()
 
