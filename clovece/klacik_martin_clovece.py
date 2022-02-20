@@ -7,6 +7,7 @@ class Board:
         self.n = size_of_board
         self.empty = '- '  # defines empty slot on movable path
         self.array = [f'{self.empty}' for _ in range((self.n-1)*4)]  # array of length of movable path
+        self.array_colored = self.array[:]
         self.matrix = []  # 2d matrix that is printed to the console
         self.gen_board()
 
@@ -29,7 +30,18 @@ class Board:
     # update of board
     def update_board(self):
         s, d = MATRIX_STRED, home_length
-        array, n, matrix = list(self.array), self.n - 1, self.matrix
+        self.array_colored = self.array[:]
+        for i in range(len(self.array_colored)-1):
+            if 'A' in self.array_colored[i]:
+                self.array_colored[i] = Red+self.array_colored[i]+White
+            elif 'B' in self.array_colored[i]:
+                self.array_colored[i] = Green+self.array_colored[i]+White
+            elif 'C' in self.array_colored[i]:
+                self.array_colored[i] = Yellow+self.array_colored[i]+White
+            elif 'D' in self.array_colored[i]:
+                self.array_colored[i] = Blue+self.array_colored[i]+White
+
+        array, n, matrix = list(self.array_colored), self.n - 1, self.matrix
 
         # update matrix by array values (movable path), PS: it's messy, but it works, don't touch it ;)
         matrix[1][s-1:s+2] = array[-2:]+[array[0]]
@@ -98,7 +110,9 @@ class Player:
     def export_array(self):
         self.home = self.array[-home_length:]
         self.array = self.array[-self.starting_point-home_length:-home_length] + self.array[:-self.starting_point-home_length]
+
         board.array = self.array
+
         board.print_board()
         self.check_winner()
 
@@ -201,7 +215,7 @@ if __name__ == '__main__':
     AUTOMATIC = False  # setting for automatic play
     COLORS = False  # setting for using ANSI colors (no need of external library)
 
-    info()
+    # info()
     # define if the game will use ANSI colors or not by user's input
     while True:
         answer = input('Chcete použiť farby (yes/no)?\n')
@@ -217,6 +231,7 @@ if __name__ == '__main__':
     Green = '\033[32m' if COLORS else ''
     Yellow = '\033[33m' if COLORS else ''
     Purple = '\033[35m' if COLORS else ''
+    Blue = '\033[36m' if COLORS else ''
     Strikethrough_on = '\033[9m' if COLORS else ''  # it makes line clear
     Strikethrough_off = '\033[29m' if COLORS else ''
     # source http://pueblo.sourceforge.net/doc/manual/ansi_color_codes.html
@@ -255,7 +270,7 @@ if __name__ == '__main__':
 
     print_line(Purple)
     print('\nVitaj v hre človeče nehnevaj sa\n')
-    rules()
+    # rules()
 
     # zadeklarovat basic global variables
     home_length = size_of_board//2-1
