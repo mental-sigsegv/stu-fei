@@ -3,11 +3,12 @@
 
 
 double degToRad(int deg) {
-    return (deg%180)/(double)180;
+    double pi = 2*acos(0.0);  // arccos(0) vracia pi/2
+    return (deg%360)*pi/180;
 }
 
-int fact(int k) {
-    int tmp = 1;
+double fact(int k) {
+    double tmp = 1;
     for (int i = 1; i <= k; i++) {
         tmp *= i;
     }
@@ -16,8 +17,8 @@ int fact(int k) {
 
 int main() {
     // cos
-    long int k = 12;
-    int degree = 100;
+    int k = 30;
+    int degree = 5372+180;
     double arr[k];
     double x = degToRad(degree);
     
