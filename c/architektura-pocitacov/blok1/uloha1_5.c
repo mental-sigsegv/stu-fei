@@ -33,6 +33,7 @@ int main() {
     printf("Mine cos: %.20lf\n", arr[k-1]);
     // printf("%d", cos(x) == arr[k-1]);
 
+    system("pause");
     return 0;
 }
 

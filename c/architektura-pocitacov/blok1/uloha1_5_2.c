@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <math.h>
-#include <stdlib.h>
-
+#include <limits.h>
 
 float degToRad(int deg) {
-    float pi = 2*acos(0.0);  // arccos(0) vracia pi/2  double - 15 decimal places
-    return (deg%360)*pi/180;  // %360 kvoli periodite, *pi/180 preraba stupne na radiany
+    // const float PI = 2*acos(0.0);  // arccos(0) vracia pi/2 - ak by nebola M_PI 
+    return (deg%360)*M_PI/180;  // %360 kvoli periodite, *pi/180 preraba stupne na radiany
 }
 
 double fact(int k) {
@@ -17,7 +16,8 @@ double fact(int k) {
     return tmp;
 }
 
-float cosine(float radians, float epsilon) {
+float cosine(int degree, float epsilon) {
+    float radians = degToRad(degree);
     int n=1;
     float lib_cos = cos(radians);
     double arr[20];
@@ -25,41 +25,42 @@ float cosine(float radians, float epsilon) {
 
     do {
         arr[n] = arr[n-1] + ((pow(-1, n))*(pow(radians, 2*n)))/fact(2*n);
-        printf("%d %.20lf\n", n, arr[n]);
-        printf("%d %.20lf\n", ()>=epsilon);  // TODO: min max via a > b ? a-b : b-a;
+        printf("%2d. %.20lf\n", n, arr[n]);  // taylorov rad
         n++;
-    } while ((arr[n-1] != arr[n-2]));
+    } while ((arr[n-1] != arr[n-2]) && ((arr[n-1] > arr[n-2] ? arr[n-1]-arr[n-2] : arr[n-2]-arr[n-1]) >= epsilon));
 
     printf("\nlib cos  %.20f\n", lib_cos);
-    printf("mine cos %.20f", arr[n-1]);
+    printf("mine cos %.20f\n", arr[n-1]);
 
     return 0.0;
 }
 
 int main() {
-    int deg = 137;
-    float rad = degToRad(deg);
-    printf("\rrad %f\n", rad);
-    cosine(rad, 0.00001);
+    // printf("%d\n", INT_MAX);  // checknut, ci int je 2 / 4 byte
+    int deg;  // int kvoli operatoru % (dalo by sa to osetrit pomocou fmod function z math.h)
+    float epsilon;
 
-    // cos
-    // int k = 40;
-    // int degree = 34534676;
-    // float arr[k];
-    // double x = degToRad(degree);
+    /*
+    Copy paste examples
+    36123 0.00000000000001
+    -234565 0.000001
+
+    2131 0.0000001
+    -2356 0.000000001
+
+    0 0.00000001
+    203 1.0e-20
+    */
+
+    scanf("%d %f", &deg, &epsilon);
+    // epsilon = __FLT_EPSILON__;
     
-    // printf("Deg:      %d\n", degree);
-    // arr[0] = 1;
+    printf("\ndegree %d\n", deg);
+    printf("epsilon %.20f\n", epsilon);
 
+    cosine(deg, epsilon);
 
-    // for (int n = 1; n < k; n++) {
-    //     arr[n] = arr[n-1] + ((pow(-1, n))*(pow(x, 2*n)))/fact(2*n);
-    // }
-
-    // printf("Cos:      %.20lf\n", cos(x));
-    // printf("Mine cos: %.20lf\n", arr[k-1]);
-    // // printf("%d", cos(x) == arr[k-1]);
-
+    getchar();   // system("pause");
     return 0;
 }
 
