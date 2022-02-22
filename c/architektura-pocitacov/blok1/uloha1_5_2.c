@@ -20,7 +20,7 @@ float cosine(int degree, float epsilon) {
     float radians = degToRad(degree);
     int n=1;
     float lib_cos = cos(radians);
-    double arr[20];
+    double arr[40];
     arr[0] = 1.0;
 
     do {
@@ -60,7 +60,7 @@ int main() {
 
     cosine(deg, epsilon);
 
-    getchar();   // system("pause");
+    // getchar(); system("pause");
     return 0;
 }
 
