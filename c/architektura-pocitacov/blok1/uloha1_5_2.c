@@ -25,7 +25,7 @@ float cosine(int degree, float epsilon) {
 
     do {
         arr[n] = arr[n-1] + ((pow(-1, n))*(pow(radians, 2*n)))/fact(2*n);
-        printf("%2d. %.20lf\n", n, arr[n]);  // taylorov rad
+        // printf("%2d. %.20lf\n", n, arr[n]);  // taylorov rad
         n++;
     } while ((arr[n-1] != arr[n-2]) && ((arr[n-1] > arr[n-2] ? arr[n-1]-arr[n-2] : arr[n-2]-arr[n-1]) >= epsilon));
 

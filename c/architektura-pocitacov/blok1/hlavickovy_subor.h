@@ -1,0 +1,1 @@
+int moja_funkcia(int parameter1, char parameter2);

@@ -2,8 +2,16 @@
 #include <math.h>
 #include <float.h>
 
-int main() {
-    printf("DBL_MAX     :   %g\n", (double) DBL_MAX);
+double fact(int k) {
+    double tmp = 1;
+    for (int i = 2; i <= k; i++) {
+        tmp *= i;
+    }
 
-    return 0;
+    return tmp;
+}
+int main() {
+    for (int i = 1; i <= 50; i++) {
+        printf("%2d %lf\n", i, fact(i));
+    }
 }
