@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 void fibonaci(int k) {
-    int arr[k];
+    int arr[100];
     arr[0] = 1;
     arr[1] = 1;
 
