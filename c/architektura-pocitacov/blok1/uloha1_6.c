@@ -7,11 +7,7 @@ int hexToDec(char* hexstring) {
     return number;
 }
 
-void intelHex(void) {
-    char* data;
-    // scanf("%s", data);
-
-    gets(data);
+void intelHex(char* data) {
 
     int l = strlen(data), count = 0, mine;
     char sum_check[3] = {data[l-2], data[l-1]};
@@ -31,6 +27,6 @@ void intelHex(void) {
 }
 
 int main() {
-    intelHex();
+    intelHex(":100000000C942A000C9445000C9445000C94450077");
     return 0;
 }
