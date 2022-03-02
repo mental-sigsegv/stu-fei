@@ -2,10 +2,9 @@
 #include <math.h>
 #include <float.h>
 #include <string.h>
-
+#include <stdlib.h>
 
 int main() {
-    char sum_check[2] = {'4', '0'};
-
-    printf("%c", sum_check[0]);
+    int test = strtol("10101sdfsdf0111011", NULL, 2);
+    printf("%d", test);
 }

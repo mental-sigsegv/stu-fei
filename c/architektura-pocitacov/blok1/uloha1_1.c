@@ -15,14 +15,12 @@ void toBin(int x) {
     }
 }
 
-int main() {
-    int num = 76723905;
-    char chr = 'z';
-
+void uloha1(int chr) {
     int intChr = chr; 
-    
     printf("\nCharacter: '%c'\nDec: %d\nHex: %X\nBin: ", chr, chr, chr);
     toBin(intChr);
-    printf("\n\nNumber: '%d' \nDec: %d\nHex: %x\nBin: ", num, num, num);
-    toBin(num);
+}
+
+int main() {
+    uloha1('X');
 }
