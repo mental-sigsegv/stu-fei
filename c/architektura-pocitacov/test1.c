@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 int main() {
+    
     int test = strtol("10101sdfsdf0111011", NULL, 2);
     printf("%d", test);
 }
