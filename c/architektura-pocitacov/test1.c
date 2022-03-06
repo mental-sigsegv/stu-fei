@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 int main() {
-   int c;
-   c += 10;
-   printf("%d", c);
+   asm(".intel_syntax noprefix \n"
+      "movabs eax, x\n"
+      ".att_syntax\n");
 }
