@@ -12,10 +12,11 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
+	
 	"Assembler": {
 		"prefix": "asm",
 		"body": [
-			"asm(\".intel_syntax noprefix\\n\"\n${1:\t}\n\t\".att_syntax\\n\");\n"
+			"asm(\".intel_syntax noprefix\\n\"\n\t${1:$BLOCK_COMMENT_START Code $BLOCK_COMMENT_END}\n\t\".att_syntax\\n\");\n"
 		]
 	}
 }

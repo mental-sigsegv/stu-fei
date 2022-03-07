@@ -4,8 +4,13 @@
 #include <string.h>
 #include <stdlib.h>
 
+static int num = 2;
+
 int main() {
-   asm(".intel_syntax noprefix \n"
-      "movabs eax, x\n"
+   asm(".intel_syntax noprefix\n"
+
       ".att_syntax\n");
+
+   printf("%d", num);
+   return 0;
 }
