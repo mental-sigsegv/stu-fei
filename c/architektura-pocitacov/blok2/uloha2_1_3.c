@@ -2,7 +2,7 @@
 
 static int g_int;
 
-void num_toHex_asm(int num) {
+void num_to_ascii_asm(int num) {
     g_int = num;
     asm(".intel_syntax noprefix\n"
         "movabs eax, g_int\n"
@@ -18,6 +18,6 @@ void num_toHex_asm(int num) {
 
 int main()
 {
-    num_toHex_asm(15);
+    num_to_ascii_asm(15);
     return 0;
 }

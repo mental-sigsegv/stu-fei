@@ -7,7 +7,7 @@ void add_nums_asm(int n1, int n2);
 void multiply_by2_asm(int x);
 
 // 2.1.3
-void num_toHex_asm(int num);
+void num_to_ascii_asm(int num);
 
 // 2.1.4
 void get_processor_name_asm();

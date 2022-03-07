@@ -92,7 +92,7 @@ void colorful_numbers() {
     SetConsoleTextAttribute(hConsole, 7);
 }
 
-void num_toHex_asm(int num) {
+void num_to_ascii_asm(int num) {
     g_int = num;
     asm(".intel_syntax noprefix\n"
         "movabs eax, g_int\n"
@@ -111,7 +111,7 @@ int main()
 {
     // add_nums_asm(678, -78);  // 2.1.1 [1b]
     // multiply_by2_asm(89);  // 2.1.2 [1b]
-    num_toHex_asm(15);  // 2.1.3 [3b]
+    num_to_ascii_asm(15);  // 2.1.3 [3b]
     // get_processor_name_asm();  // 2.1.4 [2b]
     // colorful_numbers();  // 2.5.1 [1b]
     return 0;
