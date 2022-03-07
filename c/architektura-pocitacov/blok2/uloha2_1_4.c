@@ -4,8 +4,8 @@ char proccesor_name[12];
 
 void getProccesorName() {
     asm(".intel_syntax noprefix\n"
-        "cpuid\n"
         "mov eax, 0x0\n"
+        "cpuid\n"
 
         "mov eax, ebx\n"
         "movabs proccesor_name, eax\n"

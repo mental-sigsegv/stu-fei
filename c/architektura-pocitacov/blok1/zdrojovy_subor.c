@@ -1,3 +1,5 @@
+/* BLOK 1 */
+
 #include "hlavickovy_subor.h"
 #include <stdio.h>   // input, output
 #include <math.h>    // cosine, PI value

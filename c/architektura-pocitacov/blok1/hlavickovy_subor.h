@@ -1,3 +1,5 @@
+/* BLOK 1 */
+
 // uloha 1.3
 void fibonaci(int k); 
 
