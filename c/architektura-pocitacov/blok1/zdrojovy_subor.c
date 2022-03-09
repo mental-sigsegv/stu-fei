@@ -81,8 +81,8 @@ void intelHex(char* data) {
 
 int main() {
     // fibonaci(14400);  // uloha 1.3 (1 int argument pre funkciu fibonaci) [2b]
-    // cosine(-10005, 1.0e-20);  // uloha 1.5 (1. int argument, 2. float epsilon) [4b]
-    intelHex(":100030000C9445000C9445000C9445000C944500xx");  // uloha 1.6 (1. argument string) [4b]
+    cosine(20005, 1.0e-20);  // uloha 1.5 (1. int argument, 2. float epsilon) [4b]
+    // intelHex(":10008000A036B107E1F70C9447000C940000CFE5CF");  // uloha 1.6 (1. argument intelhex string) [4b]
 
     return 0;
 }
