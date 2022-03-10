@@ -84,17 +84,18 @@ void throw(struct Player *player, struct Player *oponnent, int race_size, int *w
 }
 
 int main() {
+    // Create struct players
     struct Player player1;
     player1.num = 1;
     player1.pos_after = -1;
     player1.pos_before = -1;
-
 
     struct Player player2;
     player2.num = 2;
     player2.pos_after = -1;
     player2.pos_before = -1;
 
+    // Get input
     int s, t, n, enter, exit, winner = -1;
     scanf("%d %d %d", &s, &t, &n);
     srnd(s);
@@ -147,24 +148,12 @@ int main() {
     }
     printf("\n");
 
-    // Print array  // TODO: REMOVE
-    // printf("\n");
-    // for (int i = 0; i < n; i++) {
-    //     printf("%d ", race_arr[i]);
-    // }
-    // printf("\n");
-
     // Game
     while (winner == -1) {
         if (round_num%2 == 1) {
             throw(&player1, &player2, n, &winner, visited, race_arr);
         } else {
             throw(&player2, &player1, n, &winner, visited, race_arr);
-        }
-
-        if (round_num > 400) {  // TODO: remove error protection
-            printf("\n ERROR");
-            break;
         }
     }
 
@@ -177,8 +166,6 @@ int main() {
     {
         printf(" %d", visited[i]);
     }
-    
-    // printf("Done");
     return 0;
 }
 
