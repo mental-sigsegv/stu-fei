@@ -22,6 +22,7 @@ int rnd(int from, int to) {
 /////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct Player {
     int pos_before;
@@ -33,7 +34,10 @@ int round_num = 1;
 
 void throw(struct Player *player, struct Player *oponnent, int race_size, int *winner, int arr[], int race_path[]) {
     int r1 = rnd(1, 6), r2 = rnd(1, 6);
-    char* special = "";
+    char special[6];
+    for (int i=0; i<6; i++) {
+        special[i] = '\0';
+    }
 
      player->pos_before = player->pos_after;
 
@@ -50,7 +54,7 @@ void throw(struct Player *player, struct Player *oponnent, int race_size, int *w
         player->pos_after = oponnent->pos_after;
         oponnent->pos_after = player->pos_before;
         arr[player->pos_before] += 1;
-        special = " S";
+        strcat(special, " S");
     } else {
         player->pos_after += (r1 > r2 ? r1 : r2);
     }
@@ -59,11 +63,13 @@ void throw(struct Player *player, struct Player *oponnent, int race_size, int *w
     if ((*winner == -1) && (player->pos_after > -1) && (race_path[player->pos_after] != 0)) {
         // arr[player->pos_after] += 1;
         player->pos_after = race_path[player->pos_after];
-        special = " T";
-    } else if ((*winner == -1) && (player->pos_after == oponnent->pos_after) && ((player->pos_after != -1) && (oponnent->pos_after != -1))) {
+        strcat(special, " T");
+    } 
+    
+    if ((*winner == -1) && (player->pos_after == oponnent->pos_after) && ((player->pos_after != -1) && (oponnent->pos_after != -1))) {
         oponnent->pos_after = -1;
         oponnent->pos_before = -1;
-        special = " E";
+        strcat(special, " E");
     }
 
     arr[player->pos_after] += 1;
