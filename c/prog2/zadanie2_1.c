@@ -31,24 +31,39 @@ struct Player {
 
 int round_num = 1;
 
-void throw(struct Player *player, struct Player *oponnent, int race_size, int *winner, int arr[]) {
+void throw(struct Player *player, struct Player *oponnent, int race_size, int *winner, int arr[], int race_path[]) {
     int r1 = rnd(1, 6), r2 = rnd(1, 6);
     char* special = "";
 
+     player->pos_before = player->pos_after;
+
+    // Move
     if (player->pos_after == -1) {
         if (r1+r2 > 7) {
-            player->pos_before = -1;
             player->pos_after = r1+r2-7;
         }
+    } else if ((player->pos_after + (r1 > r2 ? r1 : r2)) >= race_size) {
+        // taking care of special moves (S, T, E) if car is able to finish within max(r1, r2) move
+        player->pos_after += (r1 >= r2 ? r1 : r2);
+        *winner = player->num;
     } else if (((player->pos_after != -1) && (oponnent->pos_after != -1)) && (((r1+r2 == 12) && (player->pos_after < oponnent->pos_after)) || ((r1+r2 == 2) && (player->pos_after > oponnent->pos_after)))) {
-        player->pos_before = player->pos_after;
         player->pos_after = oponnent->pos_after;
         oponnent->pos_after = player->pos_before;
         arr[player->pos_before] += 1;
         special = " S";
     } else {
-        player->pos_before = player->pos_after;
         player->pos_after += (r1 > r2 ? r1 : r2);
+    }
+
+    // Tunnel / kick
+    if ((*winner == -1) && (player->pos_after > -1) && (race_path[player->pos_after] != 0)) {
+        // arr[player->pos_after] += 1;
+        player->pos_after = race_path[player->pos_after];
+        special = " T";
+    } else if ((*winner == -1) && (player->pos_after == oponnent->pos_after) && ((player->pos_after != -1) && (oponnent->pos_after != -1))) {
+        oponnent->pos_after = -1;
+        oponnent->pos_before = -1;
+        special = " E";
     }
 
     arr[player->pos_after] += 1;
@@ -57,6 +72,7 @@ void throw(struct Player *player, struct Player *oponnent, int race_size, int *w
     
     if (player->pos_after >= race_size) {
         *winner = player->num;
+        return;
     }
     round_num++;
 }
@@ -135,12 +151,12 @@ int main() {
     // Game
     while (winner == -1) {
         if (round_num%2 == 1) {
-            throw(&player1, &player2, n, &winner, visited);
+            throw(&player1, &player2, n, &winner, visited, race_arr);
         } else {
-            throw(&player2, &player1, n, &winner, visited);
+            throw(&player2, &player1, n, &winner, visited, race_arr);
         }
 
-        if (round_num > 1000) {  // TODO: remove error protection
+        if (round_num > 400) {  // TODO: remove error protection
             printf("\n ERROR");
             break;
         }
