@@ -33,20 +33,27 @@ int round_num = 1;
 
 void throw(struct Player *player, struct Player *oponnent, int race_size, int *winner, int arr[]) {
     int r1 = rnd(1, 6), r2 = rnd(1, 6);
-    
+    char* special = "";
+
     if (player->pos_after == -1) {
         if (r1+r2 > 7) {
             player->pos_before = -1;
             player->pos_after = r1+r2-7;
-            arr[player->pos_after] += 1;
         }
+    } else if (((player->pos_after != -1) && (oponnent->pos_after != -1)) && (((r1+r2 == 12) && (player->pos_after < oponnent->pos_after)) || ((r1+r2 == 2) && (player->pos_after > oponnent->pos_after)))) {
+        player->pos_before = player->pos_after;
+        player->pos_after = oponnent->pos_after;
+        oponnent->pos_after = player->pos_before;
+        arr[player->pos_before] += 1;
+        special = " S";
     } else {
         player->pos_before = player->pos_after;
         player->pos_after += (r1 > r2 ? r1 : r2);
-        arr[player->pos_after] += 1;
     }
 
-    printf("[%d,%d] [%d] [%d,%d] [%d]\n", round_num, player->num, player->pos_before, r1, r2, player->pos_after);
+    arr[player->pos_after] += 1;
+
+    printf("[%d,%d] [%d] [%d,%d] [%d]%s\n", round_num, player->num, player->pos_before, r1, r2, player->pos_after, special);
     
     if (player->pos_after >= race_size) {
         *winner = player->num;
