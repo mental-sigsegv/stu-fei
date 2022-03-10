@@ -30,6 +30,8 @@ void colorfulNumbers() {
         Sleep(100);
         printf("%03d\n", i);
     }
+
+    
 }
 
 int main()
