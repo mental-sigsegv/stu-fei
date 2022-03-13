@@ -71,9 +71,10 @@ void throw(struct Player *player, struct Player *oponnent, int race_size, int *w
         oponnent->pos_before = -1;
         strcat(special, " E");
     }
-
-    arr[player->pos_after] += 1;
-
+    if ((player->pos_after >= 0) && (player->pos_after <= race_size)) {
+        arr[player->pos_after] += 1;
+    }
+    
     printf("[%d,%d] [%d] [%d,%d] [%d]%s\n", round_num, player->num, player->pos_before, r1, r2, player->pos_after, special);
     
     if (player->pos_after >= race_size) {
