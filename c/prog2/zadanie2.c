@@ -22,10 +22,82 @@ int rnd(int from, int to) {
 /////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+struct Player {
+    int pos_before;
+    int pos_after;
+    int num;
+};
+
+int round_num = 1;
+
+void throw(struct Player *player, struct Player *oponnent, int race_size, int *winner, int arr[], int race_path[]) {
+    int r1 = rnd(1, 6), r2 = rnd(1, 6);
+    char special[6];
+    for (int i=0; i<6; i++) {
+        special[i] = '\0';
+    }
+
+     player->pos_before = player->pos_after;
+
+    // Move
+    if (player->pos_after == -1) {
+        if (r1+r2 > 7) {
+            player->pos_after = r1+r2-7;
+        }
+    } else if ((player->pos_after + (r1 > r2 ? r1 : r2)) >= race_size) {
+        // taking care of special moves (S, T, E) if car is able to finish within max(r1, r2) move
+        player->pos_after += (r1 >= r2 ? r1 : r2);
+        *winner = player->num;
+    } else if (((player->pos_after != -1) && (oponnent->pos_after != -1)) && (((r1+r2 == 12) && (player->pos_after < oponnent->pos_after)) || ((r1+r2 == 2) && (player->pos_after > oponnent->pos_after)))) {
+        player->pos_after = oponnent->pos_after;
+        oponnent->pos_after = player->pos_before;
+        arr[player->pos_before] += 1;
+        strcat(special, " S");
+    } else {
+        player->pos_after += (r1 > r2 ? r1 : r2);
+    }
+
+    // Tunnel / kick
+    if ((*winner == -1) && (player->pos_after > -1) && (race_path[player->pos_after] != 0)) {
+        // arr[player->pos_after] += 1;
+        player->pos_after = race_path[player->pos_after];
+        strcat(special, " T");
+    } 
+    
+    if ((*winner == -1) && (player->pos_after == oponnent->pos_after) && ((player->pos_after != -1) && (oponnent->pos_after != -1))) {
+        oponnent->pos_after = -1;
+        oponnent->pos_before = -1;
+        strcat(special, " E");
+    }
+    if ((player->pos_after >= 0) && (player->pos_after <= race_size)) {
+        arr[player->pos_after] += 1;
+    }
+    
+    printf("[%d,%d] [%d] [%d,%d] [%d]%s\n", round_num, player->num, player->pos_before, r1, r2, player->pos_after, special);
+    
+    if (player->pos_after >= race_size) {
+        *winner = player->num;
+        return;
+    }
+    round_num++;
+}
 
 int main() {
-    int s, t, n, enter, exit;
+    // Create struct players
+    struct Player player1;
+    player1.num = 1;
+    player1.pos_after = -1;
+    player1.pos_before = -1;
+
+    struct Player player2;
+    player2.num = 2;
+    player2.pos_after = -1;
+    player2.pos_before = -1;
+
+    // Get input
+    int s, t, n, enter, exit, winner = -1;
     scanf("%d %d %d", &s, &t, &n);
     srnd(s);
     
@@ -33,11 +105,12 @@ int main() {
         return 1;
     }
 
-    int tunnels[t][2], race_arr[n];
+    int tunnels[t][2], race_arr[n], visited[n];
 
     // Fill race arrays with zero values
     for (int i = 0; i < n; i++) {
         race_arr[i] = 0;
+        visited[i] = 0;
     }
     
     // Load tunnels
@@ -57,7 +130,7 @@ int main() {
         race_arr[enter] = exit;
     }
 
-    // Check if there exist exti on enter
+    // Check if there is exit on enter
     for (int i = 0; i < t; i++) {
         enter = tunnels[i][0];
         exit = tunnels[i][1];
@@ -74,37 +147,26 @@ int main() {
             printf(" [%d,%d]", i, race_arr[i]);
         }
     }
-
-    // Print array
-    printf("\n");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", race_arr[i]);
-    }
     printf("\n");
 
     // Game
-    int r1, r2, player1 = -1, player2 = -1, last1, last2;
-
-    for (int i = 1; i <= 17; i++) {
-        if (i%2 == 1) {
-            r1 = rnd(1, 6); r2 = rnd(1, 6);
-            last1 = player1;
-
-            if ((player1 == -1) || ((r1+r2) > 7)) {
-                player1 = r1+r2-7;
-            } else {
-                player1 += r1+r2;
-            }
-
-            printf("[%d,%d] [%d] [%d,%d] [%d]\n", i, i%2, last1, r1, r2, player1);
+    while (winner == -1) {
+        if (round_num%2 == 1) {
+            throw(&player1, &player2, n, &winner, visited, race_arr);
         } else {
-            r1 = rnd(1, 6); r2 = rnd(1, 6);
-            printf("2ndplayer\n");
-            
+            throw(&player2, &player1, n, &winner, visited, race_arr);
         }
     }
-    
-    // printf("Done");
+
+    // Winner
+    printf("WINNER: %d\n", winner);
+
+    // Visited
+    printf("VISITS:");
+    for (int i = 0; i < n; i++)
+    {
+        printf(" %d", visited[i]);
+    }
     return 0;
 }
 
