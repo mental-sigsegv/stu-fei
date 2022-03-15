@@ -7,7 +7,7 @@ int main() {
 
     scanf("%lf %lf %lf %lf %lf %lf", &m, &T, &H, &g, &vsoft, &dt);
 
-    // print importet data
+    // print imported data
     printf("m=%.3lf\nT=%.3lf\nH=%.3lf\ng=%.3lf\nvsoft=%.3lf\ndt=%.3lf\n", m, T, H, g, vsoft, dt);
 
     // caculate df

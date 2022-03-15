@@ -10,7 +10,7 @@ def compile(name, args, input_file, output_file):
 
 
 if __name__ == '__main__':
-    NAME_C = "zadanie2_1"
+    NAME_C = "zadanie2_final"
     ARGS = "-Wall -o"
     OUTPUT = "zadanie2_output"
     INPUT = "zadanie2_input"
