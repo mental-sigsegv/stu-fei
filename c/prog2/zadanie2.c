@@ -1,25 +1,4 @@
-//////////////////     NEMENIT !!!      /////////////////////
-
-//    Vo vasom rieseni vyuzite tieto tieto funkcie na
-//    generovanie pseudo-nahodnych cisiel.
-//1 1
-//    Funkcia srnd(seed):
-//       * Zavolajte 1-krat na zaciatku programu na
-//       inicializaciu generovanej postupnosti cisiel.
-//
-//    Funkcia rnd(from, to):
-//       * Sluzi na vygenerovanie dalsieho nahodneho
-//       cisla z intervalu <from,to>.
-
 #define R_MAX 2147483647 // vsetky generovane cisla su mensie ako R_MAX
-static long long unsigned int SEED = 0x1; // seed generatora
-void srnd(int seed) { SEED = seed; }
-
-int rnd(int from, int to) {
-    SEED = SEED * 16807 % R_MAX;
-    return from + (int) SEED % (to - from + 1);
-}
-/////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,7 +9,15 @@ struct Player {
     int num;
 };
 
+static long long unsigned int SEED = 0x1; // seed generatora
 int round_num = 1;
+
+void srnd(int seed) { SEED = seed; }
+
+int rnd(int from, int to) {
+    SEED = SEED * 16807 % R_MAX;
+    return from + (int) SEED % (to - from + 1);
+}
 
 void throw(struct Player *player, struct Player *oponnent, int race_size, int *winner, int arr[], int race_path[]) {
     int r1 = rnd(1, 6), r2 = rnd(1, 6);
@@ -39,7 +26,7 @@ void throw(struct Player *player, struct Player *oponnent, int race_size, int *w
         special[i] = '\0';
     }
 
-     player->pos_before = player->pos_after;
+    player->pos_before = player->pos_after;
 
     // Move
     if (player->pos_after == -1) {
@@ -71,6 +58,7 @@ void throw(struct Player *player, struct Player *oponnent, int race_size, int *w
         oponnent->pos_before = -1;
         strcat(special, " E");
     }
+
     if ((player->pos_after >= 0) && (player->pos_after <= race_size)) {
         arr[player->pos_after] += 1;
     }
@@ -163,8 +151,7 @@ int main() {
 
     // Visited
     printf("VISITS:");
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         printf(" %d", visited[i]);
     }
     return 0;
