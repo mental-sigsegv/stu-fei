@@ -30,7 +30,6 @@ void uloha2_3_1() {
     
     fclose(f_input);
     fclose(f_output);
-    
 }
 
 int main() {
