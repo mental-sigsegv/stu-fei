@@ -92,6 +92,20 @@ void colorful_numbers() {
     SetConsoleTextAttribute(hConsole, 7);
 }
 
+void uloha2_2() {
+    char text[] = "Hello World!";
+    char *p;
+    p = text;  // &text[0]
+
+    printf("text: %s\n", text);
+    printf("pointer: %p\n", p);
+    p++;  // inc pointer
+    *p = 'G';
+    printf("text: %s\n", text);
+    // p += INT_MAX;  // cause STATUS_ACCESS_VIOLATION
+    *p = 'G';
+}
+
 void num_to_ascii_asm(int num) {
     g_int = num;
     asm(".intel_syntax noprefix\n"
@@ -107,12 +121,46 @@ void num_to_ascii_asm(int num) {
     printf("input: %d\nint: %d\nhex: %x\nascii: %c", num, g_int, g_int, g_int);
 }
 
+void uloha2_3_1() {
+    FILE *f_input = fopen("./input.html", "r");
+    FILE *f_output = fopen("./output.html", "w");
+    int x;
+
+    while((x = fgetc(f_input)) != EOF) {
+        
+        switch(x) {
+            case 165: 
+                x = 188; break;
+            case 169:
+                x = 138; break;
+            case 171:
+                x = 141; break;
+            case 174:
+                x = 142; break;
+            case 181:
+                x = 190; break;
+            case 185:
+                x = 154; break;
+            case 187:
+                x = 157; break;
+            case 190:
+                x = 158; break;
+        }
+        fprintf(f_output, "%c", x);
+    }
+    
+    fclose(f_input);
+    fclose(f_output);
+}
+
 int main()
 {
     // add_nums_asm(678, -78);  // 2.1.1 [1b]
     // multiply_by2_asm(89);  // 2.1.2 [1b]
-    num_to_ascii_asm(15);  // 2.1.3 [3b]
+    // num_to_ascii_asm(15);  // 2.1.3 [3b]
     // get_processor_name_asm();  // 2.1.4 [2b]
     // colorful_numbers();  // 2.5.1 [1b]
+    // uloha2_2();  // 2.2 [3b]
+    uloha2_3_1();  // 2.3.1 [2b] 
     return 0;
 }
