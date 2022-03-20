@@ -12,5 +12,13 @@ void num_to_ascii_asm(int num);
 // 2.1.4
 void get_processor_name_asm();
 
-// 2.1.5
+// 2.2
+void uloha2_2();
+
+// 2.3.1
+void uloha2_3_1();
+
+// 2.3.2
+
+// 2.5.1
 void colorful_numbers();

@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+void uloha2_3_1() {
     FILE *f_input = fopen("./input.html", "r");
     FILE *f_output = fopen("./output.html", "w");
     int x;
@@ -30,5 +30,10 @@ int main() {
     
     fclose(f_input);
     fclose(f_output);
+    
+}
+
+int main() {
+    uloha2_3_1();
     return 0;
 }
