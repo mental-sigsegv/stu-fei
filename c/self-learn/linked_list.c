@@ -42,6 +42,24 @@ struct Node* insert_node_tail(struct Node *head_node, int num) {
 
 }
 
+struct Node* insert_node_index(struct Node* head_node, int index, int value) {
+    struct Node* tmp = head_node;
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = value;
+
+    if (index == 1) {
+        new_node->next = head_node;
+        return new_node;
+    }
+
+    for (int i = 0; i < index-2; i++) {
+        tmp = tmp->next;
+    }
+    new_node->next = tmp->next;
+    tmp->next = new_node;
+    return head_node;
+}
+
 void print_node(struct Node *node) {
     struct Node *tmp = node;
     while (tmp != NULL) {
@@ -61,6 +79,7 @@ int main() {
         // head = insert_node_head(head, arr[i]);
         head = insert_node_tail(head, arr[i]);
     }
+    head = insert_node_index(head, 2, 333);
 
     print_node(head);
     freeList(head);
