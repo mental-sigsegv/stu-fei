@@ -153,6 +153,21 @@ void uloha2_3_1() {
     fclose(f_output);
 }
 
+void uloha2_3_2() {
+    // Znak = (Znak XOR Cislo) XOR Cislo
+    FILE *f_input = fopen("./koniec_poviedky.txt", "rb");
+    FILE *f_output = fopen("./koniec_poviedky_decoded.html", "w");
+    int x;
+
+    while((x = fgetc(f_input)) != EOF) {
+        x = x ^ 27;
+        fprintf(f_output, "%c", x);
+    }
+    
+    fclose(f_input);
+    fclose(f_output);
+}
+
 int main()
 {
     // add_nums_asm(678, -78);  // 2.1.1 [1b]
@@ -161,6 +176,7 @@ int main()
     // get_processor_name_asm();  // 2.1.4 [2b]
     // colorful_numbers();  // 2.5.1 [1b]
     // uloha2_2();  // 2.2 [3b]
-    uloha2_3_1();  // 2.3.1 [2b] 
+    // uloha2_3_1();  // 2.3.1 [2b] 
+    uloha2_3_2();  // 2.3.2 [1b]
     return 0;
 }

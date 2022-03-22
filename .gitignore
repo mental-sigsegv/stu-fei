@@ -1,3 +1,4 @@
 .idea
 *.exe
 c/prog2/test_cases
+*.stackdump

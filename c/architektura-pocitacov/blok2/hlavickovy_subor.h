@@ -19,6 +19,7 @@ void uloha2_2();
 void uloha2_3_1();
 
 // 2.3.2
+void uloha2_3_2();
 
 // 2.5.1
 void colorful_numbers();
