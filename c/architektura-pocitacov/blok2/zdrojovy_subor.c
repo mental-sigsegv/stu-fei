@@ -8,7 +8,8 @@
 static int g_result, g_x, g_y;  // 2.1.1
 static int g_var;  // 2.1.2
 static int g_int;  // 2.1.3
-char g_proccesor_name[12];  // 2.1.4
+char g_proccesor_name[13];  // 2.1.4
+
 
 /* 2.1.5
 GREEN  = 2
@@ -49,6 +50,8 @@ void multiply_by2_asm(int x) {
 
 
 void get_processor_name_asm() {
+    // show in memory -exec x/32b memory
+    g_proccesor_name[12] = '\0';  // added null at the end
     asm(".intel_syntax noprefix\n"
         
         "mov eax, 0x0\n"
@@ -65,9 +68,12 @@ void get_processor_name_asm() {
         ".att_syntax\n");
     
     
-    for (int i = 0; i < 12; i++) {
-        printf("%c", g_proccesor_name[i]);
-    }
+    // for (int i = 0; i < 12; i++) {
+    //     printf("%c", g_proccesor_name[i]);
+    // }
+
+    printf("%s\n", g_proccesor_name);
+    // getchar();  // for debugging
 }
 
 
@@ -168,15 +174,16 @@ void uloha2_3_2() {
     fclose(f_output);
 }
 
-int main()
-{
-    // add_nums_asm(678, -78);  // 2.1.1 [1b]
+int main() {
+    // Assembler
+    // add_nums_asm(278, 58);  // 2.1.1 [1b]
     // multiply_by2_asm(89);  // 2.1.2 [1b]
-    // num_to_ascii_asm(15);  // 2.1.3 [3b]
-    // get_processor_name_asm();  // 2.1.4 [2b]
+    // num_to_ascii_asm(5);  // 2.1.3 [3b]
+    get_processor_name_asm();  // 2.1.4 [2b]
+
     // colorful_numbers();  // 2.5.1 [1b]
     // uloha2_2();  // 2.2 [3b]
     // uloha2_3_1();  // 2.3.1 [2b] 
-    uloha2_3_2();  // 2.3.2 [1b]
+    // uloha2_3_2();  // 2.3.2 [1b]  //! not finished
     return 0;
 }

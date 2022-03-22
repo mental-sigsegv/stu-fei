@@ -9,6 +9,7 @@
                 "-g",
                 "${file}",
                 "-Wall",
+                "-Wextra",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
