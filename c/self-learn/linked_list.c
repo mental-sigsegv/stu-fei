@@ -79,7 +79,7 @@ int main() {
         // head = insert_node_head(head, arr[i]);
         head = insert_node_tail(head, arr[i]);
     }
-    head = insert_node_index(head, 2, 333);
+    head = insert_node_index(head, 1, 111);
 
     print_node(head);
     freeList(head);
