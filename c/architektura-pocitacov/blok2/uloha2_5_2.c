@@ -3,15 +3,10 @@
 #include <windows.h>
 
 
-void table() {
-    // HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    for (int i = 0; i < 255; i++) {
-        printf("%c ", i);
-    }
-}
-
 int main() {
-    table();
-    // getchar();
+    for (int i = 0; i < 255; i++) {
+        printf("%3d %c ", i, i);
+    }
+
     return 0;
 }
