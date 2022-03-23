@@ -68,11 +68,11 @@ void get_processor_name_asm() {
         ".att_syntax\n");
     
     
-    // for (int i = 0; i < 12; i++) {
-    //     printf("%c", g_proccesor_name[i]);
-    // }
+    for (int i = 0; i < 12; i++) {
+        printf("%c", g_proccesor_name[i]);
+    }
 
-    printf("%s\n", g_proccesor_name);
+    // printf("%s\n", g_proccesor_name);
     // getchar();  // for debugging
 }
 
@@ -176,9 +176,9 @@ void uloha2_3_2() {
 
 int main() {
     // Assembler
-    // add_nums_asm(278, 58);  // 2.1.1 [1b]
-    // multiply_by2_asm(89);  // 2.1.2 [1b]
-    // num_to_ascii_asm(5);  // 2.1.3 [3b]
+    // add_nums_asm(89, 23);  // 2.1.1 [1b]
+    // multiply_by2_asm(45);  // 2.1.2 [1b]
+    // num_to_ascii_asm(23);  // 2.1.3 [3b]
     get_processor_name_asm();  // 2.1.4 [2b]
 
     // colorful_numbers();  // 2.5.1 [1b]
