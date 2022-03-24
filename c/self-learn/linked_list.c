@@ -60,6 +60,22 @@ struct Node* insert_node_index(struct Node* head_node, int index, int value) {
     return head_node;
 }
 
+struct Node* remove_nth_node(struct Node* head_node, int index) {  // ! not finished
+    struct Node* tmp;
+    tmp = head_node;
+    if (index == 1) {
+        head_node = head_node->next;
+        free(tmp);
+        return head_node;
+    }
+    // ! TODO FIX
+    for (int i = 0; i <+ index; i++) {
+        head_node = head_node->next;
+    }
+    head_node = head_node->next->next;
+    return tmp;
+}
+
 void print_node(struct Node *node) {
     struct Node *tmp = node;
     while (tmp != NULL) {
@@ -79,14 +95,10 @@ int main() {
         // head = insert_node_head(head, arr[i]);
         head = insert_node_tail(head, arr[i]);
     }
-    head = insert_node_index(head, 1, 111);
+    // head = insert_node_index(head, 1, 111);
+    head = remove_nth_node(head, 2);
 
     print_node(head);
     freeList(head);
     return 0;
 }
-
-// For debug
-// -exec x/32w 0x800029b80
-// -exec w/128b 0x800029b80
-// https://sourceware.org/gdb/onlinedocs/gdb/Memory.html
