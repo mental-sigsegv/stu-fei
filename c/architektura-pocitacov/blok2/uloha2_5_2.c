@@ -64,9 +64,9 @@ void tabulka(char* name, char* height, char* weight, char* phone) {
                 }
             } else if ((row == 0) || (row%2 == 1)) {
                 table[row][column] =_hl;
-            } else {
+            } /*else {
                 table[row][column] = _empty;
-            }
+            }*/
         }
     }
 

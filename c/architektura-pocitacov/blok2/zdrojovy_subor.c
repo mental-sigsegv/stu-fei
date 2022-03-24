@@ -161,7 +161,7 @@ void uloha2_3_1() {
 
 void uloha2_3_2() {
     // Znak = (Znak XOR Cislo) XOR Cislo
-    FILE *f_input = fopen("./koniec_poviedky.txt", "rb");
+    FILE *f_input = fopen("./koniec_poviedky.txt", "rb");  // read from .txt, .html didnt work
     FILE *f_output = fopen("./koniec_poviedky_decoded.html", "w");
     int x;
 
@@ -179,11 +179,11 @@ int main() {
     // add_nums_asm(89, 23);  // 2.1.1 [1b]
     // multiply_by2_asm(45);  // 2.1.2 [1b]
     // num_to_ascii_asm(23);  // 2.1.3 [3b]
-    get_processor_name_asm();  // 2.1.4 [2b]
+    // get_processor_name_asm();  // 2.1.4 [2b]
 
     // colorful_numbers();  // 2.5.1 [1b]
     // uloha2_2();  // 2.2 [3b]
     // uloha2_3_1();  // 2.3.1 [2b] 
-    // uloha2_3_2();  // 2.3.2 [1b]  //! not finished
+    uloha2_3_2();  // 2.3.2 [1b]
     return 0;
 }
