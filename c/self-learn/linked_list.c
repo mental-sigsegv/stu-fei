@@ -61,19 +61,18 @@ struct Node* insert_node_index(struct Node* head_node, int index, int value) {
 }
 
 struct Node* remove_nth_node(struct Node* head_node, int index) {  // ! not finished
-    struct Node* tmp;
-    tmp = head_node;
+    struct Node* header;
+    header = head_node;
     if (index == 1) {
-        head_node = head_node->next;
-        free(tmp);
-        return head_node;
+        header = header->next;
+        free(head_node);
+        return header;
     }
-    // ! TODO FIX
-    for (int i = 0; i <+ index; i++) {
-        head_node = head_node->next;
+    for (int i = 0; i < index - 2; i++) {
+        header = header->next;
     }
-    head_node = head_node->next->next;
-    return tmp;
+    header->next = header->next->next ;
+    return head_node;
 }
 
 void print_node(struct Node *node) {

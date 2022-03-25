@@ -23,3 +23,7 @@ void uloha2_3_2();
 
 // 2.5.1
 void colorful_numbers();
+
+// 2.5.2
+void tabulka(char* name, char* height, char* weight, char* phone, int consoleX, int consoleY);
+int maxOfFour(char** arr);
