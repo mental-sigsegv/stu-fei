@@ -60,7 +60,7 @@ struct Node* insert_node_index(struct Node* head_node, int index, int value) {
     return head_node;
 }
 
-struct Node* remove_nth_node(struct Node* head_node, int index) {  // ! not finished
+struct Node* remove_nth_node(struct Node* head_node, int index) {  // TODO free node
     struct Node* header;
     header = head_node;
     if (index == 1) {
