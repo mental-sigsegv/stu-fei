@@ -14,9 +14,9 @@
 #define _empty 32
 #define _vll 180
 #define _vlr 195
-#define _vlt 194
-#define _vlb 193
-#define _vltb 197
+#define _hlb 194
+#define _hlt 193
+#define _hltb 197
 
 #define BLK "\e[0;30m"
 #define RED "\e[0;31m"
@@ -28,6 +28,9 @@
 #define WHT "\e[0;37m"
 #define reset "\e[0m"
 
+#define TABLE_COLOR YEL
+#define TEXT_COLOR GRN
+
 int maxOfFour(char** arr) {
     int max = 0;
     for (int i = 0; i < 4; i++) {
@@ -38,117 +41,81 @@ int maxOfFour(char** arr) {
     return max;
 }
 
-void tabulka(char* name, char* height, char* weight, char* phone) {
+void tabulka(char* name, char* height, char* weight, char* phone, int consoleX, int consoleY) {
     // Set variables
-    char* user_data[4] = {name, height, weight, phone};
-    int y = 10, lenght = maxOfFour(user_data);
-    lenght += 10;
-    int table[y][lenght];
+    char* userData[] = {name, height, weight, phone};
+    char* tableData[] = {"Meno", "Vyska", "Hmotnost", "Tel. cislo"};
+
+    // char* userData[5] = {name, height, weight, phone, name};
+    // char* tableData[5] = {"1", "2", "3", "4", "5"};
+
+    char tableHeader[] = "Zaznam";
+    int headerLength = strlen(tableHeader);
+    int numberOfItems = sizeof(userData)/8;
+
+    int y = numberOfItems*2+1, x1 = maxOfFour(tableData)+1, x2 = maxOfFour(userData)+1;
 
     // Set console
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    
-    // system("clear");
     setlocale(LC_ALL, "en_US.cp437");
-    
-    // Store data in array
-    for (int row = 0; row < y; ++row) {
-        for (int column = 0; column < lenght; column++) {
-            if ((column == 0) || (column == lenght-1)) {
-                if ((row%2 == 1) && (column == 0)) {
-                    table[row][column] =_vlr;
-                } else if ((row%2 == 1) && (column == lenght-1)) {
-                    table[row][column] =_vll;
-                } else {
-                    table[row][column] =_vl;
-                }
-            } else if ((row == 0) || (row%2 == 1)) {
-                table[row][column] =_hl;
-            } /*else {
-                table[row][column] = _empty;
-            }*/
-        }
-    }
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD point = {consoleX, consoleY};
 
-    // Get corners
-    table[0][0] = _ltc;
-    table[y-1][0] = _lbc;
-    table[0][lenght-1] = _rtc;
-    table[y-1][lenght-1] = _rbc;
-
-    // Set middle line
-    int pos = 10;
-    for (int i = 0; i < y; i++) {
-        if (i == 0) {
-            table[0][pos] = _vlt;
-        } else if (i == y-1) {
-            table[i][pos] = _vlb;
-        } else if (i % 2 == 1) {
-            table[i][pos] = _vltb; 
+    COORD size = {800, 800};
+    SetConsoleScreenBufferSize(hConsole, size);
+    // Print header of table
+    SetConsoleCursorPosition(hConsole, point);
+    for (int i = 0; i < (x1+x2-headerLength+3-1); i++) {
+        if (i == (x1+x2-headerLength+3)/2) {
+            printf(TEXT_COLOR " %s ", tableHeader);
+        } else if (i == 0) {
+            printf(TABLE_COLOR "%c", _ltc);
+        } else if (i == (x1+x2-headerLength+3-1-1)) {
+            printf(TABLE_COLOR "%c", _rtc);
         } else {
-            table[i][pos] = _vl;
+            printf(TABLE_COLOR "%c", _hl);
         }
-        
     }
-
-    int n = (lenght-8)/2;
-    for (int i = n; i < 8+n; i++) {
-        table[0][i] = " Zaznam "[i-n];
-    }
-    
-
-    // Print the table
-    // SetConsoleTextAttribute(hConsole, 6);
-    int chr = 0;
-    for (int row = 0; row < y; ++row) {
-        for (int column = 0; column < lenght; column++) {
-            chr = table[row][column];
-            if (chr < 128) {
-                printf(GRN "%c" reset, chr);
-            } else {
-                printf(YEL "%c" reset, chr);
+    printf(reset "\n"); 
+    // Print table
+    for (int i = 0; i < y; i++) {
+        point.Y++;
+        SetConsoleCursorPosition(hConsole, point);
+        if (i%2 == 0) {
+            
+            printf(TABLE_COLOR);
+            for (int j = 0; j < (x1 + x2 + 3); j++) {
+                if ((i == 0) && (j == 0)) {
+                    putchar(_vlr);  // vertical line right
+                } else if ((i == 0) && (j == (x1 + 1))) {
+                    putchar(_hlb);  // horizontal line bottom
+                } else if ((i == 0) && (j == (x1 + x2 + 3 -1))) {  
+                    putchar(_vll);  // vertical line left
+                } else if ((i == (y - 1)) && (j == (x1 + x2 + 3 -1))) {
+                    putchar(_rbc);  // right bottom corner
+                } else if ((i == (y - 1)) && (j == x1 + 1)) {
+                    putchar(_hlt);  // horizontal line top
+                } else if ((i == (y - 1)) && (j == 0)) {
+                    putchar(_lbc);  // left bottom corner
+                } else if (j == 0) {
+                    putchar(_vlr);  // vertical line right
+                } else if (j == (x1 + x2 + 3 -1)) {
+                    putchar(_vll);  // vertical line left
+                } else if (j == (x1 + 1)) {
+                    putchar(_hltb);  // horizontal line top bottom
+                } else {
+                    putchar(_hl);
+                }
             }
-        }
-        putchar('\n');
-    }
 
-    SetConsoleTextAttribute(hConsole, 7);
-    // scanf("?");
+            printf(reset "\n");
+        } else {
+            printf(TABLE_COLOR "%c" TEXT_COLOR "%-*s" TABLE_COLOR "%c" TEXT_COLOR "%*s" TABLE_COLOR "%c\n", _vl, x1, tableData[i/2], _vl, x2, userData[i/2], _vl);
+        }
+    }
+    scanf("?");
 }
 
 int main() {
-    tabulka("Martin Klacik", "172 cm", "72 kg", "0429 233 423");
-
-    
-    // Display values
-    // for (int c = 0; c < 256; c++) {
-    //     printf("%3d %c |", c, c);
-    //     if (c%15 == 0) {
-    //         printf("\n");
-    //     }
-    // }
-    // COORD point;
-    // point.X = 30; point.Y = 30;                  // ina moznost zadania suradnice
-    // SetConsoleCursorPosition(hConsole, point); 
-
-    
-    // for (int i = 0; i < x; i++) {
-    //     putchar(_vl);
-    //     for (int j = 0; j < y; j++) {
-    //         if (i%(x-1-7) == 0) {
-    //             putchar(_hl); 
-    //         } else if (j%(y-1) == 0) {
-    //             putchar(' '); 
-    //         }  else {
-    //             putchar('A');
-    //         }
-    //     }
-    //     putchar(_vl);
-    //     putchar('\n');
-    //     point.Y++;
-    //     SetConsoleCursorPosition(hConsole, point); 
-    // }
-
-    // scanf("?");
+    tabulka("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ Martin Klacik", "666 cm", "666 kg", "0429 233 4236676", 50, 50);
     return 0;
 }

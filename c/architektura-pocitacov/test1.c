@@ -6,8 +6,10 @@
 
 
 int main() {
+   char name[] = "Name";
    char arr[] = "Martin";
-   printf("|%15s|", arr);
+   
+   printf("|%-*s|%*s|", 10, name, 20, arr);
 
    return 0;
 }
