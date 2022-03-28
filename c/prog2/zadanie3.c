@@ -18,7 +18,7 @@ void update_line(char *arr) {
         }
         i++;
     }
-    arr[new_i+1]='\n';
+    arr[new_i]='\n';
     arr[new_i+1]='\0';
 }
 
