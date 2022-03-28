@@ -25,6 +25,7 @@ void store_pointers(char* from_arr, char** to_arr) {
     }
 }
 
+
 int main() {
     char arr[1001] = "uik weqwe qaWWPr sidfbuisbyb32 23423u4ubg\n\0";  // array we wanna get pointers from
     char* p_arr[(int)strlen(arr) + 1];  // store array pointers

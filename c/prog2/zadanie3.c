@@ -22,6 +22,56 @@ void update_line(char *arr) {
     arr[new_i+1]='\0';
 }
 
+void store_pointers(char* from_arr, char** to_arr) {
+    char letter;
+    int p_adress=0;
+    to_arr[0] = NULL;
+
+    for (int i = 0; i < (int)strlen(from_arr); i++) {
+        
+        letter = from_arr[i];
+        if ((letter != ' ') && (isalnum(letter))) {
+            if (i == 0) {
+                    to_arr[p_adress] = &from_arr[i];
+                    p_adress++;
+            } else if (!(isalnum((unsigned int)from_arr[i-1]))) {
+                to_arr[p_adress] = &from_arr[i];
+                p_adress++;
+            }
+            to_arr[p_adress] = NULL;
+        }
+    }
+}
+
+void replace_line(char* arr, char* replaceString) {
+    if ((CASE_SENS == 0) && (CASE_INSENS == 0)) {
+        return;
+    }
+
+    char* pointersOfWords[(int)strlen(arr)];
+    char* pointer;
+    store_pointers(arr, pointersOfWords);
+
+    if (CASE_SENS == 1) {
+        for (int i = 0; i < (int)sizeof(pointersOfWords)/8; i++) {
+            if (pointersOfWords[i] == NULL) {
+                break;
+            }
+            pointer = pointersOfWords[i];
+            for (int j = 0; j < (int)strlen(replaceString); j++) {
+                if ((*pointer == '\n') || !(isalnum((unsigned int)*pointer))) {
+                    break;
+                }
+                *pointer = replaceString[j];
+                pointer++;
+            }
+        }    
+    } else if (CASE_INSENS == 1) {
+        return;  // TODO finish
+    }
+
+}
+
 void case_conversion(char *arr) {  
     if (UPPER_CASE == 1) {
         for (int i = 0; i < (int)strlen(arr); i++) {
@@ -66,6 +116,7 @@ int main(int argc, char *argv[]) {
     
     int opt;
 	char* optstring = ":dplur:R:";  // TODO staci dat na zaciatok optstringu "-" a getopt presunie vsetky non option argumenty na koniec a zaregistruje aj to -e
+    char* argString;
 
     while ((opt = getopt(argc, argv, optstring)) != -1) {
         switch (opt) {
@@ -83,11 +134,11 @@ int main(int argc, char *argv[]) {
                 break;
             case 'r':
             	CASE_SENS = 1;  //! store optarg into string
-                printf("%s", optarg);
+                argString = optarg;
             	break;
             case 'R':
             	CASE_INSENS = 1;  //! store optarg into string / pointer
-                printf("%s", optarg);
+                argString = optarg;
                 break;
             
             default: /* '?' alebo ':' */   
@@ -116,6 +167,7 @@ int main(int argc, char *argv[]) {
         }
         edit_line(line);
         update_line(line);
+        replace_line(line, argString);
         printf("%s", line);
 
         // !delete later
