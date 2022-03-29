@@ -6,7 +6,7 @@
 
 #define MAX_LENGTH 1000
 
-static int DIGITS=0, PUNCT=0, UPPER_CASE=0, LOWER_CASE=0, CASE_SENS=0, CASE_INSENS=0;
+static int DIGITS=0, PUNCT=0, UPPER_CASE=0, LOWER_CASE=0, CASE_SENS=0, CASE_INSENS=0, OPTIONAL_ARGS=0;
 
 void update_line(char *arr) {
     char c;
@@ -66,8 +66,28 @@ void replace_line(char* arr, char* replaceString) {
                 pointer++;
             }
         }    
-    } else if (CASE_INSENS == 1) {
-        return;  // TODO finish
+    } else if (CASE_INSENS == 1) {  // * can be merged with top one
+        for (int i = 0; i < (int)sizeof(pointersOfWords)/8; i++) {  
+            if (pointersOfWords[i] == NULL) {
+                break;
+            }
+            pointer = pointersOfWords[i];
+            for (int j = 0; j < (int)strlen(replaceString); j++) {
+                if ((*pointer == '\n') || !(isalnum((unsigned int)*pointer))) {
+                    break;
+                }
+
+                if (isdigit((unsigned int)*pointer)) {
+                    *pointer = replaceString[j];
+                } else if (islower((unsigned int)*pointer)) {
+                    *pointer = tolower(replaceString[j]);
+                } else {
+                    *pointer = toupper(replaceString[j]);
+                }
+                
+                pointer++;
+            }
+        }    
     }
 
 }
