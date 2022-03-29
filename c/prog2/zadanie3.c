@@ -30,25 +30,25 @@ void store_pointers(char* from_arr, char** to_arr) {
 }
 
 void find_prefix(char* arr, char* stringReplace, char** prefixes, int numOfPrefixes) {
-    // printf("%s\n%p\n%d\n%p\n", stringReplace, prefixes, numOfPrefixes, pointersOfWords);
     char* pointersOfWords[(int)strlen(arr)];
     store_pointers(arr, pointersOfWords);
     
     int ptr=0, l=0;
     char znak;
-    char* PENIS;
+    char* wordPointer;
+
     while (pointersOfWords[ptr] != NULL) {
         for (int pref = 0; pref < numOfPrefixes; pref++) {
             l = (int)strlen(prefixes[pref]);
-            PENIS = pointersOfWords[ptr];
-            if (strncmp(prefixes[pref], PENIS, l) == 0) {
+            wordPointer = pointersOfWords[ptr];
+            if (strncmp(prefixes[pref], wordPointer, l) == 0) {
                 for (int i=0; i < (int)strlen(stringReplace); i++) {
-                    znak = *PENIS;
+                    znak = *wordPointer;
                     if (!(isalnum(znak))) {
                         break;
                     } else {
-                        *PENIS = stringReplace[i];
-                        PENIS = PENIS + 1;
+                        *wordPointer = stringReplace[i];
+                        wordPointer = wordPointer + 1;
                     }
                     
                 }
@@ -59,49 +59,43 @@ void find_prefix(char* arr, char* stringReplace, char** prefixes, int numOfPrefi
 }
 
 void find_prefixBIGR(char* arr, char* stringReplace, char** prefixes, int numOfPrefixes) {
-    // printf("%s\n%p\n%d\n%p\n", stringReplace, prefixes, numOfPrefixes, pointersOfWords);
     char* pointersOfWords[(int)strlen(arr)];
     store_pointers(arr, pointersOfWords);
     
     int ptr=0, l=0;
     char znak;
-    char* PENIS, *prefixCopy, *penisCopy;
+    char *wordPointer, *wordPointerCopy, *prefixCopy;
+
     while (pointersOfWords[ptr] != NULL) {
         for (int pref = 0; pref < numOfPrefixes; pref++) {
             l = (int)strlen(prefixes[pref]);
-            PENIS = pointersOfWords[ptr];
+            wordPointer = pointersOfWords[ptr];
 
-            penisCopy = (char*)malloc(100);
+            wordPointerCopy = (char*)malloc(100);
             prefixCopy = (char*)malloc(100);
-            strcpy(penisCopy, PENIS);
+            strcpy(wordPointerCopy, wordPointer);
             strcpy(prefixCopy, prefixes[pref]);
-            // penisCopy = PENIS;
-            // prefixCopy = prefixes[pref];
 
-            penisCopy = strlwr(penisCopy);
+
+            wordPointerCopy = strlwr(wordPointerCopy);
             prefixCopy = strlwr(prefixCopy);
 
-            if (strncmp(prefixCopy, penisCopy, l) == 0) {  // TODO FIX THIS BULLSHIT
+            if (strncmp(prefixCopy, wordPointerCopy, l) == 0) {
                 for (int i=0; i < (int)strlen(stringReplace); i++) {
-                    znak = *PENIS;
-                    // printf("-%c-", znak);
+                    znak = *wordPointer;
                     if (isalnum(znak) == 0) {
-                        // PENIS = PENIS + 1; // ? wtf
                         break;
                     } else if (isdigit(znak) != 0) {
-                        *PENIS = stringReplace[i];
-                        // PENIS = PENIS + 1;
+                        *wordPointer = stringReplace[i];
                     } else if (islower(znak) != 0) {
-                        *PENIS = tolower(stringReplace[i]);
-                        // PENIS = PENIS + 1;
+                        *wordPointer = tolower(stringReplace[i]);
                     } else {
-                        *PENIS = toupper(stringReplace[i]);
-                        // PENIS = PENIS + 1;
+                        *wordPointer = toupper(stringReplace[i]);
                     }
-                    PENIS = PENIS + 1;
+                    wordPointer = wordPointer + 1;
                 }
             }
-            free(penisCopy);
+            free(wordPointerCopy);
             free(prefixCopy);
         }
         ptr++;
@@ -145,7 +139,7 @@ void replace_line(char* arr, char* replaceString) {
                 pointer++;
             }
         }    
-    } else if ((CASE_INSENS == 1) && (OPTIONAL_ARGS == 0)) {  // * can be merged with top one
+    } else if ((CASE_INSENS == 1) && (OPTIONAL_ARGS == 0)) {  // *can be merged with top one
         for (int i = 0; i < (int)sizeof(pointersOfWords)/8; i++) {  
             if (pointersOfWords[i] == NULL) {
                 break;
@@ -208,13 +202,12 @@ void edit_line(char *arr) {
 }
 
 
-
 int main(int argc, char *argv[]) {
     // Define settings
     char line[MAX_LENGTH+1] = {'\0'};
     
     int opt;
-	char* optstring = ":dplur:R:";  // TODO staci dat na zaciatok optstringu "-" a getopt presunie vsetky non option argumenty na koniec a zaregistruje aj to -e
+	char* optstring = ":dplur:R:";
     char* argString;
 
     while ((opt = getopt(argc, argv, optstring)) != -1) {
@@ -265,12 +258,8 @@ int main(int argc, char *argv[]) {
         optionalArgs[c] = argv[i];
         c++;
     }
-    // for (int i = 0; i < OPTIONAL_ARGS; i++) {
-    //     printf("%s\n", optionalArgs[i]);
-    // }
 
     // Get line
-    int safe_break = 0;  // !delete later
     while (1) {
         fgets(line, MAX_LENGTH, stdin);
         if (line[0] == '\n') {
@@ -284,18 +273,7 @@ int main(int argc, char *argv[]) {
         } else if ((CASE_INSENS == 1) && (OPTIONAL_ARGS > 0)) {
             find_prefixBIGR(line, argString, optionalArgs, OPTIONAL_ARGS);
         }
-        
         printf("%s", line);
-
-        // !delete later
-        if (safe_break > 20) {
-            printf("FUCK YOU, YOU FUCKED UP");
-            break;
-        } else {
-            safe_break++;
-        }
-        // !delete later
-
     }
     
     return 0;
