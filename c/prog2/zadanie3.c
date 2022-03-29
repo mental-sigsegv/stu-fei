@@ -8,20 +8,6 @@
 
 static int DIGITS=0, PUNCT=0, UPPER_CASE=0, LOWER_CASE=0, CASE_SENS=0, CASE_INSENS=0, OPTIONAL_ARGS=0;
 
-void update_line(char *arr) {
-    char c;
-    int i = 0, new_i = 0;
-    while ((c = arr[i]) != '\n') {
-        if (c != -1) {
-            arr[new_i] = c;
-            new_i++;
-        }
-        i++;
-    }
-    arr[new_i]='\n';
-    arr[new_i+1]='\0';
-}
-
 void store_pointers(char* from_arr, char** to_arr) {
     char letter;
     int p_adress=0;
@@ -43,6 +29,84 @@ void store_pointers(char* from_arr, char** to_arr) {
     }
 }
 
+void find_prefix(char* arr, char* stringReplace, char** prefixes, int numOfPrefixes) {
+    // printf("%s\n%p\n%d\n%p\n", stringReplace, prefixes, numOfPrefixes, pointersOfWords);
+    char* pointersOfWords[(int)strlen(arr)];
+    store_pointers(arr, pointersOfWords);
+    
+    int ptr=0, l=0;
+    char znak;
+    char* PENIS;
+    while (pointersOfWords[ptr] != NULL) {
+        for (int pref = 0; pref < numOfPrefixes; pref++) {
+            l = (int)strlen(prefixes[pref]);
+            PENIS = pointersOfWords[ptr];
+            if (strncmp(prefixes[pref], PENIS, l) == 0) {
+                for (int i=0; i < (int)strlen(stringReplace); i++) {
+                    znak = *PENIS;
+                    if (!(isalnum(znak))) {
+                        break;
+                    } else {
+                        *PENIS = stringReplace[i];
+                        PENIS = PENIS + 1;
+                    }
+                    
+                }
+            }
+        }
+        ptr++;
+    }
+}
+
+void find_prefixBIGR(char* arr, char* stringReplace, char** prefixes, int numOfPrefixes) {
+    // printf("%s\n%p\n%d\n%p\n", stringReplace, prefixes, numOfPrefixes, pointersOfWords);
+    char* pointersOfWords[(int)strlen(arr)];
+    store_pointers(arr, pointersOfWords);
+    
+    int ptr=0, l=0;
+    char znak;
+    char* PENIS;
+    while (pointersOfWords[ptr] != NULL) {
+        for (int pref = 0; pref < numOfPrefixes; pref++) {
+            l = (int)strlen(prefixes[pref]);
+            PENIS = pointersOfWords[ptr];
+            if (strncmp(prefixes[pref], PENIS, l) == 0) {  // TODO FIX THIS BULLSHIT
+                for (int i=0; i < (int)strlen(stringReplace); i++) {
+                    znak = *PENIS;
+                    if (!(isalnum(znak))) {
+                        break;
+                    } else if (isdigit(znak)) {
+                        *PENIS = toupper(stringReplace[i]);
+                        PENIS = PENIS + 1;
+                    } else if (islower(znak)) {
+                        *PENIS = tolower(stringReplace[i]);
+                        PENIS = PENIS + 1;
+                    } else {
+                        *PENIS = toupper(stringReplace[i]);
+                        PENIS = PENIS + 1;
+                    }
+                    
+                }
+            }
+        }
+        ptr++;
+    }
+}
+
+void update_line(char *arr) {
+    char c;
+    int i = 0, new_i = 0;
+    while ((c = arr[i]) != '\n') {
+        if (c != -1) {
+            arr[new_i] = c;
+            new_i++;
+        }
+        i++;
+    }
+    arr[new_i]='\n';
+    arr[new_i+1]='\0';
+}
+
 void replace_line(char* arr, char* replaceString) {
     if ((CASE_SENS == 0) && (CASE_INSENS == 0)) {
         return;
@@ -52,7 +116,7 @@ void replace_line(char* arr, char* replaceString) {
     char* pointer;
     store_pointers(arr, pointersOfWords);
 
-    if (CASE_SENS == 1) {
+    if ((CASE_SENS == 1) && (OPTIONAL_ARGS == 0)) {
         for (int i = 0; i < (int)sizeof(pointersOfWords)/8; i++) {
             if (pointersOfWords[i] == NULL) {
                 break;
@@ -66,7 +130,7 @@ void replace_line(char* arr, char* replaceString) {
                 pointer++;
             }
         }    
-    } else if (CASE_INSENS == 1) {  // * can be merged with top one
+    } else if ((CASE_INSENS == 1) && (OPTIONAL_ARGS == 0)) {  // * can be merged with top one
         for (int i = 0; i < (int)sizeof(pointersOfWords)/8; i++) {  
             if (pointersOfWords[i] == NULL) {
                 break;
@@ -89,7 +153,6 @@ void replace_line(char* arr, char* replaceString) {
             }
         }    
     }
-
 }
 
 void case_conversion(char *arr) {  
@@ -128,6 +191,7 @@ void edit_line(char *arr) {
     }
     return;
 }
+
 
 
 int main(int argc, char *argv[]) {
@@ -178,6 +242,18 @@ int main(int argc, char *argv[]) {
     	}
     }
 
+    // Define optional argv
+    OPTIONAL_ARGS = argc-optind;
+    char* optionalArgs[OPTIONAL_ARGS];
+    int c = 0;
+    for (int i = optind; i < argc; i++) {
+        optionalArgs[c] = argv[i];
+        c++;
+    }
+    // for (int i = 0; i < OPTIONAL_ARGS; i++) {
+    //     printf("%s\n", optionalArgs[i]);
+    // }
+
     // Get line
     int safe_break = 0;  // !delete later
     while (1) {
@@ -188,6 +264,12 @@ int main(int argc, char *argv[]) {
         edit_line(line);
         update_line(line);
         replace_line(line, argString);
+        if ((CASE_SENS == 1) && (OPTIONAL_ARGS > 0)) {
+            find_prefix(line, argString, optionalArgs, OPTIONAL_ARGS);
+        } else if ((CASE_INSENS == 1) && (OPTIONAL_ARGS > 0)) {
+            find_prefixBIGR(line, argString, optionalArgs, OPTIONAL_ARGS);
+        }
+        
         printf("%s", line);
 
         // !delete later
