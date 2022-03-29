@@ -65,29 +65,44 @@ void find_prefixBIGR(char* arr, char* stringReplace, char** prefixes, int numOfP
     
     int ptr=0, l=0;
     char znak;
-    char* PENIS;
+    char* PENIS, *prefixCopy, *penisCopy;
     while (pointersOfWords[ptr] != NULL) {
         for (int pref = 0; pref < numOfPrefixes; pref++) {
             l = (int)strlen(prefixes[pref]);
             PENIS = pointersOfWords[ptr];
-            if (strncmp(prefixes[pref], PENIS, l) == 0) {  // TODO FIX THIS BULLSHIT
+
+            penisCopy = (char*)malloc(100);
+            prefixCopy = (char*)malloc(100);
+            strcpy(penisCopy, PENIS);
+            strcpy(prefixCopy, prefixes[pref]);
+            // penisCopy = PENIS;
+            // prefixCopy = prefixes[pref];
+
+            penisCopy = strlwr(penisCopy);
+            prefixCopy = strlwr(prefixCopy);
+
+            if (strncmp(prefixCopy, penisCopy, l) == 0) {  // TODO FIX THIS BULLSHIT
                 for (int i=0; i < (int)strlen(stringReplace); i++) {
                     znak = *PENIS;
-                    if (!(isalnum(znak))) {
+                    // printf("-%c-", znak);
+                    if (isalnum(znak) == 0) {
+                        // PENIS = PENIS + 1; // ? wtf
                         break;
-                    } else if (isdigit(znak)) {
-                        *PENIS = toupper(stringReplace[i]);
-                        PENIS = PENIS + 1;
-                    } else if (islower(znak)) {
+                    } else if (isdigit(znak) != 0) {
+                        *PENIS = stringReplace[i];
+                        // PENIS = PENIS + 1;
+                    } else if (islower(znak) != 0) {
                         *PENIS = tolower(stringReplace[i]);
-                        PENIS = PENIS + 1;
+                        // PENIS = PENIS + 1;
                     } else {
                         *PENIS = toupper(stringReplace[i]);
-                        PENIS = PENIS + 1;
+                        // PENIS = PENIS + 1;
                     }
-                    
+                    PENIS = PENIS + 1;
                 }
             }
+            free(penisCopy);
+            free(prefixCopy);
         }
         ptr++;
     }
