@@ -8,6 +8,17 @@
 
 static int DIGITS=0, PUNCT=0, UPPER_CASE=0, LOWER_CASE=0, CASE_SENS=0, CASE_INSENS=0, OPTIONAL_ARGS=0;
 
+char *strlwr(char *str) {
+  unsigned char *p = (unsigned char *)str;
+
+  while (*p) {
+     *p = tolower((unsigned char)*p);
+      p++;
+  }
+
+  return str;
+}
+
 void store_pointers(char* from_arr, char** to_arr) {
     char letter;
     int p_adress=0;
@@ -71,8 +82,8 @@ void find_prefixBIGR(char* arr, char* stringReplace, char** prefixes, int numOfP
             l = (int)strlen(prefixes[pref]);
             wordPointer = pointersOfWords[ptr];
 
-            wordPointerCopy = (char*)malloc(100);
-            prefixCopy = (char*)malloc(100);
+            wordPointerCopy = (char*)malloc(1000);
+            prefixCopy = (char*)malloc(1000);
             strcpy(wordPointerCopy, wordPointer);
             strcpy(prefixCopy, prefixes[pref]);
 
