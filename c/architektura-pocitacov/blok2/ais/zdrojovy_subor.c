@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <windows.h>  // for HANDLE
 #include <locale.h>
+#include <limits.h>
 
 static int g_result, g_x, g_y;  // 2.1.1
 static int g_var;  // 2.1.2
@@ -63,7 +64,6 @@ void add_nums_asm(int n1, int n2) {
     printf("%d + %d = %d", g_x, g_y, g_result);
 }
 
-
 void multiply_by2_asm(int x) {
     g_var = x;
     asm(".intel_syntax noprefix\n"
@@ -74,7 +74,6 @@ void multiply_by2_asm(int x) {
 
     printf("%d\n", g_var);
 }
-
 
 void get_processor_name_asm() {
     // show in memory -exec x/32b memory
@@ -102,7 +101,6 @@ void get_processor_name_asm() {
     // printf("%s\n", g_proccesor_name);
     // getchar();  // for debugging
 }
-
 
 void colorful_numbers() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -214,7 +212,7 @@ int maxOfFour(char** arr) {
 void tabulka(char* name, char* height, char* weight, char* phone, int consoleX, int consoleY) {
     // Set variables
     char* userData[] = {name, height, weight, phone};
-    char* tableData[] = {"Meno", "Vyska", "Hmotnost", "Tel. cislo"};
+    char* tableData[] = {"KlacikKlacikKlacikKlacikKlacikMeno", "Vyska", "Hmotnost", "Tel. cislo"};
 
     // char* userData[5] = {name, height, weight, phone, name};
     // char* tableData[5] = {"1", "2", "3", "4", "5"};
@@ -282,7 +280,7 @@ void tabulka(char* name, char* height, char* weight, char* phone, int consoleX, 
             printf(TABLE_COLOR "%c" TEXT_COLOR "%-*s" TABLE_COLOR "%c" TEXT_COLOR "%*s" TABLE_COLOR "%c\n", _vl, x1, tableData[i/2], _vl, x2, userData[i/2], _vl);
         }
     }
-    scanf("?");
+    getchar();
 }
 
 int main() {
@@ -296,6 +294,6 @@ int main() {
     // uloha2_2();  // 2.2 [3b]
     // uloha2_3_1();  // 2.3.1 [2b] 
     // uloha2_3_2();  // 2.3.2 [1b]
-    tabulka("Martin Klacik", "666 cm", "666 kg", "0429 233 426", 150, 250);  // 2.5.2 [3b]
+    tabulka("KlacikKlacikKlacikKlacikKlacikKlacikMartin Klacik", "666 cm", "666 kg", "0429 233 426", 100, 100);  // 2.5.2 [3b]
     return 0;
 }
