@@ -38,13 +38,23 @@ int main(int argc, char *argv[]){
                 FORMAT = 1;
                 break;
             default: /* '?' alebo ':' */   
-                if (optarg == NULL) {
-                    printf("req. arg");
-                    return 2;
+                // printf("%d ", opt);
+                for (int l = 1; l <= (int)strlen(optstring); l=l+2) {
+                    // printf("%d ", optstring[l]);
+                    if (optstring[l] ==  optopt) {
+                        printf("req. arg");
+                        return 2;
+                    }
                 }
                 printf("wrong switch");
                 return 1;
         }
     }
+
+    if ((fw_LON || fw_LAT) && (fw_LON != fw_LAT)) {
+            printf("return 3");
+            return 3;
+    } else if ()
+
     return 0;
 }
