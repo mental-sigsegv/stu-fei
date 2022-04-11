@@ -11,7 +11,7 @@ static int fw_NAME=0, fw_ITEM=0, fw_LAT=0, fw_LON=0, fi_NAME=0, fi_PRICE=0, FORM
 int main(int argc, char *argv[]){
     int opt;
 	char* optstring = ":w:i:n:e:t:p:W";
-    char* 
+    // char* 
 
     while ((opt = getopt(argc, argv, optstring)) != -1) {
         
