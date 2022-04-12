@@ -3,3 +3,4 @@
 c/prog2/test_cases
 *.stackdump
 .vscode
+.vscode/tasks.json

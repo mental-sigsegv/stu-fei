@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <ctype.h>
 
-
 #include "config.h"
 // #include "functions.c"
 
