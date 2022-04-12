@@ -22,6 +22,30 @@ int isNumeric(char* str) {
     return 1;
 }
 
+void defulat_print(){
+    int count=1;
+    for (int i = 0; i < DB_NUM; i++) {
+        for (int j=0; j < db[i].n; j++) {
+            printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
+            count++;
+        }
+        
+    }
+}
+
+void formated_print() {
+    int count;
+    for (int i = 0; i < DB_NUM; i++) {
+        count = 1;
+        printf("");
+        for (int j=0; j < db[i].n; j++) {
+            
+            count++;
+        }
+        
+    }
+}
+
 int main(int argc, char *argv[]){
     int opt;
 	char* optstring = ":w:i:n:e:t:p:W";
@@ -104,8 +128,12 @@ int main(int argc, char *argv[]){
     // Filtering
 
     // Print
-
-    printf("%s", db[0].name);
+    if (FORMAT == 1) {
+        formated_print();
+    } else {
+        defulat_print();
+    }
+    
     
     return 0;
 }
