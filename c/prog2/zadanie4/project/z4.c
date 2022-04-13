@@ -10,7 +10,7 @@
 
 
 static int fw_NAME=0, fw_ITEM=0, fw_LAT=0, fw_LON=0, fi_NAME=0, fi_PRICE=0, FORMAT=0; 
-static char *fw_NAMEs, *fw_ITEMs;
+static char *fw_NAMEs, *fw_ITEMs, *fi_NAMEs;
 static char *fw_LONf, *fw_LATf;
 static int validWarehouse[DB_NUM];
 
@@ -24,21 +24,21 @@ int isNumeric(char* str) {
     return 1;
 }
 
-void dp(int i, int j, int count) {
-    
-}
-
-void fp(int i, int j, int count) {
-    
-}
-
 void default_print(){
     int count=1;
     for (int i = 0; i < DB_NUM; i++) {
         if (validWarehouse[i] == 1) {
             for (int j=0; j < db[i].n; j++) {
-                printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
-                count++;
+                if (fi_NAME == 1) {
+                    if (strcmp(fi_NAMEs, db[i].items[j].name) == 0) {
+                        printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
+                        count++;
+                    }
+                } else {
+                    printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
+                    count++;
+                }
+                
             }
         }
     }
@@ -78,8 +78,21 @@ void fw_byItem(char* name) {
     }
 }
 
-void fw_byGps() {
+void fw_byGps(GPS myPos) {
+    double minDistance = distance(myPos, db[0].gps);
+    double currentDistance;
+    int warehouseIndex=0;
 
+
+    for (int i = 0; i < DB_NUM; i++) {
+        validWarehouse[i] = 0;
+        currentDistance = distance(myPos, db[i].gps);
+        if (currentDistance < minDistance) {
+            minDistance = currentDistance;
+            warehouseIndex = i;
+        }
+    }
+    validWarehouse[warehouseIndex] = 1;
 }
 
 int main(int argc, char *argv[]){
@@ -114,6 +127,7 @@ int main(int argc, char *argv[]){
                 break;
             case 't':
             	fi_NAME = 1;
+                fi_NAMEs = optarg;
             	break;
             case 'p':
             	fi_PRICE = 1;
@@ -175,7 +189,7 @@ int main(int argc, char *argv[]){
     } else if (fw_ITEM == 1) {
         fw_byItem(fw_ITEMs);
     } else if ((fw_LON == 1) && (fw_LAT == 1)) {
-        fw_byGps();
+        fw_byGps(GPSposition);
     }
 
     // TODO REMOVE
