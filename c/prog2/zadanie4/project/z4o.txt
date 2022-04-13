@@ -1,0 +1,111 @@
+1. chili 50 : Kolarovo 47.915 17.997 13
+2. aroma 5 : Kolarovo 47.915 17.997 13
+3. recipe 67 : Kolarovo 47.915 17.997 13
+4. wok 94 : Kolarovo 47.915 17.997 13
+5. noodle 5 : Kolarovo 47.915 17.997 13
+6. flour 97 : Kolarovo 47.915 17.997 13
+7. bread 73 : Kolarovo 47.915 17.997 13
+8. steak 74 : Kolarovo 47.915 17.997 13
+9. chocolate 95 : Kolarovo 47.915 17.997 13
+10. poutine 61 : Kolarovo 47.915 17.997 13
+11. pot 28 : Kolarovo 47.915 17.997 13
+12. toast 98 : Kolarovo 47.915 17.997 13
+13. pasta 79 : Kolarovo 47.915 17.997 13
+14. salsa 93 : Zlate Moravce 48.378 18.396 13
+15. pizza 95 : Zlate Moravce 48.378 18.396 13
+16. caramel 74 : Zlate Moravce 48.378 18.396 13
+17. cheese 86 : Zlate Moravce 48.378 18.396 13
+18. ice 89 : Zlate Moravce 48.378 18.396 13
+19. cocoa 30 : Zlate Moravce 48.378 18.396 13
+20. tea 16 : Zlate Moravce 48.378 18.396 13
+21. pot 46 : Zlate Moravce 48.378 18.396 13
+22. glaze 48 : Zlate Moravce 48.378 18.396 13
+23. toast 20 : Zlate Moravce 48.378 18.396 13
+24. food 74 : Zlate Moravce 48.378 18.396 13
+25. cake 33 : Zlate Moravce 48.378 18.396 13
+26. seasoning 38 : Zlate Moravce 48.378 18.396 13
+27. bread 84 : Stara Lubovna 49.317 20.683 19
+28. toast 47 : Stara Lubovna 49.317 20.683 19
+29. salad 82 : Stara Lubovna 49.317 20.683 19
+30. lard 82 : Stara Lubovna 49.317 20.683 19
+31. dish 60 : Stara Lubovna 49.317 20.683 19
+32. mushroom 93 : Stara Lubovna 49.317 20.683 19
+33. chimichanga 41 : Stara Lubovna 49.317 20.683 19
+34. pastry 53 : Stara Lubovna 49.317 20.683 19
+35. bagel 62 : Stara Lubovna 49.317 20.683 19
+36. candy 24 : Stara Lubovna 49.317 20.683 19
+37. recipe 50 : Stara Lubovna 49.317 20.683 19
+38. poutine 48 : Stara Lubovna 49.317 20.683 19
+39. sauce 100 : Stara Lubovna 49.317 20.683 19
+40. biscuit 42 : Stara Lubovna 49.317 20.683 19
+41. burger 28 : Stara Lubovna 49.317 20.683 19
+42. marinade 64 : Stara Lubovna 49.317 20.683 19
+43. stew 58 : Stara Lubovna 49.317 20.683 19
+44. entree 27 : Stara Lubovna 49.317 20.683 19
+45. yogurt 82 : Stara Lubovna 49.317 20.683 19
+46. burrito 30 : Michalovce 48.758 21.918 14
+47. grill 60 : Michalovce 48.758 21.918 14
+48. oil 58 : Michalovce 48.758 21.918 14
+49. chocolate 98 : Michalovce 48.758 21.918 14
+50. entree 53 : Michalovce 48.758 21.918 14
+51. olive 22 : Michalovce 48.758 21.918 14
+52. plate 92 : Michalovce 48.758 21.918 14
+53. toast 94 : Michalovce 48.758 21.918 14
+54. wheat 34 : Michalovce 48.758 21.918 14
+55. juice 49 : Michalovce 48.758 21.918 14
+56. sopapillas 46 : Michalovce 48.758 21.918 14
+57. margarine 99 : Michalovce 48.758 21.918 14
+58. beans 45 : Michalovce 48.758 21.918 14
+59. meat 74 : Michalovce 48.758 21.918 14
+60. filet 90 : Stara Tura 48.777 17.696 11
+61. caviar 96 : Stara Tura 48.777 17.696 11
+62. chocolate 82 : Stara Tura 48.777 17.696 11
+63. liquor 62 : Stara Tura 48.777 17.696 11
+64. queso 3 : Stara Tura 48.777 17.696 11
+65. poutine 53 : Stara Tura 48.777 17.696 11
+66. toast 82 : Stara Tura 48.777 17.696 11
+67. tostada 44 : Stara Tura 48.777 17.696 11
+68. waffle 7 : Stara Tura 48.777 17.696 11
+69. olive 8 : Stara Tura 48.777 17.696 11
+70. spice 28 : Stara Tura 48.777 17.696 11
+71. chili 67 : Bytca 49.223 18.558 13
+72. tartar 56 : Bytca 49.223 18.558 13
+73. enchilada 49 : Bytca 49.223 18.558 13
+74. toast 69 : Bytca 49.223 18.558 13
+75. cookie 7 : Bytca 49.223 18.558 13
+76. oil 89 : Bytca 49.223 18.558 13
+77. water 68 : Bytca 49.223 18.558 13
+78. plate 14 : Bytca 49.223 18.558 13
+79. cocoa 71 : Bytca 49.223 18.558 13
+80. kitchen 51 : Bytca 49.223 18.558 13
+81. sandwich 27 : Bytca 49.223 18.558 13
+82. spice 18 : Bytca 49.223 18.558 13
+83. caviar 80 : Bytca 49.223 18.558 13
+84. mayonnaise 50 : Zakamenne 49.390 19.302 13
+85. milk 83 : Zakamenne 49.390 19.302 13
+86. bread 87 : Zakamenne 49.390 19.302 13
+87. cuisine 34 : Zakamenne 49.390 19.302 13
+88. eggs 10 : Zakamenne 49.390 19.302 13
+89. chimichanga 7 : Zakamenne 49.390 19.302 13
+90. aroma 93 : Zakamenne 49.390 19.302 13
+91. dessert 8 : Zakamenne 49.390 19.302 13
+92. mushroom 23 : Zakamenne 49.390 19.302 13
+93. enchilada 78 : Zakamenne 49.390 19.302 13
+94. soda 2 : Zakamenne 49.390 19.302 13
+95. raclette 23 : Zakamenne 49.390 19.302 13
+96. toast 84 : Zakamenne 49.390 19.302 13
+97. glaze 47 : Hlohovec 48.431 17.803 15
+98. marinade 85 : Hlohovec 48.431 17.803 15
+99. ketchup 64 : Hlohovec 48.431 17.803 15
+100. vinegar 95 : Hlohovec 48.431 17.803 15
+101. soda 38 : Hlohovec 48.431 17.803 15
+102. pie 37 : Hlohovec 48.431 17.803 15
+103. burger 87 : Hlohovec 48.431 17.803 15
+104. foie gras 46 : Hlohovec 48.431 17.803 15
+105. toast 64 : Hlohovec 48.431 17.803 15
+106. hamburger 16 : Hlohovec 48.431 17.803 15
+107. nut 53 : Hlohovec 48.431 17.803 15
+108. biscuit 17 : Hlohovec 48.431 17.803 15
+109. broth 1 : Hlohovec 48.431 17.803 15
+110. wine 76 : Hlohovec 48.431 17.803 15
+111. steak 54 : Hlohovec 48.431 17.803 15

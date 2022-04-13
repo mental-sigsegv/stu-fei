@@ -39,11 +39,6 @@ void default_print(){
             for (int j=0; j < db[i].n; j++) {
                 printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
                 count++;
-            // if (fw_NAME == 1) {
-            //     if (strcmp(db[i].name, fw_NAMEs) == 0) {
-            //         dp(i, j, count);
-            //         count++;
-            //     }
             }
         }
     }
@@ -58,12 +53,6 @@ void formated_print() {
             for (int j=0; j < db[i].n; j++) {
                 printf("%d. %s %d\n", count, db[i].items[j].name, db[i].items[j].price);
                 count++;
-                // if (fw_NAME == 1) {
-                //     if (strcmp(db[i].name, fw_NAMEs) == 0) {
-                //         fp(i, j, count);
-                //         count++;
-                //     }
-                // } 
             }
         }
     }
@@ -77,8 +66,16 @@ void fw_byName(char* name) {
     }
 }
 
-void fw_byItem() {
-
+void fw_byItem(char* name) {
+    for (int i = 0; i < DB_NUM; i++) {
+        validWarehouse[i] = 0;
+        for (int j=0; j < db[i].n; j++) {
+            if (strcmp(name, db[i].items[j].name) == 0) {
+                validWarehouse[i] = 1;
+                break;
+            }
+        }
+    }
 }
 
 void fw_byGps() {
@@ -176,10 +173,16 @@ int main(int argc, char *argv[]){
     if (fw_NAME == 1) {
         fw_byName(fw_NAMEs);
     } else if (fw_ITEM == 1) {
-        fw_byItem();
+        fw_byItem(fw_ITEMs);
     } else if ((fw_LON == 1) && (fw_LAT == 1)) {
         fw_byGps();
     }
+
+    // TODO REMOVE
+    // printf("\n");
+    // for (int i = 0; i < DB_NUM; i++) {
+    //     printf("%d ", validWarehouse[i]);
+    // }
 
     // Print
     if (FORMAT == 1) {
