@@ -10,7 +10,9 @@
 
 
 static int fw_NAME=0, fw_ITEM=0, fw_LAT=0, fw_LON=0, fi_NAME=0, fi_PRICE=0, FORMAT=0; 
-static char *LONG, *LAT;
+static char *fw_NAMEs, *fw_ITEMs;
+static char *fw_LONf, *fw_LATf;
+static int validWarehouse[DB_NUM];
 
 int isNumeric(char* str) {
     while (*str != '\0') {
@@ -22,51 +24,96 @@ int isNumeric(char* str) {
     return 1;
 }
 
-void defulat_print(){
+void dp(int i, int j, int count) {
+    
+}
+
+void fp(int i, int j, int count) {
+    
+}
+
+void default_print(){
     int count=1;
     for (int i = 0; i < DB_NUM; i++) {
-        for (int j=0; j < db[i].n; j++) {
-            printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
-            count++;
+        if (validWarehouse[i] == 1) {
+            for (int j=0; j < db[i].n; j++) {
+                printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
+                count++;
+            // if (fw_NAME == 1) {
+            //     if (strcmp(db[i].name, fw_NAMEs) == 0) {
+            //         dp(i, j, count);
+            //         count++;
+            //     }
+            }
         }
-        
     }
 }
 
 void formated_print() {
     int count;
     for (int i = 0; i < DB_NUM; i++) {
-        count = 1;
-        printf("");
-        for (int j=0; j < db[i].n; j++) {
-            
-            count++;
+        if (validWarehouse[i] == 1) {
+            count = 1;
+            printf("%s %.3lf %.3lf %d :\n", db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
+            for (int j=0; j < db[i].n; j++) {
+                printf("%d. %s %d\n", count, db[i].items[j].name, db[i].items[j].price);
+                count++;
+                // if (fw_NAME == 1) {
+                //     if (strcmp(db[i].name, fw_NAMEs) == 0) {
+                //         fp(i, j, count);
+                //         count++;
+                //     }
+                // } 
+            }
         }
-        
     }
+}
+
+void fw_byName(char* name) {
+    for (int i = 0; i < DB_NUM; i++) {
+        if (strcmp(name, db[i].name) != 0) {
+            validWarehouse[i] = 0;
+        }
+    }
+}
+
+void fw_byItem() {
+
+}
+
+void fw_byGps() {
+
 }
 
 int main(int argc, char *argv[]){
     int opt;
+      // Valid warehouse for print
 	char* optstring = ":w:i:n:e:t:p:W";
     GPS GPSposition;
+
+    for (int i = 0; i < DB_NUM; i++) {
+        validWarehouse[i] = 1;
+    }
+
 
     while ((opt = getopt(argc, argv, optstring)) != -1) {
         
         switch (opt) {
             case 'w':
                 fw_NAME = 1;
+                fw_NAMEs = optarg;
                 break;
             case 'i':
                 fw_ITEM = 1;
+                fw_ITEMs = optarg;
                 break;
             case 'n':
                 fw_LAT = 1;
-                LAT = optarg;
+                fw_LATf = optarg;
                 break;
             case 'e':
                 fw_LON = 1;
-                LONG = optarg;
+                fw_LONf = optarg;
                 break;
             case 't':
             	fi_NAME = 1;
@@ -102,8 +149,8 @@ int main(int argc, char *argv[]){
     
     // Return 4  // ? optimize
     if ((fw_LON == 1) && (fw_LAT == 1)) {
-        if (isNumeric(LONG)) {
-            GPSposition.lon = atof(LONG);
+        if (isNumeric(fw_LONf)) {
+            GPSposition.lon = atof(fw_LONf);
         } else {
             printf("return 4");  // TODO remove
             return 4;
@@ -113,8 +160,8 @@ int main(int argc, char *argv[]){
             return 4;
         }
 
-        if (isNumeric(LAT)) {
-            GPSposition.lat = atof(LAT);
+        if (isNumeric(fw_LATf)) {
+            GPSposition.lat = atof(fw_LATf);
         } else {
             printf("return 4");  // TODO remove
             return 4;
@@ -126,12 +173,19 @@ int main(int argc, char *argv[]){
     }
 
     // Filtering
+    if (fw_NAME == 1) {
+        fw_byName(fw_NAMEs);
+    } else if (fw_ITEM == 1) {
+        fw_byItem();
+    } else if ((fw_LON == 1) && (fw_LAT == 1)) {
+        fw_byGps();
+    }
 
     // Print
     if (FORMAT == 1) {
         formated_print();
     } else {
-        defulat_print();
+        default_print();
     }
     
     
