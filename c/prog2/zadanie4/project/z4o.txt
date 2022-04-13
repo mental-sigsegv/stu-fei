@@ -1,0 +1,55 @@
+Levice 48.214 18.607 6 :
+Kolarovo 47.915 17.997 13 :
+Nova Dubnica 48.933 18.150 5 :
+Zlate Moravce 48.378 18.396 13 :
+Stara Lubovna 49.317 20.683 19 :
+Topolcany 48.550 18.183 2 :
+Jarovnice 49.050 21.067 5 :
+Kremnica 48.704 18.918 19 :
+1. water 95
+Sabinov 49.100 21.100 8 :
+Banska Bystrica 48.735 19.145 7 :
+Humenne 48.931 21.912 15 :
+Liptovsky Hradok 49.039 19.724 7 :
+Michalovce 48.758 21.918 14 :
+Komarno 47.763 18.128 14 :
+Stara Tura 48.777 17.696 11 :
+Turcianske Teplice 48.859 18.864 18 :
+Nove Zamky 47.983 18.173 18 :
+Rimavska Sobota 48.381 20.020 11 :
+Bytca 49.223 18.558 13 :
+1. water 68
+Bernolakovo 48.199 17.300 3 :
+Nova Bana 48.427 18.639 3 :
+Holic 48.812 17.163 10 :
+Lucenec 48.331 19.671 3 :
+Krupina 48.350 19.067 6 :
+Zakamenne 49.390 19.302 13 :
+Poprad 49.050 20.300 11 :
+Senec 48.219 17.400 16 :
+1. water 50
+Tvrdosin 49.337 19.550 16 :
+Sahy 48.067 18.967 7 :
+Kysucke Nove Mesto 49.300 18.783 5 :
+Kezmarok 49.138 20.429 3 :
+Velke Kapusany 48.550 22.083 10 :
+Hlohovec 48.431 17.803 15 :
+Ruzomberok 49.079 19.308 19 :
+Velke Canikovce 48.302 17.346 1 :
+Lipany 49.153 20.962 1 :
+Oscadnica 49.438 18.886 4 :
+Cana 48.612 21.324 2 :
+Puchov 49.120 18.331 7 :
+Vranov nad Toplou 48.881 21.673 10 :
+Detva 48.557 19.421 20 :
+Sered 48.283 17.733 18 :
+Nesvady 47.928 18.127 11 :
+Spisska Bela 49.186 20.457 19 :
+1. water 3
+Filakovo 48.272 19.829 16 :
+Vrutky 49.112 18.924 19 :
+1. water 35
+Hrinova 48.567 19.517 11 :
+Nemsova 48.967 18.117 3 :
+Samorin 48.027 17.312 5 :
+Gbely 48.718 17.115 6 :

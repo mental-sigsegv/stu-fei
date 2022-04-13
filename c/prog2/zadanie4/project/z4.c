@@ -50,9 +50,20 @@ void formated_print() {
         if (validWarehouse[i] == 1) {
             count = 1;
             printf("%s %.3lf %.3lf %d :\n", db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
+
+            
+
             for (int j=0; j < db[i].n; j++) {
-                printf("%d. %s %d\n", count, db[i].items[j].name, db[i].items[j].price);
-                count++;
+                if (fi_NAME == 1) {
+                    if (strcmp(fi_NAMEs, db[i].items[j].name) == 0) {
+                        printf("%d. %s %d\n", count, db[i].items[j].name, db[i].items[j].price);
+                        count++;
+                    }
+                } else {
+                    printf("%d. %s %d\n", count, db[i].items[j].name, db[i].items[j].price);
+                    count++;
+                }
+                
             }
         }
     }
