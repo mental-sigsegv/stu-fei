@@ -12,7 +12,7 @@
 static int fw_NAME=0, fw_ITEM=0, fw_LAT=0, fw_LON=0, fi_NAME=0, fi_PRICE=0, FORMAT=0; 
 static char *fw_NAMEs, *fw_ITEMs, *fi_NAMEs;
 static char *fw_LONf, *fw_LATf;
-static int validWarehouse[DB_NUM];
+static int validWarehouse[DB_NUM], PRICE;
 
 int isNumeric(char* str) {
     while (*str != '\0') {
@@ -31,6 +31,11 @@ void default_print(){
             for (int j=0; j < db[i].n; j++) {
                 if (fi_NAME == 1) {
                     if (strcmp(fi_NAMEs, db[i].items[j].name) == 0) {
+                        printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
+                        count++;
+                    }
+                } else if (fi_PRICE == 1) {
+                    if (db[i].items[j].price <= PRICE) {
                         printf("%d. %s %d : %s %.3lf %.3lf %d\n", count, db[i].items[j].name, db[i].items[j].price, db[i].name, db[i].gps.lat, db[i].gps.lon, db[i].n);
                         count++;
                     }
@@ -56,6 +61,11 @@ void formated_print() {
             for (int j=0; j < db[i].n; j++) {
                 if (fi_NAME == 1) {
                     if (strcmp(fi_NAMEs, db[i].items[j].name) == 0) {
+                        printf("%d. %s %d\n", count, db[i].items[j].name, db[i].items[j].price);
+                        count++;
+                    }
+                } else if (fi_PRICE == 1) {
+                    if (db[i].items[j].price <= PRICE) {
                         printf("%d. %s %d\n", count, db[i].items[j].name, db[i].items[j].price);
                         count++;
                     }
@@ -142,6 +152,7 @@ int main(int argc, char *argv[]){
             	break;
             case 'p':
             	fi_PRICE = 1;
+                PRICE = atoi(optarg);
                 break;
             case 'W':
                 FORMAT = 1;
