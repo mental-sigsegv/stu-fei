@@ -95,7 +95,7 @@ int main() {
         head = insert_node_tail(head, arr[i]);
     }
     // head = insert_node_index(head, 1, 111);
-    head = remove_nth_node(head, 2);
+    // head = remove_nth_node(head, 2);
 
     print_node(head);
     freeList(head);
