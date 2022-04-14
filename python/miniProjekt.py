@@ -56,7 +56,7 @@ def kvety():
 
         k1.penup(); k1.home(); k1.fd(400); k1.left(90); k1.fd(150); k1.pendown(); k1.right(90)
         kvet([20, 2, 12], [1, 30], [45, 7, 20], k1) # Treti kvet
-kvety()
+# kvety()
 
 # hideturtle()
 # k1 = turtle.Turtle()
@@ -79,7 +79,7 @@ def multi_tasking():
     p2.start()
     p3 = threading.Thread(target=kvet, args=([10, 2, 12], [1, 30], [45, 7, 20], k3), daemon=True)
     p3.start()
-# multi_tasking()
+multi_tasking()
 
 mainloop()
 # exitonclick()

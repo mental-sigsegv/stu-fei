@@ -3,12 +3,14 @@ from turtle import *
 speed(10)
 pensize(2)
 
+
 def stvorec(a):
     for _ in range(4):
         fd(a)
         left(90)
     exitonclick()
 # stvorec(50)
+
 
 def rovno_troj(a):
     for _ in range(3):
@@ -17,12 +19,14 @@ def rovno_troj(a):
     exitonclick()
 # rovno_troj(100)
 
+
 def patuholnik(a):
     for _ in range(5):
         fd(a)
         left(72)
     exitonclick()
 # patuholnik(70)
+
 
 def schody(a, n):
     for _ in range(4):
@@ -37,6 +41,7 @@ def schody(a, n):
 # schody(50, 2)
 # schody(30, 6)
 
+
 def kosostvorec(a, angle):
     for _ in range(2):
         fd(a)
@@ -44,6 +49,7 @@ def kosostvorec(a, angle):
         fd(a)
         left(180-angle)
     # exitonclick()
+
 
 def kvet(strana):
     for _ in range(2):
@@ -63,7 +69,8 @@ def kvet(strana):
 
     exitonclick()
 
-# kvet(70)
+kvet(90)
+
 
 def uholnik(n, a):
     for _ in range(n):
@@ -72,9 +79,12 @@ def uholnik(n, a):
         left(angle)
     # exitonclick()
 
-def kvet2(pocet_kruhov, n ,a):
+
+def kvet2(pocet_kruhov, n, a):
     for _ in range(pocet_kruhov):
         uholnik(n, a)
         left(360/n)
     exitonclick()
-# kvet2(12, 12, 50)
+
+
+# kvet2(4, 30, 10)

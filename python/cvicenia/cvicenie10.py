@@ -1,8 +1,8 @@
 from random import randint
 
 # bonus pomocou reduce
-max_range = 15
-nums = 6
+max_range = 10
+nums = 4
 
 def print_interval(intervals):
     for start, end in intervals:
