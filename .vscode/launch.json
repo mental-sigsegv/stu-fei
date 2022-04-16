@@ -10,9 +10,9 @@
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
             "stopAtEntry": false,
-            "customLaunchSetupCommands": [
-              { "text": "target-run", "description": "run target", "ignoreFailures": false }
-            ],
+            // "customLaunchSetupCommands": [
+            //   { "text": "target-run", "description": "run target", "ignoreFailures": false }
+            // ],
             "launchCompleteCommand": "exec-run",
             "cwd": "${fileDirname}",
             "linux": {

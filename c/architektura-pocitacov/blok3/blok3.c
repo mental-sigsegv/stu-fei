@@ -14,6 +14,7 @@ const short unsigned int SERVER_PORT = 777;
 
 #define BUFF_SIZE 4096
 #define GRN "\e[0;32m"
+#define RED "\e[0;31m"
 #define COLOR_RESET "\e[0m"
 
 // const char* SERVER_ADRESS = "142.251.36.68";
@@ -38,7 +39,29 @@ void sendMessage(char *message) {
 		printf("-> Send failed\n");
 		return;
 	}
-	printf("-> Message was send...\n");
+	printf(RED "-> Message was send...\n" COLOR_RESET);
+}
+
+void format_print(char* message) {
+    int sizeOfTerminal = w.ws_col;
+
+    int letter=0;
+    int lastLetter=-1;
+    int spaceIndex=0;
+    while (letter <= (int)strlen(message)) {
+        for (int i=sizeOfTerminal/2 + letter; i >= letter; i--) {
+            if ((message[i] == ' ') || (message[i] == '\n')) {
+                spaceIndex = i;
+                break;
+            }
+        }
+        printf("%*.*s\n", sizeOfTerminal, spaceIndex-letter, message+letter);
+        if (lastLetter == letter) {
+            break;
+        }
+        lastLetter = letter;
+		letter = spaceIndex;
+    }
 }
 
 void recieveMessage() {
@@ -48,8 +71,9 @@ void recieveMessage() {
 		printf("-> recv failed\n");
 		return;
 	}
-	printf(GRN "%*s\n", w.ws_col, "-> Reply received:" COLOR_RESET);
-	printf("%*s\n", w.ws_col, server_reply);
+	printf(GRN "%*s\n", w.ws_col+4, "-> Reply received:" COLOR_RESET);
+	format_print(server_reply);
+	// printf("%*s\n", w.ws_col, server_reply);
 	
 }
 
@@ -68,6 +92,22 @@ char* itoa(int val, int base) {
 	for(; val && i ; --i, val /= base)
 		buf[i] = "0123456789abcdef"[val % base];
 	return &buf[i+1];
+}
+
+void decipher() {
+	char server_reply[BUFF_SIZE];
+	if(recv(socket_desc, server_reply, BUFF_SIZE, 0) < 0) {
+		printf("-> recv failed\n");
+		return;
+	}
+	for (int i=0; i<132; i++) {
+		server_reply[i] = server_reply[i] ^ 55;
+	}
+	server_reply[132]='\n';
+	server_reply[133]='\0';
+	printf(GRN "%*s\n", w.ws_col+4, "-> Reply received:" COLOR_RESET);
+	format_print(server_reply);
+	// printf("%s\n", server_reply);
 }
 
 int main() {
@@ -110,15 +150,33 @@ int main() {
 	recieveMessage();
 
 	// Send code, recieve, write in green
-	printf(GRN);
 	sendMessage("753421");
 	recieveMessage();
-	printf(COLOR_RESET);
 
 	// Compute code
 	int code = compute_code(ID);
-	// printf("%s", itoa(code, 10));
 	sendMessage(itoa(code, 10));
+	recieveMessage();
+
+	sendMessage("333222111");
+	recieveMessage();
+
+	sendMessage("123");
+	decipher();
+
+	sendMessage("?");
+	recieveMessage();
+
+	sendMessage("48");
+	recieveMessage();
+
+	sendMessage("2");
+	recieveMessage();
+
+	sendMessage("E.T.");
+	recieveMessage();
+
+	sendMessage("PRIMENUMBER");
 	recieveMessage();
 
 	close(socket_desc);

@@ -28,7 +28,6 @@ int main () {
         }
         lastLetter = letter;
         letter = spaceIndex;
-        // printf("%d\n", letter);
     }
 
     
