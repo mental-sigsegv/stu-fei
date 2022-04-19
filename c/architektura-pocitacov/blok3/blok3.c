@@ -195,8 +195,9 @@ int main() {
 	sendMessage("polyadicke");
 	recieveMessage();
 
-	sendMessage("jednosmerna");
+	sendMessage("half-duplex");
 	recieveMessage();
+
 
 	close(socket_desc);
 	return 0;
