@@ -24,6 +24,8 @@ static int socket_desc;
 
 struct winsize w;
 
+FILE *log_file;
+
 void connectToServer(struct sockaddr_in server) {
 	//Connect to remote server
 	if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0)	{
@@ -39,7 +41,9 @@ void sendMessage(char *message) {
 		printf("-> Send failed\n");
 		return;
 	}
-	printf(RED "-> Message was send...\n" COLOR_RESET);
+	printf(RED "-> \"%s\" was send...\n", message, COLOR_RESET);
+
+	fprintf(log_file, "USER   -> \"%s\" was send...\n", message);
 }
 
 void format_print(char* message) {
@@ -73,8 +77,8 @@ void recieveMessage() {
 	}
 	printf(GRN "%*s\n", w.ws_col+4, "-> Reply received:" COLOR_RESET);
 	format_print(server_reply);
-	// printf("%*s\n", w.ws_col, server_reply);
-	
+
+	fprintf(log_file, "\nSERVER -> Reply received:\n%s\n", server_reply);
 }
 
 int compute_code(char* num) {
@@ -107,10 +111,13 @@ void decipher() {
 	server_reply[133]='\0';
 	printf(GRN "%*s\n", w.ws_col+4, "-> Reply received:" COLOR_RESET);
 	format_print(server_reply);
-	// printf("%s\n", server_reply);
+
+	fprintf(log_file, "\nSERVER -> Reply received:\n%s\n", server_reply);
 }
 
 int main() {
+   	log_file = fopen("./log.txt", "w+");
+
 	// For terminal
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
@@ -134,7 +141,7 @@ int main() {
 	printf("-> Connected!\n");
 
 	// Recieve Morfeus msg
-	sendMessage("NONE");
+	sendMessage("?");
     recieveMessage();
 
 	// Recieve my name
@@ -177,6 +184,18 @@ int main() {
 	recieveMessage();
 
 	sendMessage("PRIMENUMBER");
+	recieveMessage();
+
+	sendMessage("LOG.CHAT");  // TODO ADD PRIME GENERATOR
+	recieveMessage();
+
+	sendMessage("Trinity");
+	recieveMessage();
+
+	sendMessage("polyadicke");
+	recieveMessage();
+
+	sendMessage("jednosmerna");
 	recieveMessage();
 
 	close(socket_desc);
