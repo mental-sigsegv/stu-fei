@@ -23,7 +23,6 @@ void generate_primes(char* text) {
             printf("%c", text[i-1]);
         }
     }
-    printf("\n");
 }
 
 int main() {

@@ -69,18 +69,3 @@ USER   -> "LOG.CHAT" was send...
 SERVER -> Reply received:
 Correct. It is crucial to record all our communication and send it to Sion. Therefore, re-code your software to store all our communication to a file. It must be clear from the log who sent what. Then send me the string Trinity.
 
-USER   -> "Trinity" was send...
-
-SERVER -> Reply received:
-Now you need to study the ship manuals to be able to save Trinity. The questions are in a foreign language. Post the correct reply as an answer. Here is the first one: Ako nazyvame cislene sustavy, ktore mozeme rozvinut do mocninoveho radu [1 slovo]? (prednaska 1)
-
-USER   -> "polyadicke" was send...
-
-SERVER -> Reply received:
-Good one! Here is another one: Ako sa vola obojsmerna komunikacia, v pripade ze v jednej jednotke casu ide komunikacia iba jednym smerom?  (prednaska 9)
-
-USER   -> "half-duplex" was send...
-
-SERVER -> Reply received:
-Good answer, great job! For now, this is enough; if you've got this far and accomplished all the missions you will have full score. If you, however, want to get bonus points and really save Trinity, you can start a new topic on AP forum located here: http://ap.urk.fei.stuba.sk/community/ Request the bonus mission and the chance to save Trinity will be yours! ....... THE BONUS IS HERE! To save Trinity you must implement an algorithm for the Caesar cipher and use it as a virus to damage Agent Smith's core software. Your implementation must work with any parameters, but demonstrate it on this: OBVMHKR To decipher rotate 7 letters right and send me the result. https://en.wikipedia.org/wiki/Caesar_cipher 
-

@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <math.h>
 
 
 const char* SERVER_ADRESS = "147.175.115.34";
@@ -25,6 +26,8 @@ static int socket_desc;
 struct winsize w;
 
 FILE *log_file;
+
+char server_reply[BUFF_SIZE];
 
 void connectToServer(struct sockaddr_in server) {
 	//Connect to remote server
@@ -70,7 +73,6 @@ void format_print(char* message) {
 
 void recieveMessage() {
 	// Receive a reply from the server
-    char server_reply[BUFF_SIZE];
 	if(recv(socket_desc, server_reply, BUFF_SIZE, 0) < 0) {
 		printf("-> recv failed\n");
 		return;
@@ -98,13 +100,41 @@ char* itoa(int val, int base) {
 	return &buf[i+1];
 }
 
+int is_prime(int num) {
+    if ((num == 2) || (num == 3)) {
+        return 1;
+    } else if ((num%2 == 0) || (num == 1)) {
+        return 0;
+    }
+    for (int i = 3; i <= (int)sqrt(num)+1; i=i+2) {
+        if (num%i == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void decipher_by_primes() {
+	char* text = server_reply;
+	int new_index = 0;
+    for (int i = 0; i <= (int)strlen(text); i++) {
+        if (is_prime(i) == 1) {
+            // printf("%c", text[i-1]);
+			server_reply[new_index] = text[i-1];
+			new_index++;
+        }
+    }
+	server_reply[new_index] = '\0';
+}
+
 void decipher() {
-	char server_reply[BUFF_SIZE];
+	// char server_reply[BUFF_SIZE];
 	if(recv(socket_desc, server_reply, BUFF_SIZE, 0) < 0) {
 		printf("-> recv failed\n");
 		return;
 	}
 	for (int i=0; i<132; i++) {
+		// server_reply[i] = server_reply[i];
 		server_reply[i] = server_reply[i] ^ 55;
 	}
 	server_reply[132]='\n';
@@ -186,9 +216,13 @@ int main() {
 	sendMessage("PRIMENUMBER");
 	recieveMessage();
 
-	sendMessage("LOG.CHAT");  // TODO ADD PRIME GENERATOR
+	decipher_by_primes();
+	sendMessage(server_reply);  // TODO IMPLEMET FUNCTION FROM prime-generator.c
 	recieveMessage();
 
+	return 0;
+
+	
 	sendMessage("Trinity");
 	recieveMessage();
 
