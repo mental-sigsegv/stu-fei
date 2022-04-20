@@ -1,3 +1,4 @@
+// Includes
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -9,25 +10,20 @@
 #include <unistd.h>
 #include <math.h>
 
-
-const char* SERVER_ADRESS = "147.175.115.34";
-const short unsigned int SERVER_PORT = 777;
-
+// Defines
 #define BUFF_SIZE 4096
 #define GRN "\e[0;32m"
 #define RED "\e[0;31m"
 #define COLOR_RESET "\e[0m"
 
-// const char* SERVER_ADRESS = "142.251.36.68";
-// const short unsigned int SERVER_PORT = 80;
+// Global var
+const char* SERVER_ADRESS = "147.175.115.34";
+const short unsigned int SERVER_PORT = 777;
 
 static int socket_desc;
-
 struct winsize w;
-
-FILE *log_file;
-
 char server_reply[BUFF_SIZE];
+FILE *log_file;
 
 void connectToServer(struct sockaddr_in server) {
 	//Connect to remote server
@@ -44,9 +40,9 @@ void sendMessage(char *message) {
 		printf("-> Send failed\n");
 		return;
 	}
-	printf(RED "-> \"%s\" was send...\n", message, COLOR_RESET);
+	printf(RED "-> \"%s\" was send...", message, COLOR_RESET);
 
-	fprintf(log_file, "USER   -> \"%s\" was send...\n", message);
+	fprintf(log_file, "USER\n%s\n", message);
 }
 
 void format_print(char* message) {
@@ -55,6 +51,9 @@ void format_print(char* message) {
     int letter=0;
     int lastLetter=-1;
     int spaceIndex=0;
+
+	printf(GRN "\n%*s\n", w.ws_col+4, "-> Reply received:" COLOR_RESET);
+
     while (letter <= (int)strlen(message)) {
         for (int i=sizeOfTerminal/2 + letter; i >= letter; i--) {
             if ((message[i] == ' ') || (message[i] == '\n')) {
@@ -77,10 +76,8 @@ void recieveMessage() {
 		printf("-> recv failed\n");
 		return;
 	}
-	printf(GRN "%*s\n", w.ws_col+4, "-> Reply received:" COLOR_RESET);
 	format_print(server_reply);
-
-	fprintf(log_file, "\nSERVER -> Reply received:\n%s\n", server_reply);
+	fprintf(log_file, "\nSERVER\n%s\n", server_reply);
 }
 
 int compute_code(char* num) {
@@ -128,21 +125,32 @@ void decipher_by_primes() {
 }
 
 void decipher() {
-	// char server_reply[BUFF_SIZE];
 	if(recv(socket_desc, server_reply, BUFF_SIZE, 0) < 0) {
 		printf("-> recv failed\n");
 		return;
 	}
 	for (int i=0; i<132; i++) {
-		// server_reply[i] = server_reply[i];
 		server_reply[i] = server_reply[i] ^ 55;
 	}
-	server_reply[132]='\n';
-	server_reply[133]='\0';
-	printf(GRN "%*s\n", w.ws_col+4, "-> Reply received:" COLOR_RESET);
+	server_reply[132]='\0';
+	
 	format_print(server_reply);
+	fprintf(log_file, "\nSERVER\n%s\n", server_reply);
+}
 
-	fprintf(log_file, "\nSERVER -> Reply received:\n%s\n", server_reply);
+void decipher_by_caesar(char* cipher, int rotate) {
+    char letter;
+    for (int l=0; l<(int)strlen(cipher); l++) {
+        letter = cipher[l];
+        if (('a' <= letter) && (letter <= 'z')) {
+            server_reply[l] = ((letter + rotate)%'a')%26+'a';
+        } else if (('A' <= letter) && (letter <= 'Z')) {
+            server_reply[l] = ((letter + rotate)%'A')%26+'A';
+        } else {
+            server_reply[l] = cipher[l];
+        }
+    }
+	server_reply[(int)strlen(cipher)] = '\0';
 }
 
 int main() {
@@ -158,7 +166,8 @@ int main() {
 		printf("-> Could not create socket\n");
 		return 1;
 	}
-		
+	
+	// Setting up server (ip, port, type of connection)
 	server.sin_addr.s_addr = inet_addr(SERVER_ADRESS);
 	server.sin_family = AF_INET;
 	server.sin_port = htons(SERVER_PORT);
@@ -168,7 +177,9 @@ int main() {
 		printf("-> Connect error!\n");
 		return 1;
 	}
-	printf("-> Connected!\n");
+	printf(GRN "-> Connected!\n" COLOR_RESET);
+	fprintf(log_file, "STATUS\nconnected\n\n");
+
 
 	// Recieve Morfeus msg
 	sendMessage("?");
@@ -180,7 +191,7 @@ int main() {
 	recieveMessage();
 
 	// Set UTF-8
-	sendMessage("7545477");
+	sendMessage("?");
 	recieveMessage();
 
 	sendMessage("7545477");
@@ -217,12 +228,9 @@ int main() {
 	recieveMessage();
 
 	decipher_by_primes();
-	sendMessage(server_reply);  // TODO IMPLEMET FUNCTION FROM prime-generator.c
+	sendMessage(server_reply);
 	recieveMessage();
 
-	return 0;
-
-	
 	sendMessage("Trinity");
 	recieveMessage();
 
@@ -232,7 +240,20 @@ int main() {
 	sendMessage("half-duplex");
 	recieveMessage();
 
+	for (int i = 1; i < 26; i++) {
+		decipher_by_caesar("OBVMHKR", i);
+		sendMessage(server_reply);
+		recieveMessage();
 
+		if (strcmp(server_reply, "Incorrect answer, try again...\n") != 0) {
+			break;
+		}
+	}
+	
+
+	fprintf(log_file, "STATUS\ndisconnected\n");
+	fclose(log_file);
 	close(socket_desc);
+
 	return 0;
 }
