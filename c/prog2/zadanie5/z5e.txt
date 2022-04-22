@@ -1,0 +1,14 @@
+FILE_ERROR Hlohovec.txt
+FILE_ERROR Sala.txt
+FILE_ERROR Komarno.txt
+FILE_ERROR Bardejov.txt
+FILE_ERROR Krupina.txt
+FILE_ERROR Chorvatsky_Grob.txt
+FILE_ERROR Snina.txt
+FILE_ERROR Presov.txt
+FILE_ERROR Detva.txt
+FILE_ERROR Zeliezovce.txt
+FILE_ERROR Vrbove.txt
+FILE_ERROR Nove_Mesto_nad_Vahom.txt
+FILE_ERROR Svidnik.txt
+FILE_ERROR Stara_Lubovna.txt

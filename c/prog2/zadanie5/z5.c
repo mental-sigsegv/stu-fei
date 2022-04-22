@@ -10,12 +10,26 @@
 static int fw_NAME=0, fw_LAT=0, fw_LON=0, o_ASC=0, o_DES=0, DB_NUM=0; 
 static char *fw_NAMEs;
 static char *fw_LONf, *fw_LATf;
-// static int validWarehouse[DB_NUM], PRICE;
+
+int txt_existance(char* name) {
+    char itemsPath[128+MAX_NAME];
+    FILE *w_items;
+    
+    strcpy(itemsPath, ITEMS_FOLDER);
+    strcat(itemsPath, PATH_SEPARATOR);
+    strcat(itemsPath, name);
+    strcat(itemsPath, ".txt");
+
+    w_items=fopen(itemsPath, "r");
+    if (w_items == NULL) {
+        return 0;
+    }
+    return 1;
+}
 
 int main(int argc, char *argv[]){
     int opt;
 	char* optstring = ":w:n:e:ad";
-    // GPS GPSposition;
 
     while ((opt = getopt(argc, argv, optstring)) != -1) {
         switch (opt) {
@@ -44,18 +58,25 @@ int main(int argc, char *argv[]){
         }
     }
      
-    FILE *fp, *w_db, *db_of_w;
+    FILE *fp, *w_db;
     
     // Get number of warehouses
     fp=fopen(WAREHOUSE_DB_FILE, "r");
-    int lines =0;
     while (EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp,"%*c"))) {
         ++DB_NUM;
     }
     fclose(fp);
 
-    // Go through warehouse_db
-    WAREHOUSE *WAREHOUSES[DB_NUM]; 
+    // Variables
+    WAREHOUSE *WAREHOUSES[DB_NUM];
+    short validWarehouse[DB_NUM]; 
+
+    // Set warehouses as available to be printed
+    for (int i=0; i< DB_NUM; i++) {
+        validWarehouse[i] = 1;
+    }
+
+    // Store warehouses (DB_NUM) struck into array
     w_db=fopen(WAREHOUSE_DB_FILE, "r");
     int k=0;
     while (1) {
@@ -66,12 +87,20 @@ int main(int argc, char *argv[]){
         }
         WAREHOUSES[k] = wh;
         k++;
-        // free(wh);
     }
     
+    // Print warehouses
     for (int i = 0; i < DB_NUM; i++) {
         WAREHOUSE *wh = WAREHOUSES[i];
-        printf("%s %.3lf %.3lf %d\n", wh->name, wh->gps.lat, wh->gps.lat, wh->capacity);
+        fprintf(stdout, "%s %.3lf %.3lf %d\n", wh->name, wh->gps.lon, wh->gps.lat, wh->capacity);
+        if (txt_existance(wh->name) == 0) {
+            validWarehouse[i] = 0;
+            fprintf(stderr, "FILE_ERROR %s.txt\n", wh->name);
+        }
+    }
+
+    // Free malloc warehouses
+    for (int i = 0; i < DB_NUM; i++) {
         free(WAREHOUSES[i]);
     }
     
