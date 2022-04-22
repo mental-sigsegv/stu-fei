@@ -15,7 +15,7 @@
 
 // GPS poloha
 typedef struct gps {
-    double LATlat; // latitude
+    double lat; // latitude
     double lon; // longitude
 } GPS;
 
