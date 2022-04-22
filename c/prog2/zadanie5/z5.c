@@ -11,19 +11,66 @@ static int fw_NAME=0, fw_LAT=0, fw_LON=0, o_ASC=0, o_DES=0, DB_NUM=0;
 static char *fw_NAMEs;
 static char *fw_LONf, *fw_LATf;
 
-int txt_existance(char* name) {
+
+int get_num_of_lines(char* file) {
+    FILE *fp;
+    int count=0;
+
+    fp=fopen(file, "r");
+    while (EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp,"%*c"))) {
+        ++count;
+    }
+    fclose(fp);
+    return count;
+}
+
+int valid_capacity(WAREHOUSE* wh) {
     char itemsPath[128+MAX_NAME];
+    int numOfItems=0;
     FILE *w_items;
-    
+
     strcpy(itemsPath, ITEMS_FOLDER);
     strcat(itemsPath, PATH_SEPARATOR);
-    strcat(itemsPath, name);
+    strcat(itemsPath, wh->name);
+    strcat(itemsPath, ".txt");
+
+    numOfItems = get_num_of_lines(itemsPath);
+
+    if (numOfItems > wh->capacity) {
+        return 0;
+    }
+    wh->n = numOfItems;
+    return 1;
+}
+
+int valid_txt(WAREHOUSE* wh) {
+    char itemsPath[128+MAX_NAME];
+    FILE *w_items = NULL;
+
+    strcpy(itemsPath, ITEMS_FOLDER);
+    strcat(itemsPath, PATH_SEPARATOR);
+    strcat(itemsPath, wh->name);
     strcat(itemsPath, ".txt");
 
     w_items=fopen(itemsPath, "r");
     if (w_items == NULL) {
         return 0;
     }
+    fclose(w_items);
+    return 1;
+}
+
+int valid_format(WAREHOUSE* wh) {
+    
+
+    // int numOfItems = get_num_of_lines(itemsPath);
+    // w_items=fopen(itemsPath, "r");
+    // wh->items = (ITEM*)malloc(sizeof(ITEM)*wh->n);
+    // for (int i = 0; i < numOfItems; i++) {
+        
+    // }
+
+    // fclose(w_items);
     return 1;
 }
 
@@ -58,14 +105,10 @@ int main(int argc, char *argv[]){
         }
     }
      
-    FILE *fp, *w_db;
+    FILE *w_db;
     
     // Get number of warehouses
-    fp=fopen(WAREHOUSE_DB_FILE, "r");
-    while (EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp,"%*c"))) {
-        ++DB_NUM;
-    }
-    fclose(fp);
+    DB_NUM = get_num_of_lines(WAREHOUSE_DB_FILE);
 
     // Variables
     WAREHOUSE *WAREHOUSES[DB_NUM];
@@ -93,9 +136,15 @@ int main(int argc, char *argv[]){
     for (int i = 0; i < DB_NUM; i++) {
         WAREHOUSE *wh = WAREHOUSES[i];
         fprintf(stdout, "%s %.3lf %.3lf %d\n", wh->name, wh->gps.lon, wh->gps.lat, wh->capacity);
-        if (txt_existance(wh->name) == 0) {
+        if (valid_txt(wh) == 0) {
             validWarehouse[i] = 0;
             fprintf(stderr, "FILE_ERROR %s.txt\n", wh->name);
+        } else if (valid_capacity(wh) == 0) {
+            validWarehouse[i] = 0;
+            fprintf(stderr, "CAPACITY_ERROR %s.txt\n", wh->name);
+        } else if (valid_format(wh) == 0) {
+            validWarehouse[i] = 0;
+            fprintf(stderr, "FORMAT_ERROR %s.txt\n", wh->name);
         }
     }
 
