@@ -92,6 +92,83 @@ void filter_name(WAREHOUSE **wh, short list[], char* name) {
     }
 }
 
+void sort_by_name(WAREHOUSE* wh) {
+    ITEM temp;
+    int change=0;
+
+    while (1) {
+        change = 0;
+        for (int i = 0; i < (wh->n)-1; i++) {
+            if (strcmp(wh->items[i].name, wh->items[i+1].name) > 0) {
+                temp = wh->items[i];
+                wh->items[i] = wh->items[i+1];
+                wh->items[i+1] = temp;
+                change++;
+            }
+        }
+
+        if (change == 0) {
+            break;
+        }
+    }
+}
+
+void sort_by_asc(WAREHOUSE* wh) {
+    ITEM temp;
+    int change=0;
+    while (1) {
+        change = 0;
+        for (int i = 0; i < (wh->n)-1; i++) {
+            if (wh->items[i].price > wh->items[i+1].price) {
+                temp = wh->items[i];
+                wh->items[i] = wh->items[i+1];
+                wh->items[i+1] = temp;
+                change++;
+            }
+        }
+
+        if (change == 0) {
+            break;
+        }
+    }
+}
+
+void sort_by_des(WAREHOUSE* wh) {
+    ITEM temp;
+    int change=0;
+    while (1) {
+        change = 0;
+        for (int i = 0; i < (wh->n)-1; i++) {
+            if (wh->items[i].price < wh->items[i+1].price) {
+                temp = wh->items[i];
+                wh->items[i] = wh->items[i+1];
+                wh->items[i+1] = temp;
+                change++;
+            }
+        }
+
+        if (change == 0) {
+            break;
+        }
+    }
+}
+
+void filter_gps(WAREHOUSE **wh, short list[], GPS myPos) {
+    double minDistance = distance(myPos, wh[0]->gps);
+    double currentDistance;
+    int warehouseIndex=0;
+
+    for (int i = 0; i < DB_NUM; i++) {
+        list[i] = 0;
+        currentDistance = distance(myPos, wh[i]->gps);
+        if (currentDistance < minDistance) {
+            minDistance = currentDistance;
+            warehouseIndex = i;
+        }
+    }
+    list[warehouseIndex] = 1;
+}
+
 int main(int argc, char *argv[]){
     int opt;
 	char* optstring = ":w:n:e:ad";
@@ -142,7 +219,7 @@ int main(int argc, char *argv[]){
     int k=0;
     while (1) {
         WAREHOUSE *wh = (WAREHOUSE*)malloc(sizeof(WAREHOUSE));
-        if (fscanf(w_db, "%s %lf %lf %d\n", wh->name, &(wh->gps.lon), &(wh->gps.lat), &(wh->capacity)) == EOF) {
+        if (fscanf(w_db, "%s %lf %lf %d\n", wh->name, &(wh->gps.lat), &(wh->gps.lon), &(wh->capacity)) == EOF) {
             free(wh);
             break;
         }
@@ -153,25 +230,25 @@ int main(int argc, char *argv[]){
     // Filter warehouses
     if (fw_NAME == 1) {
         filter_name(WAREHOUSES, validWarehouse, fw_NAMEs);
-        for (int i = 0; i < DB_NUM; i++) {
-            printf("%d-", validWarehouse[i]);
-        }
     } else if ((fw_LON == 1) && (fw_LAT == 1)) {
-        // filter_gps();
+        GPS gps_data;
+        gps_data.lat = atof(fw_LATf);
+        gps_data.lon = atof(fw_LONf);
+        filter_gps(WAREHOUSES, validWarehouse, gps_data);
     }
 
     // Print warehouses, stderr, allocate items for wh
     for (int i = 0; i < DB_NUM; i++) {
         WAREHOUSE *wh = WAREHOUSES[i];
-        fprintf(stdout, "%s %.3lf %.3lf %d\n", wh->name, wh->gps.lon, wh->gps.lat, wh->capacity);
+        fprintf(stdout, "%s %.3lf %.3lf %d\n", wh->name, wh->gps.lat, wh->gps.lon, wh->capacity);
         if (validWarehouse[i] == 1) {
-            if (valid_txt(wh) == 0) {  // ! taking too much memory
+            if (valid_txt(wh) == 0) {  // ! taking too much memory?
                 validWarehouse[i] = 0;
                 fprintf(stderr, "FILE_ERROR %s.txt\n", wh->name);
-            } else if (valid_capacity(wh) == 0) {  // ! taking too much memory
+            } else if (valid_capacity(wh) == 0) {  // ! taking too much memory?
                 validWarehouse[i] = 0;
                 fprintf(stderr, "CAPACITY_ERROR %s.txt\n", wh->name);
-            } else if (valid_format(wh) == 0) {  // ! taking too much memory
+            } else if (valid_format(wh) == 0) {  // ! taking too much memory?
                 validWarehouse[i] = 0;
                 fprintf(stderr, "FORMAT_ERROR %s.txt\n", wh->name);
             } else {
@@ -180,7 +257,27 @@ int main(int argc, char *argv[]){
         }
     }
 
-    
+    // Print items
+    WAREHOUSE *wh;
+    for (int i = 0; i < DB_NUM; i++) {
+        if (validWarehouse[i] == 1) {
+            wh = WAREHOUSES[i];
+            printf("%s %.3lf %.3lf %d :\n", wh->name, wh->gps.lat, wh->gps.lon, wh->capacity);
+            
+            if (o_ASC == 1) {
+                sort_by_asc(wh);
+            } else if (o_DES == 1) {
+                sort_by_des(wh);
+            } else {
+                sort_by_name(wh);
+            }
+            
+            for (int j=0; j < wh->n; j++) {
+                printf("%d. %s %d\n", j+1, wh->items[j].name, wh->items[j].price);
+            }
+           
+        }
+    }
 
 
     // Free malloc warehouses and items

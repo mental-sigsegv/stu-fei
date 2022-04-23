@@ -1,4 +1,4 @@
-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-1-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-Secovce 48.700 21.650 4
+Secovce 48.700 21.650 4
 Dobsina 48.821 20.367 15
 Zlate_Moravce 48.378 18.396 16
 Zarnovica 48.483 18.717 16
@@ -48,53 +48,250 @@ Rabca 49.483 19.483 5
 Malacky 48.438 17.024 12
 Stara_Lubovna 49.317 20.683 7
 Vrutky 49.112 18.924 17
-0-0-0-1-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-Secovce 48.700 21.650 4
-Dobsina 48.821 20.367 15
-Zlate_Moravce 48.378 18.396 16
-Zarnovica 48.483 18.717 16
-Hlohovec 48.431 17.803 4
-Poprad 49.050 20.300 11
-Dvory_nad_Zitavou 47.993 18.264 7
-Sala 48.150 17.883 15
-Velky_Meder 47.850 17.767 10
-Komarno 47.763 18.128 3
-Oscadnica 49.438 18.886 18
-Puchov 49.120 18.331 14
-Bardejov 49.295 21.276 11
-Trebisov 48.633 21.717 12
-Krupina 48.350 19.067 16
-Kolarovo 47.915 17.997 17
-Chorvatsky_Grob 48.227 17.291 17
-Snina 48.988 22.157 20
-Sahy 48.067 18.967 18
-Topolcany 48.550 18.183 6
-Slovensky_Grob 48.256 17.275 11
-Piestany 48.583 17.833 11
-Ruzomberok 49.079 19.308 18
-Velke_Kapusany 48.550 22.083 17
-Svaty_Jur 48.252 17.216 18
-Banska_Stiavnica 48.459 18.893 2
-Surany 48.083 18.183 20
-Velky_Krtis 48.215 19.338 15
-Nitra 48.315 18.087 4
-Presov 49.000 21.233 1
-Detva 48.557 19.421 2
-Zeliezovce 48.049 18.660 13
-Bratislava 48.145 17.113 15
-Tornala 48.417 20.333 10
-Vrbove 48.621 17.723 12
-Stropkov 49.205 21.651 20
-Nove_Mesto_nad_Vahom 48.783 17.833 13
-Kosice 48.717 21.250 8
-Petrzalka 48.133 17.117 3
-Moldava_nad_Bodvou 48.616 20.999 14
-Hrinova 48.567 19.517 19
-Jarovnice 49.050 21.067 15
-Svidnik 49.306 21.568 10
-Nemsova 48.967 18.117 15
-Sladkovicovo 48.200 17.650 5
-Cierny_Balog 48.750 19.667 9
-Rabca 49.483 19.483 5
-Malacky 48.438 17.024 12
-Stara_Lubovna 49.317 20.683 7
-Vrutky 49.112 18.924 17
+Secovce 48.700 21.650 4 :
+1. biscuit 97
+2. muffin 55
+3. poutine 12
+Dobsina 48.821 20.367 15 :
+1. meat 95
+2. taco 93
+3. nut 89
+4. beer 87
+5. cobbler 86
+6. chili 64
+7. wine 58
+8. ice 47
+9. milk 44
+10. cake 37
+11. burrito 36
+12. entree 34
+13. plate 32
+14. vinegar 11
+15. dish 6
+Poprad 49.050 20.300 11 :
+1. batter 78
+2. skillet 63
+3. coffee 27
+4. queso 21
+5. yeast 5
+Dvory_nad_Zitavou 47.993 18.264 7 :
+1. aroma 98
+2. drink 87
+3. taste 87
+4. butter 75
+5. skillet 31
+6. enchilada 28
+7. tartar 19
+Puchov 49.120 18.331 14 :
+1. soy 97
+2. glaze 92
+3. salad 90
+4. bread 58
+5. sandwich 58
+6. cookie 49
+7. wine 46
+8. dessert 39
+9. taste 31
+10. wok 19
+11. candy 18
+12. beer 17
+13. noodle 6
+14. cocoa 5
+Trebisov 48.633 21.717 12 :
+1. batter 99
+2. cobbler 83
+3. margarine 82
+4. drink 74
+5. wine 58
+6. crumble 53
+7. salsa 38
+8. ice 26
+9. soy 25
+10. meat 23
+11. waffle 13
+12. yeast 6
+Kolarovo 47.915 17.997 17 :
+1. lard 83
+2. croissant 75
+3. aroma 57
+4. nut 49
+5. soda 27
+6. cake 27
+7. kitchen 23
+8. salad 23
+9. caviar 20
+Sahy 48.067 18.967 18 :
+1. pudding 99
+2. chocolate 94
+3. yeast 88
+4. crumble 86
+5. margarine 71
+6. taste 69
+7. croissant 64
+8. skillet 42
+9. stew 35
+10. chili 34
+11. salad 33
+12. meat 29
+13. oil 21
+14. chimichanga 20
+15. bagel 18
+16. sauce 14
+17. mousse 10
+18. pot 2
+Topolcany 48.550 18.183 6 :
+1. burrito 91
+2. sopapillas 82
+3. olive 61
+Slovensky_Grob 48.256 17.275 11 :
+1. hamburger 97
+2. filet 83
+3. wok 82
+4. yogurt 80
+5. oil 61
+6. batter 47
+7. paste 41
+8. pudding 35
+9. dish 18
+10. taste 10
+11. marinade 8
+Svaty_Jur 48.252 17.216 18 :
+1. coffee 96
+2. burrito 80
+3. waffle 71
+4. fish 69
+5. lard 65
+6. dish 57
+7. empanada 56
+8. wine 55
+9. burger 53
+10. sopapillas 52
+11. liquor 52
+12. yeast 44
+13. marinade 40
+14. chili 39
+15. muffin 34
+16. chimichanga 31
+17. soda 30
+18. nut 16
+Banska_Stiavnica 48.459 18.893 2 :
+1. oil 86
+2. caramel 32
+Velky_Krtis 48.215 19.338 15 :
+1. cuisine 94
+2. seasoning 83
+3. soda 83
+4. taste 80
+5. glaze 58
+6. nut 52
+7. crumble 51
+8. cream 49
+9. ice 46
+10. bagel 45
+11. biscuit 42
+12. mayonnaise 41
+13. steak 28
+14. chili 20
+15. aroma 2
+Nitra 48.315 18.087 4 :
+1. filet 86
+2. cream 63
+3. fish 51
+4. nut 47
+Bratislava 48.145 17.113 15 :
+1. wine 87
+2. sauce 85
+3. nut 76
+4. steak 72
+5. taco 66
+6. curd 57
+7. croissant 36
+8. marinade 2
+Tornala 48.417 20.333 10 :
+1. pie 71
+2. wine 63
+3. wok 56
+4. taquito 52
+5. seasoning 51
+6. rice 22
+7. curd 18
+8. wheat 12
+9. tartar 4
+10. ice 2
+Stropkov 49.205 21.651 20 :
+1. batter 84
+2. butter 72
+3. cocoa 68
+4. pot 60
+5. dessert 59
+6. food 58
+7. poutine 42
+8. caramel 38
+9. margarine 22
+10. cobbler 21
+11. cheese 15
+12. wheat 12
+13. muffin 8
+Kosice 48.717 21.250 8 :
+1. bagel 90
+2. salsa 89
+3. caramel 79
+4. food 72
+5. dish 72
+6. dessert 42
+7. vinegar 41
+8. rice 8
+Hrinova 48.567 19.517 19 :
+1. butter 95
+2. yogurt 83
+3. drink 77
+4. hamburger 69
+5. vinegar 68
+6. bread 67
+7. soup 67
+8. grill 65
+9. burrito 61
+10. dessert 56
+11. tea 54
+12. burger 51
+13. beans 49
+14. curd 43
+15. ketchup 23
+16. kitchen 22
+17. margarine 11
+18. cuisine 10
+19. stew 1
+Nemsova 48.967 18.117 15 :
+1. biscuit 83
+2. eggs 78
+3. lard 75
+4. dish 65
+5. queso 42
+Rabca 49.483 19.483 5 :
+1. pie 74
+2. noodle 30
+3. bagel 26
+4. waffle 20
+5. candy 17
+Malacky 48.438 17.024 12 :
+1. cheese 95
+2. meat 87
+3. juice 81
+4. wheat 80
+5. butter 73
+6. entree 71
+7. filet 68
+8. dish 46
+9. milk 29
+10. marinade 27
+11. pie 20
+12. pizza 8
+Vrutky 49.112 18.924 17 :
+1. curd 98
+2. mayo 92
+3. marinade 30
+4. water 17
+5. eggs 14
+6. yogurt 3
+7. ketchup 2
+8. filet 2
