@@ -1,0 +1,12 @@
+Blok 1 exit code:  0
+Blok 2 exit code:  0
+Blok 3 exit code:  0
+Blok 4 exit code:  0
+Blok 5 exit code:  0
+Blok 6 exit code:  0
+Blok 7 exit code:  0
+Blok 8 exit code:  0
+Blok 9 exit code:  0
+Blok 10 exit code:  0
+Blok 11 exit code:  0
+Blok 12 exit code:  0
