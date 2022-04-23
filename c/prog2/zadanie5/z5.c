@@ -62,13 +62,34 @@ int valid_format(WAREHOUSE* wh) {
     char itemName[MAX_NAME];
     int itemPrice;
     for (int i = 0; i < wh->n; i++) {
-        if((fscanf(w_items, "%s %d", itemName, &itemPrice))!=2) {
+        if((fscanf(w_items, "%s %d\n", itemName, &itemPrice))!=2) {
             fclose(w_items);
             return 0;
         }
     }
     fclose(w_items);
     return 1;
+}
+
+void allocate_items(WAREHOUSE* wh) {
+    FILE *w_items;
+    get_item_path(wh);
+    w_items=fopen(items_path, "r");
+    wh->items = (ITEM*)malloc(sizeof(ITEM)*wh->n);
+    for (int i = 0; i < wh->n; i++) {
+        fscanf(w_items, "%s %d", wh->items[i].name, &wh->items[i].price);
+    }
+    fclose(w_items);
+}
+
+void filter_name(WAREHOUSE **wh, short list[], char* name) {
+    for (int i = 0; i < DB_NUM; i++) {
+        if (list[i] == 1) {
+            if (strcmp(wh[i]->name, name) != 0) {
+                list[i] = 0;
+            }
+        }
+    }
 }
 
 int main(int argc, char *argv[]){
@@ -129,24 +150,44 @@ int main(int argc, char *argv[]){
         k++;
     }
     
-    // Print warehouses
+    // Filter warehouses
+    if (fw_NAME == 1) {
+        filter_name(WAREHOUSES, validWarehouse, fw_NAMEs);
+        for (int i = 0; i < DB_NUM; i++) {
+            printf("%d-", validWarehouse[i]);
+        }
+    } else if ((fw_LON == 1) && (fw_LAT == 1)) {
+        // filter_gps();
+    }
+
+    // Print warehouses, stderr, allocate items for wh
     for (int i = 0; i < DB_NUM; i++) {
         WAREHOUSE *wh = WAREHOUSES[i];
         fprintf(stdout, "%s %.3lf %.3lf %d\n", wh->name, wh->gps.lon, wh->gps.lat, wh->capacity);
-        if (valid_txt(wh) == 0) {
-            validWarehouse[i] = 0;
-            fprintf(stderr, "FILE_ERROR %s.txt\n", wh->name);
-        } else if (valid_capacity(wh) == 0) {
-            validWarehouse[i] = 0;
-            fprintf(stderr, "CAPACITY_ERROR %s.txt\n", wh->name);
-        } else if (valid_format(wh) == 0) {
-            validWarehouse[i] = 0;
-            fprintf(stderr, "FORMAT_ERROR %s.txt\n", wh->name);
+        if (validWarehouse[i] == 1) {
+            if (valid_txt(wh) == 0) {  // ! taking too much memory
+                validWarehouse[i] = 0;
+                fprintf(stderr, "FILE_ERROR %s.txt\n", wh->name);
+            } else if (valid_capacity(wh) == 0) {  // ! taking too much memory
+                validWarehouse[i] = 0;
+                fprintf(stderr, "CAPACITY_ERROR %s.txt\n", wh->name);
+            } else if (valid_format(wh) == 0) {  // ! taking too much memory
+                validWarehouse[i] = 0;
+                fprintf(stderr, "FORMAT_ERROR %s.txt\n", wh->name);
+            } else {
+                allocate_items(wh);
+            }
         }
     }
 
-    // Free malloc warehouses
+    
+
+
+    // Free malloc warehouses and items
     for (int i = 0; i < DB_NUM; i++) {
+        if (validWarehouse[i] == 1) {
+            free(WAREHOUSES[i]->items);
+        }
         free(WAREHOUSES[i]);
     }
     
