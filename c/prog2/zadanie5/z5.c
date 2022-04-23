@@ -11,6 +11,14 @@ static int fw_NAME=0, fw_LAT=0, fw_LON=0, o_ASC=0, o_DES=0, DB_NUM=0;
 static char *fw_NAMEs;
 static char *fw_LONf, *fw_LATf;
 
+static char items_path[MAX_NAME];
+
+void get_item_path(WAREHOUSE* wh) {
+    strcpy(items_path, ITEMS_FOLDER);
+    strcat(items_path, PATH_SEPARATOR);
+    strcat(items_path, wh->name);
+    strcat(items_path, ".txt");
+}
 
 int get_num_of_lines(char* file) {
     FILE *fp;
@@ -25,16 +33,9 @@ int get_num_of_lines(char* file) {
 }
 
 int valid_capacity(WAREHOUSE* wh) {
-    char itemsPath[128+MAX_NAME];
     int numOfItems=0;
-    FILE *w_items;
-
-    strcpy(itemsPath, ITEMS_FOLDER);
-    strcat(itemsPath, PATH_SEPARATOR);
-    strcat(itemsPath, wh->name);
-    strcat(itemsPath, ".txt");
-
-    numOfItems = get_num_of_lines(itemsPath);
+    get_item_path(wh);
+    numOfItems = get_num_of_lines(items_path);
 
     if (numOfItems > wh->capacity) {
         return 0;
@@ -44,15 +45,9 @@ int valid_capacity(WAREHOUSE* wh) {
 }
 
 int valid_txt(WAREHOUSE* wh) {
-    char itemsPath[128+MAX_NAME];
-    FILE *w_items = NULL;
-
-    strcpy(itemsPath, ITEMS_FOLDER);
-    strcat(itemsPath, PATH_SEPARATOR);
-    strcat(itemsPath, wh->name);
-    strcat(itemsPath, ".txt");
-
-    w_items=fopen(itemsPath, "r");
+    FILE *w_items;
+    get_item_path(wh);
+    w_items=fopen(items_path, "r");
     if (w_items == NULL) {
         return 0;
     }
@@ -61,16 +56,18 @@ int valid_txt(WAREHOUSE* wh) {
 }
 
 int valid_format(WAREHOUSE* wh) {
-    
-
-    // int numOfItems = get_num_of_lines(itemsPath);
-    // w_items=fopen(itemsPath, "r");
-    // wh->items = (ITEM*)malloc(sizeof(ITEM)*wh->n);
-    // for (int i = 0; i < numOfItems; i++) {
-        
-    // }
-
-    // fclose(w_items);
+    FILE *w_items;
+    get_item_path(wh);
+    w_items=fopen(items_path, "r");
+    char itemName[MAX_NAME];
+    int itemPrice;
+    for (int i = 0; i < wh->n; i++) {
+        if((fscanf(w_items, "%s %d", itemName, &itemPrice))!=2) {
+            fclose(w_items);
+            return 0;
+        }
+    }
+    fclose(w_items);
     return 1;
 }
 
