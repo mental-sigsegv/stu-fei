@@ -17,6 +17,7 @@
 #define BUFF_SIZE 4096
 #define GRN "\e[0;32m"
 #define RED "\e[0;31m"
+#define YEL "\e[0;33m"
 #define COLOR_RESET "\e[0m"
 
 // Global var
@@ -32,25 +33,44 @@ FILE *log_file;
 // https://www.binarytides.com/socket-programming-c-linux-tutorial/
 
 
-void sendMessage(char *message) {
-	//Send some data
-	if(send(socket_desc , message, strlen(message), 0) < 0) {
-		printf("-> Send failed\n");
-		exit(1);
-	}
-
-	printf(RED "-> \"%s\" was send...", message, COLOR_RESET);
-	fprintf(log_file, "USER\n%s\n", message);
-}
-
-void format_print(char* message) {
+void format_print_user(char* message) {
     int sizeOfTerminal = w.ws_col;
 
     int letter=0;
     int lastLetter=-1;
     int spaceIndex=0;
 
-	printf(GRN "\n%*s\n", w.ws_col+4, "-> Reply received:" COLOR_RESET);
+	printf(YEL "-> Sent message...\n" COLOR_RESET);
+
+    while (letter <= (int)strlen(message)) {
+        for (int i=sizeOfTerminal/2 + letter; i >= letter; i--) {
+			if (i >= (int)strlen(message)) {
+				spaceIndex = (int)strlen(message);
+				break;
+			} else if ((message[i] == ' ') || (message[i] == '\n')) {
+                spaceIndex = i;
+                break;
+            }
+        }
+        if ((lastLetter == letter) || (spaceIndex > (int)strlen(message))) {
+            break;
+        }
+
+        printf(RED "%*.*s\n" COLOR_RESET, spaceIndex-letter, spaceIndex-letter, message+letter);
+        
+		lastLetter = letter;
+		letter = spaceIndex;
+    }
+}
+
+void format_print_server(char* message) {
+    int sizeOfTerminal = w.ws_col;
+
+    int letter=0;
+    int lastLetter=-1;
+    int spaceIndex=0;
+
+	printf(YEL "%*s\n" COLOR_RESET, w.ws_col, "-> Reply received:" );
 
     while (letter <= (int)strlen(message)) {
         for (int i=sizeOfTerminal/2 + letter; i >= letter; i--) {
@@ -59,7 +79,7 @@ void format_print(char* message) {
                 break;
             }
         }
-        printf("%*.*s\n", sizeOfTerminal, spaceIndex-letter, message+letter);
+        printf(GRN "%*.*s\n" COLOR_RESET, sizeOfTerminal, spaceIndex-letter, message+letter);
         if (lastLetter == letter) {
             break;
         }
@@ -68,13 +88,24 @@ void format_print(char* message) {
     }
 }
 
+void sendMessage(char *message) {
+	//Send some data
+	if(send(socket_desc , message, strlen(message), 0) < 0) {
+		printf("-> Send failed\n");
+		exit(1);
+	}
+
+	format_print_user(message);
+	fprintf(log_file, "USER\n%s\n", message);
+}
+
 void recieveMessage() {
 	// Receive a reply from the server
 	if(recv(socket_desc, server_reply, BUFF_SIZE, 0) < 0) {
 		printf("-> recv failed\n");
 		exit(1);
 	}
-	format_print(server_reply);
+	format_print_server(server_reply);
 	fprintf(log_file, "\nSERVER\n%s\n", server_reply);
 }
 
@@ -132,7 +163,7 @@ void decipher() {
 	}
 	server_reply[132]='\0';
 	
-	format_print(server_reply);
+	format_print_server(server_reply);
 	fprintf(log_file, "\nSERVER\n%s\n", server_reply);
 }
 
@@ -152,8 +183,7 @@ void decipher_by_caesar(char* cipher, int rotate) {
 }
 
 int main() {
-    system("LANG=C.UTF-8;"); 
-    // system("locale");
+    system("LANG=C.UTF-8;");  //  locale;
    	log_file = fopen("./log.txt", "w+");
 
 	// For terminal
@@ -182,7 +212,7 @@ int main() {
 	fprintf(log_file, "STATUS\nconnected\n\n");
 
 	// Recieve Morfeus msg
-	sendMessage("?");  // TODO FIX
+	sendMessage("Oh dear Morfeus, tell me what should I send you to satisfy you. Lorem: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.");  // TEST user part of terminal
     recieveMessage();
 
 	// Recieve my name
