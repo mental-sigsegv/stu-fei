@@ -1,3 +1,6 @@
+// gprof ./z5 > z5.prof
+// gcc *.c -o z5 -pg -lm
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
