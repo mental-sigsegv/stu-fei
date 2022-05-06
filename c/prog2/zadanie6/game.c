@@ -9,11 +9,12 @@
 
 
 // Ansi colors - source https://gist.github.com/RabaDabaDoba/145049536f815903c79944599c6f952a
+//                      https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 // Regular text
 #define BLK "\e[0;30m"
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
+#define YEL "\e[0;93m"
 #define BLU "\e[0;34m"
 #define MAG "\e[0;35m"
 #define CYN "\e[0;36m"
@@ -32,6 +33,7 @@
 // Special
 #define ITALIC "\e[3m"
 #define RESET "\e[0m"
+#define GRY "\e[38;5;232m"
 
 // You can change those, if you want, but words are lenght of COLUMNS
 #define ROWS 6
@@ -42,7 +44,7 @@ char* wordDB[] = {"sigma", "based", "truth", "below", "click", "phone", "china",
 
 // Alphabet for keyboard
 char* ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-int ALPHABET_COLORS[27] = {0};  // 0-white, 1-green, 2-yellow, 3-red
+int ALPHABET_COLORS[27] = {0};  // 0-white, 1-green, 2-yellow, 3-gray/black
 
 // Wordle in fancy text with ansi colors
 // source - https://www.coolgenerator.com/ascii-text-generator
@@ -50,13 +52,13 @@ char* wordle[128] = {"\e[4;32m██\e[0;33m╗    \e[4;32m██\e[0;33m╗ \e[
 
 int SIZE_OF_DB;
 
-// Hope this is gonna work
+// Hope this is gonna work)
 void clear_terminal() {
   const char *CLEAR_SCREEN_ANSI = "\e[1;1H\e[2J\0";
   write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
 }
 
-// Whole string to lower, needs malloc  // ? optimize
+// Compare strings, both lowercase
 int str_cmp(char *str1, char *str2) {
     for (int i=0; i<COLUMNS; i++) {
         if (tolower(str1[i]) != tolower(str2[i])) {
@@ -87,15 +89,15 @@ void print_alphabet() {
             case 2:  // Yellow
                 printf(YEL " %c" RESET, ALPHABET[i]);
                 break;
-            case 1:  // Red
-                printf(RED " %c" RESET, ALPHABET[i]);
+            case 1:  // gray/black
+                printf(GRY " %c" RESET, ALPHABET[i]);
                 break;
             default:
                 printf(" %c", ALPHABET[i]);
         }
         
         if ((i==9) || (i==18)) {
-            printf("\n%*c", i/7, ' ');  // Add extra space
+            printf("\n%*c", i/7, ' ');  // Add extra space on every new line
             printf("    ");  // Filler
         }
     }
@@ -138,7 +140,7 @@ int generate_table(char** userInput, char* key, int round) {
                         printf(YEL "%c" , letter);
                         change_letter_value(letter, 2);
                     } else {
-                        printf("%c", letter);  // White letter
+                        printf("%c", letter);  // gray/black letter
                         change_letter_value(letter, 1);
                     }
                     
@@ -164,8 +166,9 @@ int generate_table(char** userInput, char* key, int round) {
     return 0;
 }
 
-// Clear buffer, prevent overflow
+// Clear buffer, prevent scanf overflow
 void clear_buffer(){
+    // Loading chars
     int c;
     while ((c = getchar()) != '\n' && c != EOF){
         continue;
@@ -216,14 +219,15 @@ int main() {
             array[r] = emptyString;
         }
         
-        clear_terminal();
-
+        // Pick random word
         SIZE_OF_DB = sizeof(wordDB)/sizeof(wordDB[0]);
         char* wordleSolution = wordDB[rand() % SIZE_OF_DB];
-        wordleSolution = "sigma";
+        // wordleSolution = "sigma";  // Just for debugging/fixing issues
 
+        clear_terminal();
         generate_table(array, wordleSolution, 0);
 
+        // Rounds
         int round;
         for (round=0; round<ROWS; round++) {
             
@@ -245,13 +249,15 @@ int main() {
             }
         }
 
+        // Free allocated memmory
         for (int i=round; i>=0; i--) {
             free(array[i]);
         }
 
+        // Ask for another game
         char answer;
         while (1) {
-            printf("\nDo you wanna play another round? [%sy%s/%sn%s]\n", GRN, RESET, RED, RESET);
+            printf("\nDo you wanna play another one? [%sy%s/%sn%s]\n", GRN, RESET, RED, RESET);
             scanf("%1c", &answer);
             clear_buffer();
             if ('n' == answer) {
