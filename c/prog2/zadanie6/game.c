@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
+
 
 
 // Ansi colors - source https://gist.github.com/RabaDabaDoba/145049536f815903c79944599c6f952a
@@ -33,6 +35,36 @@
 // source - https://www.coolgenerator.com/ascii-text-generator
 char* wordle[128] = {"\e[4;32m██\e[0;33m╗    \e[4;32m██\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██\e[0;33m╗     \e[4;32m███████\e[0;33m╗", "\e[4;32m██\e[0;33m║    \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m╔═══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m║     \e[4;32m██\e[0;33m╔════╝", "\e[4;32m██\e[0;33m║ \e[4;32m█\e[0;33m╗ \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║   \e[4;32m██\e[0;33m║\e[4;32m██████\e[0;33m╔╝\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║     \e[4;32m█████\e[0;33m╗  ", "\e[4;32m██\e[0;33m║\e[4;32m███\e[0;33m╗\e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║   \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║     \e[4;32m██\e[0;33m╔══╝  ", "\e[0;33m╚\e[4;32m███\e[0;33m╔\e[4;32m███\e[0;33m╔╝╚\e[4;32m██████\e[0;33m╔╝\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██████\e[0;33m╔╝\e[4;32m███████\e[0;33m╗\e[4;32m███████\e[0;33m╗", "\e[0;33m ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝"};
 
+void clear_terminal() {
+  const char *CLEAR_SCREEN_ANSI = "\e[1;1H\e[2J\0";
+  write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
+}
+
+void generate_table(char** userInput, char* key) {
+    // Table 5x6
+    int ROWS=6, COLUMNS=5;
+    for (int row=0; row<=ROWS*2; row++) {
+        if (row%2 == 1) {
+            printf("%2d. |", row/2);
+            for (int column=0; column<COLUMNS*2; column++) {
+                if (column%2 == 0) {
+                    printf("x");
+                } else {
+                    printf("|");
+                }
+            }
+        } else {
+            printf("    ");
+            for (int column=0; column<=COLUMNS*2; column++) {
+                printf("%c", "+-"[column%2]);
+            }
+        }
+
+        
+        printf("\n");
+    }
+}
+
 // Function to print fancy 'wordle' text
 void print_wordle() {
     printf("\n"); 
@@ -48,10 +80,16 @@ void print_wordle() {
 
 // Main
 int main() {
+    // clear_terminal();
     print_wordle();
 
     printf("\nPress %sENTER%s to continue...\n", ITALIC, RESET);
-    scanf("?");
+    getchar();
+    clear_terminal();
+
+    printf("Good job, let's play!\n");
+    generate_table(NULL, NULL);
+    getchar();
 
     return 0;
 }
