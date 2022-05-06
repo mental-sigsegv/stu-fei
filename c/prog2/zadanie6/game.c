@@ -41,9 +41,13 @@
 char* wordDB[] = {"sigma", "based", "truth", "below", "click", "phone", "china", "stuff", "magic", "bound", "noted", "voice", "field", "error", "grace", "anger", "claim", "skill", "crime", "fruit", "point", "woman", "yield", "night", "south", "logic", "class", "scale", "scope", "alarm", "grand", "billy", "links", "smart", "carry", "plain", "prime", "issue", "floor", "sport", "enter", "story", "drove", "great", "clock", "split", "study", "close", "given", "globe", "begin", "jimmy", "ready", "trial", "event", "metal", "judge", "pilot", "pound", "solid", "while", "block", "fifty", "price", "after", "local", "human", "bring", "chair", "upset", "limit", "tried", "those", "pride", "queen", "harry", "extra", "aware", "drill", "forty", "motor", "again", "novel", "water", "sense", "mouse", "blame", "gross", "heavy", "paint", "beach", "terry", "blind", "agent", "chain", "peace", "baker", "depth", "alert", "stone", "leave", "glass", "march", "solve", "today", "phase", "shirt", "would", "spent", "until", "newly", "video", "staff", "plant", "lower", "dress", "place", "focus", "worth", "jones", "noise", "worse", "acute", "dozen", "built", "route", "brief", "light", "found", "model", "month", "state", "press", "bench", "score", "booth", "needs", "wound", "apart", "empty", "dream", "fully", "plate", "prove", "shift", "minus", "among", "pitch", "power", "shoot", "stand", "drink", "elite", "panel", "sugar", "grade", "broke", "cover", "print", "avoid", "maria", "above", "frank", "input", "image", "truck", "speak", "prize", "fleet", "funny", "smith", "along", "strip", "adult", "offer", "watch", "union", "shell", "sight", "layer", "tight", "break", "force", "worst", "curve", "enjoy", "apple", "store", "texas", "stake", "party", "thing", "trust", "refer", "thick", "crowd", "mouth", "throw", "worry", "sized", "boost", "agree", "check", "wheel", "birth", "every", "group", "mayor", "brown", "think", "super", "roger", "spend", "cross", "maybe", "royal", "shall", "laser", "audit", "prior", "brand", "usage", "badly", "young", "never", "teach", "vital", "doing", "faith", "proud", "these", "usual", "henry", "sorry", "fresh", "guard", "drive", "brain", "women", "large", "ocean", "spare", "theme", "three", "steam", "order", "earth", "short", "legal", "fiber", "clear", "stood", "upper", "reach", "table", "audio", "laugh", "quite", "apply", "youth", "going", "cheap", "radio", "chose", "aside", "their", "forth", "stage", "rough", "clean", "front", "touch", "abuse", "meant", "other", "thank", "write", "quiet", "where", "grown", "array", "entry", "later", "storm", "debut", "ought", "allow", "rapid", "threw", "board", "cable", "ratio", "taken", "admit", "whole", "teeth", "delay", "often", "trade", "broad", "breed", "seven", "mixed", "north", "moral", "frame", "stock", "treat", "argue", "dated", "alive", "small", "alone", "final", "tries", "learn", "wrote", "space", "adopt", "flash", "loose", "least", "arise", "value", "plane", "fixed", "court", "inner", "label", "shape", "under", "count", "lunch", "ahead", "chest", "spoke", "total", "trend", "match", "sweet", "guest", "mount", "heart", "calif", "being", "forum", "grass", "fluid", "guess", "valid", "river", "child", "wrong", "known", "range", "tough", "horse", "stuck", "truly", "sixth", "exact", "coach", "craft", "alike", "could", "Angle", "cream", "slide", "arena", "house", "photo", "began", "quick", "whose", "daily", "paper", "taxes", "sleep", "catch", "train", "chart", "first", "actor", "dying", "chase", "theft", "tired", "suite", "fraud", "roman", "draft", "proof", "crash", "guide", "shock", "speed", "still", "buyer", "music", "build", "lucky", "smoke", "round", "coast", "happy", "sharp", "lewis", "there", "unity", "times", "black", "stick", "tower", "rural", "sound", "album", "basic", "scene", "steel", "waste", "ideal", "giant", "alter", "asset", "eager", "death", "peter", "early", "basis", "might", "civil", "lease", "chief", "maker", "index", "smile", "award", "undue", "dealt", "fight", "shown", "movie", "urban", "bases", "doubt", "style", "title", "begun", "hence", "rival", "share", "topic", "false", "angry", "which", "fault", "about", "raise", "nurse", "sixty", "fifth", "crown", "lying", "white", "hotel", "media", "visit", "money", "enemy", "drawn", "minor", "blood", "robin", "sheet", "drama", "joint", "occur", "twice", "piece", "green", "dance", "exist", "equal", "japan", "right", "lives", "bread", "taste", "world", "grant", "cause", "serve", "virus", "shelf", "since", "level", "track", "third", "start", "cycle", "eight", "major"};
 // char* wordDB[] = {"penis", "sigma"};
 
+char* ALPHABET = "QWERTYUIOPASDFGHJKLZXCVBNM";
+
 // Wordle in fancy text with ansi colors
 // source - https://www.coolgenerator.com/ascii-text-generator
 char* wordle[128] = {"\e[4;32m██\e[0;33m╗    \e[4;32m██\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██\e[0;33m╗     \e[4;32m███████\e[0;33m╗", "\e[4;32m██\e[0;33m║    \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m╔═══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m║     \e[4;32m██\e[0;33m╔════╝", "\e[4;32m██\e[0;33m║ \e[4;32m█\e[0;33m╗ \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║   \e[4;32m██\e[0;33m║\e[4;32m██████\e[0;33m╔╝\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║     \e[4;32m█████\e[0;33m╗  ", "\e[4;32m██\e[0;33m║\e[4;32m███\e[0;33m╗\e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║   \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║     \e[4;32m██\e[0;33m╔══╝  ", "\e[0;33m╚\e[4;32m███\e[0;33m╔\e[4;32m███\e[0;33m╔╝╚\e[4;32m██████\e[0;33m╔╝\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██████\e[0;33m╔╝\e[4;32m███████\e[0;33m╗\e[4;32m███████\e[0;33m╗", "\e[0;33m ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝"};
+
+int SIZE_OF_DB;
 
 // Hope this is gonna work
 void clear_terminal() {
@@ -52,15 +56,28 @@ void clear_terminal() {
 }
 
 // Whole string to lower, needs malloc  // ? optimize
-char *strlwr(char *str) {
-    unsigned char *p = (unsigned char *)str;
-
-    while (*p) {
-        *p = tolower((unsigned char)*p);
-        p++;
+int str_cmp(char *str1, char *str2) {
+    for (int i=0; i<COLUMNS; i++) {
+        if (tolower(str1[i]) != tolower(str2[i])) {
+            return 0;
+        }
     }
+    return 1;
+}
 
-    return str;
+// Printing keyboard
+void print_alphabet() {
+    printf("\n    ");  // Filler
+    for (int i = 0; i < (int)strlen(ALPHABET); i++) {
+        
+        printf(" %c", ALPHABET[i]);
+        if ((i==9) || (i==18)) {
+            printf("\n%*c", i/7, ' ');  // Add extra space
+            printf("    ");  // Filler
+        }
+    }
+    printf("\n");
+
 }
 
 // Check if letter is in soltion, if yes, return 1 so we can print it yellow
@@ -74,15 +91,17 @@ int letter_in_key(char letter, char *key) {
 }
 
 int generate_table(char** userInput, char* key, int round) {
+    printf("The word has been chosen from database with %d words\n\n", SIZE_OF_DB);
+
     // Table ROWS x COLUMNS
     char letter, keyLetter;
     for (int row=0; row<=ROWS*2; row++) {
         if (row%2 == 1) {  // print letters
             if (row/2 == round) {
                 printf(RED "%2d." RESET, row/2);
-                printf(" |");
+                printf(" | ");
             } else {
-                printf("%2d. |", row/2);
+                printf("%2d. | ", row/2);
             }
            
             for (int column=0; column<COLUMNS*2; column++) {
@@ -91,36 +110,31 @@ int generate_table(char** userInput, char* key, int round) {
                     keyLetter = toupper(key[column/2]);
                     if (letter == keyLetter) {  // Green letter
                         printf(GRN "%c" , letter);
+                        change_letter_value(letter, "green");
                     } else if (letter_in_key(letter, key) == 1) {  // Yellow letter
                         printf(YEL "%c" , letter);
+                        
                     } else {
                         printf("%c", letter);  // White letter
                     }
                     
                 } else {
-                    printf(RESET "|");  // Reset color before next letter
+                    printf(RESET " | ");  // Reset color before next letter
                 }
             }
         } else {  // print lines between words
             printf("    ");  // Filler
-            for (int column=0; column<=COLUMNS*2; column++) {
-                printf("%c", "+-"[column%2]);
+            for (int column=0; column<=COLUMNS*4; column++) {
+                printf("%c", "+---"[column%4]);
             }
         }
         printf("\n");
+
     }
+    print_alphabet();
 
-    // TODO optimize
-    char* keyLower = (char*)malloc(COLUMNS);
-    char* inputLower = (char*)malloc(COLUMNS);
-    strcpy(keyLower, key);
-    strcpy(inputLower, userInput[round]);
-    keyLower = strlwr(keyLower);
-    inputLower = strlwr(inputLower);
-
-    if (strcmp(inputLower, keyLower) == 0) {
-        free(keyLower);
-        free(inputLower);
+    // Compare if round string is key
+    if (str_cmp(userInput[round], key) == 1) {
         return 1;
     }
     return 0;
@@ -144,65 +158,85 @@ void print_wordle() {
     }
 
     // Printing creator of this creation
-    printf("%s%sby anonymous %sFEI STU%s%sdent%s\n", RESET, ITALIC, BWHT, RESET, ITALIC, RESET);
+    printf("%s%sby anonymous %sFEI STU%s%sdent%s\n", RESET, ITALIC, BCYN, RESET, ITALIC, RESET);
 }
 
 // Main
 int main() {
+    int isGame = 1;
     char* array[ROWS];
 
     srand(time(0));
 
-    // Create empty string for dynaminc setting of columns
-    char emptyString[COLUMNS];
-    for (int c=0; c<COLUMNS; c++) {
-        emptyString[c] = ' ';
-    }
-
-    // Fill array
-    for (int r=0; r < ROWS; r++) {
-        array[r] = emptyString;
-    }
-
-    // clear_terminal();
-    // print_wordle();
-
-    // printf("\nPress %sENTER%s to continue...\n", ITALIC, RESET);
-    // getchar();
-    // clear_terminal();
-
-    // printf("Good job, let's play!\n");
-    // generate_table();
-    // getchar();
-
-    
+    // Start
     clear_terminal();
+    print_wordle();
+    printf("\nPress %sENTER%s to continue...\n", ITALIC, RESET);
+    getchar();
 
-    int SIZE_OF_DB = sizeof(wordDB)/sizeof(wordDB[0]);
-    char* wordleSolution = wordDB[rand() % SIZE_OF_DB];
-    // wordleSolution = "sigma";
-    printf("Database has %d words\n", SIZE_OF_DB);
+    while (isGame == 1) {
 
-    generate_table(array, wordleSolution, 0);
-
-    for (int round=0; round<ROWS; round++) {
-        
-        printf("\nGuess the Hidden Word\n-> ");
-        array[round] = (char *)malloc(sizeof(char *));
-        scanf("%5s", array[round]);
-        for (int check=(int)strlen(array[round]); check<COLUMNS; check++) {
-            array[round][check] = '-';
+        // Create empty string for dynaminc setting of columns
+        char emptyString[COLUMNS];
+        for (int c=0; c<COLUMNS; c++) {
+            emptyString[c] = ' ';
         }
-        clear_buffer();
+
+        // Fill array
+        for (int r=0; r < ROWS; r++) {
+            array[r] = emptyString;
+        }
+        
         clear_terminal();
 
-        if (generate_table(array, wordleSolution, round) == 1) {
-            printf(YEL "\nYou won, word was" GRN " %s\n" RESET, wordleSolution );
-            break;
-        } else if (round == ROWS -1) {
-            printf(RED "\nYOU LOST GG WP ff15, word was %s\n" RESET, wordleSolution);
-        }
-    }
+        SIZE_OF_DB = sizeof(wordDB)/sizeof(wordDB[0]);
+        char* wordleSolution = wordDB[rand() % SIZE_OF_DB];
+        // wordleSolution = "sigma";
+        
 
+        generate_table(array, wordleSolution, 0);
+
+        int round;
+        for (round=0; round<ROWS; round++) {
+            
+            printf("\nGuess the Hidden Word\n-> ");
+            array[round] = (char *)malloc(sizeof(char)*COLUMNS);
+            scanf("%5s", array[round]);
+            for (int check=(int)strlen(array[round]); check<COLUMNS; check++) {
+                array[round][check] = '-';
+            }
+            clear_buffer();
+            clear_terminal();
+
+            if (generate_table(array, wordleSolution, round) == 1) {
+                printf(YEL "\nYou won, word was" GRN " %s\n" RESET, wordleSolution );
+                break;
+            } else if (round == ROWS -1) {
+                printf(RED "\nYOU LOST GG WP ff15, word was");
+                printf(MAG " %s\n" RESET, wordleSolution);
+                break;
+            }
+        }
+
+        for (int i=round; i>=0; i--) {
+            free(array[i]);
+        }
+
+        char answer;
+        while (1) {
+            printf("\nDo you wanna play another? " RED "[y/n]\n" RESET);
+            scanf("%1c", &answer);
+            clear_buffer();
+            if ('n' == answer) {
+                isGame = 0;
+                break;
+            } else if ('y' == answer) {
+                isGame = 1;
+                break;
+            }
+        
+        }
+
+    }
     return 0;
 }
