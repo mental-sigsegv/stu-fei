@@ -31,7 +31,7 @@
 #define ITALIC "\e[3m"
 #define RESET "\e[0m"
 
-// You can change those, if you want
+// You can change those, if you want, but words are lenght of COLUMNS
 #define ROWS 6
 #define COLUMNS 5
 
@@ -44,6 +44,18 @@ void clear_terminal() {
   write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
 }
 
+
+char *strlwr(char *str) {
+    unsigned char *p = (unsigned char *)str;
+
+    while (*p) {
+        *p = tolower((unsigned char)*p);
+        p++;
+    }
+
+    return str;
+}
+
 int letter_in_key(char letter, char *key) {
     for (int l=0; l<(int)strlen(key); l++) {
         if (letter == key[l]) {
@@ -53,12 +65,18 @@ int letter_in_key(char letter, char *key) {
     return 0;
 }
 
-void generate_table(char** userInput, char* key) {
+int generate_table(char** userInput, char* key, int round) {
     // Table ROWSxCOLUMNS
     char letter, keyLetter;
     for (int row=0; row<=ROWS*2; row++) {
         if (row%2 == 1) {  // print letters
-            printf("%2d. |", row/2);
+            if (row/2 == round) {
+                printf(RED "%2d." RESET, row/2);
+                printf(" |");
+            } else {
+                printf("%2d. |", row/2);
+            }
+           
             for (int column=0; column<COLUMNS*2; column++) {
                 if (column%2 == 0) {
                     letter = toupper(userInput[row/2][column/2]);
@@ -82,6 +100,28 @@ void generate_table(char** userInput, char* key) {
             }
         }
         printf("\n");
+    }
+
+    // TODO optimize
+    char* keyLower = (char*)malloc(COLUMNS);
+    char* inputLower = (char*)malloc(COLUMNS);
+    strcpy(keyLower, key);
+    strcpy(inputLower, userInput[round]);
+    keyLower = strlwr(keyLower);
+    inputLower = strlwr(inputLower);
+
+    if (strcmp(inputLower, keyLower) == 0) {
+        free(keyLower);
+        free(inputLower);
+        return 1;
+    }
+    return 0;
+}
+
+void clear_buffer(){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF){
+        continue;
     }
 }
 
@@ -111,7 +151,6 @@ int main() {
     // Fill array
     for (int r=0; r < ROWS; r++) {
         array[r] = emptyString;
-        array[r] = "adcbe";
     }
 
     // clear_terminal();
@@ -122,8 +161,31 @@ int main() {
     // clear_terminal();
 
     // printf("Good job, let's play!\n");
-    generate_table(array, "ABCDE");
+    // generate_table();
     // getchar();
+
+    char* wordleSolution = "SIGMA";
+    
+    generate_table(array, wordleSolution, 0);
+
+    for (int round=0; round<ROWS; round++) {
+        // clear_terminal();
+        
+        printf("Guess the Hidden Word\n\n");
+        array[round] = (char *)malloc(sizeof(char *));
+        scanf("%5s", array[round]);
+        for (int check=(int)strlen(array[round]); check<COLUMNS; check++) {
+            array[round][check] = '-';
+        }
+        clear_buffer();
+
+        if (generate_table(array, wordleSolution, round) == 1) {
+            printf(YEL "\nYou won, word was" GRN " %s\n" RESET, wordleSolution );
+            break;
+        } else if (round == ROWS -1) {
+            printf(RED "\nYOU LOST GG WP ff15\n" RESET);
+        }
+    }
 
     return 0;
 }
