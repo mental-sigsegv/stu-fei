@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <ctype.h>
 
 
 // Ansi colors - source https://gist.github.com/RabaDabaDoba/145049536f815903c79944599c6f952a
@@ -31,6 +31,10 @@
 #define ITALIC "\e[3m"
 #define RESET "\e[0m"
 
+// You can change those, if you want
+#define ROWS 6
+#define COLUMNS 5
+
 // Wordle in fancy text with ansi colors
 // source - https://www.coolgenerator.com/ascii-text-generator
 char* wordle[128] = {"\e[4;32m██\e[0;33m╗    \e[4;32m██\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██████\e[0;33m╗ \e[4;32m██\e[0;33m╗     \e[4;32m███████\e[0;33m╗", "\e[4;32m██\e[0;33m║    \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m╔═══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m║     \e[4;32m██\e[0;33m╔════╝", "\e[4;32m██\e[0;33m║ \e[4;32m█\e[0;33m╗ \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║   \e[4;32m██\e[0;33m║\e[4;32m██████\e[0;33m╔╝\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║     \e[4;32m█████\e[0;33m╗  ", "\e[4;32m██\e[0;33m║\e[4;32m███\e[0;33m╗\e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║   \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m╔══\e[4;32m██\e[0;33m╗\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██\e[0;33m║     \e[4;32m██\e[0;33m╔══╝  ", "\e[0;33m╚\e[4;32m███\e[0;33m╔\e[4;32m███\e[0;33m╔╝╚\e[4;32m██████\e[0;33m╔╝\e[4;32m██\e[0;33m║  \e[4;32m██\e[0;33m║\e[4;32m██████\e[0;33m╔╝\e[4;32m███████\e[0;33m╗\e[4;32m███████\e[0;33m╗", "\e[0;33m ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝"};
@@ -40,27 +44,43 @@ void clear_terminal() {
   write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
 }
 
+int letter_in_key(char letter, char *key) {
+    for (int l=0; l<(int)strlen(key); l++) {
+        if (letter == key[l]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void generate_table(char** userInput, char* key) {
-    // Table 5x6
-    int ROWS=6, COLUMNS=5;
+    // Table ROWSxCOLUMNS
+    char letter, keyLetter;
     for (int row=0; row<=ROWS*2; row++) {
-        if (row%2 == 1) {
+        if (row%2 == 1) {  // print letters
             printf("%2d. |", row/2);
             for (int column=0; column<COLUMNS*2; column++) {
                 if (column%2 == 0) {
-                    printf("x");
+                    letter = toupper(userInput[row/2][column/2]);
+                    keyLetter = toupper(key[column/2]);
+                    if (letter == keyLetter) {
+                        printf(GRN "%c" , letter);
+                    } else if (letter_in_key(letter, key) == 1) {
+                        printf(YEL "%c" , letter);
+                    } else {
+                        printf("%c", letter);
+                    }
+                    
                 } else {
-                    printf("|");
+                    printf(RESET "|");
                 }
             }
-        } else {
+        } else {  // print lines between words
             printf("    ");
             for (int column=0; column<=COLUMNS*2; column++) {
                 printf("%c", "+-"[column%2]);
             }
         }
-
-        
         printf("\n");
     }
 }
@@ -80,16 +100,30 @@ void print_wordle() {
 
 // Main
 int main() {
+    char* array[ROWS];
+
+    // Create empty string for dynaminc setting of columns
+    char emptyString[COLUMNS];
+    for (int c=0; c<COLUMNS; c++) {
+        emptyString[c] = ' ';
+    }
+
+    // Fill array
+    for (int r=0; r < ROWS; r++) {
+        array[r] = emptyString;
+        array[r] = "adcbe";
+    }
+
     // clear_terminal();
-    print_wordle();
+    // print_wordle();
 
-    printf("\nPress %sENTER%s to continue...\n", ITALIC, RESET);
-    getchar();
-    clear_terminal();
+    // printf("\nPress %sENTER%s to continue...\n", ITALIC, RESET);
+    // getchar();
+    // clear_terminal();
 
-    printf("Good job, let's play!\n");
-    generate_table(NULL, NULL);
-    getchar();
+    // printf("Good job, let's play!\n");
+    generate_table(array, "ABCDE");
+    // getchar();
 
     return 0;
 }
