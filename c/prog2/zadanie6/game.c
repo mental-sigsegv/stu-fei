@@ -114,7 +114,7 @@ int letter_in_key(char letter, char *key) {
 }
 
 int generate_table(char** userInput, char* key, int round) {
-    printf("The word has been chosen from database with %d words\n\n", SIZE_OF_DB);
+    printf("The word has been chosen from database with %s%d%s words\n\n", BCYN, SIZE_OF_DB, RESET);
 
     // Table ROWS x COLUMNS
     char letter, keyLetter;
@@ -220,7 +220,7 @@ int main() {
 
         SIZE_OF_DB = sizeof(wordDB)/sizeof(wordDB[0]);
         char* wordleSolution = wordDB[rand() % SIZE_OF_DB];
-        // wordleSolution = "sigma";
+        wordleSolution = "sigma";
 
         generate_table(array, wordleSolution, 0);
 
@@ -228,7 +228,7 @@ int main() {
         for (round=0; round<ROWS; round++) {
             
             printf("\nGuess the Hidden Word\n-> ");
-            array[round] = (char *)malloc(sizeof(char)*COLUMNS);
+            array[round] = (char *)malloc(sizeof(char)*(COLUMNS+1));
             scanf("%5s", array[round]);
             for (int check=(int)strlen(array[round]); check<COLUMNS; check++) {
                 array[round][check] = '-';
@@ -240,8 +240,7 @@ int main() {
                 printf(YEL "\nYou won, word was" GRN " %s\n" RESET, wordleSolution );
                 break;
             } else if (round == ROWS -1) {
-                printf(RED "\nYOU LOST GG WP ff15, word was");
-                printf(MAG " %s\n" RESET, wordleSolution);
+                printf("\n%sYOU LOST! GG WP, ff15, the word was %s%s%s\n", RED, BYEL, wordleSolution, RESET);
                 break;
             }
         }
@@ -252,7 +251,7 @@ int main() {
 
         char answer;
         while (1) {
-            printf("\nDo you wanna play another? " RED "[y/n]\n" RESET);
+            printf("\nDo you wanna play another round? [%sy%s/%sn%s]\n", GRN, RESET, RED, RESET);
             scanf("%1c", &answer);
             clear_buffer();
             if ('n' == answer) {
