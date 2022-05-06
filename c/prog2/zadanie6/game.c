@@ -63,16 +63,16 @@ void generate_table(char** userInput, char* key) {
                 if (column%2 == 0) {
                     letter = toupper(userInput[row/2][column/2]);
                     keyLetter = toupper(key[column/2]);
-                    if (letter == keyLetter) {
+                    if (letter == keyLetter) {  // Green letter
                         printf(GRN "%c" , letter);
-                    } else if (letter_in_key(letter, key) == 1) {
+                    } else if (letter_in_key(letter, key) == 1) {  // Yellow letter
                         printf(YEL "%c" , letter);
                     } else {
-                        printf("%c", letter);
+                        printf("%c", letter);  // White letter
                     }
                     
                 } else {
-                    printf(RESET "|");
+                    printf(RESET "|");  // Reset color before next letter
                 }
             }
         } else {  // print lines between words
