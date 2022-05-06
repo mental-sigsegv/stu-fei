@@ -9,4 +9,5 @@ with open("c/prog2/test-files/script.txt", "r") as f:
 for word in f_data:
     x.add(word.strip())
 
-print(repr(x).replace("'", '"'))
+# print(repr(x).replace("'", '"'))
+print(len(x))
