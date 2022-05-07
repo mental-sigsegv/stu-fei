@@ -7,40 +7,29 @@
 #include <stdlib.h>
 #include <time.h>
 
-
 // Ansi colors - source https://gist.github.com/RabaDabaDoba/145049536f815903c79944599c6f952a
 //                      https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 // Regular text
-#define BLK "\e[0;30m"
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
 #define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
+#define GRY "\e[38;5;232m"
 
 // Regular bold text
-#define BBLK "\e[1;30m"
-#define BRED "\e[1;31m"
-#define BGRN "\e[1;32m"
 #define BYEL "\e[1;33m"
-#define BBLU "\e[1;34m"
-#define BMAG "\e[1;35m"
 #define BCYN "\e[1;36m"
-#define BWHT "\e[1;37m"
+
 
 // Special
 #define ITALIC "\e[3m"
 #define RESET "\e[0m"
-#define GRY "\e[38;5;232m"
 
 // You can change those, if you want, but words are lenght of COLUMNS
 #define ROWS 6
 #define COLUMNS 5
 
 // Word database
-char* wordDB[] = {"sigma", "based", "truth", "below", "click", "phone", "china", "stuff", "magic", "bound", "noted", "voice", "field", "error", "grace", "anger", "claim", "skill", "crime", "fruit", "point", "woman", "yield", "night", "south", "logic", "class", "scale", "scope", "alarm", "grand", "billy", "links", "smart", "carry", "plain", "prime", "issue", "floor", "sport", "enter", "story", "drove", "great", "clock", "split", "study", "close", "given", "globe", "begin", "jimmy", "ready", "trial", "event", "metal", "judge", "pilot", "pound", "solid", "while", "block", "fifty", "price", "after", "local", "human", "bring", "chair", "upset", "limit", "tried", "those", "pride", "queen", "harry", "extra", "aware", "drill", "forty", "motor", "again", "novel", "water", "sense", "mouse", "blame", "gross", "heavy", "paint", "beach", "terry", "blind", "agent", "chain", "peace", "baker", "depth", "alert", "stone", "leave", "glass", "march", "solve", "today", "phase", "shirt", "would", "spent", "until", "newly", "video", "staff", "plant", "lower", "dress", "place", "focus", "worth", "jones", "noise", "worse", "acute", "dozen", "built", "route", "brief", "light", "found", "model", "month", "state", "press", "bench", "score", "booth", "needs", "wound", "apart", "empty", "dream", "fully", "plate", "prove", "shift", "minus", "among", "pitch", "power", "shoot", "stand", "drink", "elite", "panel", "sugar", "grade", "broke", "cover", "print", "avoid", "maria", "above", "frank", "input", "image", "truck", "speak", "prize", "fleet", "funny", "smith", "along", "strip", "adult", "offer", "watch", "union", "shell", "sight", "layer", "tight", "break", "force", "worst", "curve", "enjoy", "apple", "store", "texas", "stake", "party", "thing", "trust", "refer", "thick", "crowd", "mouth", "throw", "worry", "sized", "boost", "agree", "check", "wheel", "birth", "every", "group", "mayor", "brown", "think", "super", "roger", "spend", "cross", "maybe", "royal", "shall", "laser", "audit", "prior", "brand", "usage", "badly", "young", "never", "teach", "vital", "doing", "faith", "proud", "these", "usual", "henry", "sorry", "fresh", "guard", "drive", "brain", "women", "large", "ocean", "spare", "theme", "three", "steam", "order", "earth", "short", "legal", "fiber", "clear", "stood", "upper", "reach", "table", "audio", "laugh", "quite", "apply", "youth", "going", "cheap", "radio", "chose", "aside", "their", "forth", "stage", "rough", "clean", "front", "touch", "abuse", "meant", "other", "thank", "write", "quiet", "where", "grown", "array", "entry", "later", "storm", "debut", "ought", "allow", "rapid", "threw", "board", "cable", "ratio", "taken", "admit", "whole", "teeth", "delay", "often", "trade", "broad", "breed", "seven", "mixed", "north", "moral", "frame", "stock", "treat", "argue", "dated", "alive", "small", "alone", "final", "tries", "learn", "wrote", "space", "adopt", "flash", "loose", "least", "arise", "value", "plane", "fixed", "court", "inner", "label", "shape", "under", "count", "lunch", "ahead", "chest", "spoke", "total", "trend", "match", "sweet", "guest", "mount", "heart", "calif", "being", "forum", "grass", "fluid", "guess", "valid", "river", "child", "wrong", "known", "range", "tough", "horse", "stuck", "truly", "sixth", "exact", "coach", "craft", "alike", "could", "Angle", "cream", "slide", "arena", "house", "photo", "began", "quick", "whose", "daily", "paper", "taxes", "sleep", "catch", "train", "chart", "first", "actor", "dying", "chase", "theft", "tired", "suite", "fraud", "roman", "draft", "proof", "crash", "guide", "shock", "speed", "still", "buyer", "music", "build", "lucky", "smoke", "round", "coast", "happy", "sharp", "lewis", "there", "unity", "times", "black", "stick", "tower", "rural", "sound", "album", "basic", "scene", "steel", "waste", "ideal", "giant", "alter", "asset", "eager", "death", "peter", "early", "basis", "might", "civil", "lease", "chief", "maker", "index", "smile", "award", "undue", "dealt", "fight", "shown", "movie", "urban", "bases", "doubt", "style", "title", "begun", "hence", "rival", "share", "topic", "false", "angry", "which", "fault", "about", "raise", "nurse", "sixty", "fifth", "crown", "lying", "white", "hotel", "media", "visit", "money", "enemy", "drawn", "minor", "blood", "robin", "sheet", "drama", "joint", "occur", "twice", "piece", "green", "dance", "exist", "equal", "japan", "right", "lives", "bread", "taste", "world", "grant", "cause", "serve", "virus", "shelf", "since", "level", "track", "third", "start", "cycle", "eight", "major"};
+char* wordDB[] = {"sigma", "based", "truth", "below", "click", "phone", "china", "bound", "noted", "voice", "field", "error", "grace", "anger", "claim", "skill", "crime", "fruit", "point", "woman", "yield", "night", "south", "logic", "class", "scale", "scope", "alarm", "grand", "billy", "links", "smart", "carry", "plain", "prime", "issue", "floor", "sport", "enter", "story", "drove", "great", "clock", "split", "study", "close", "given", "globe", "begin", "jimmy", "ready", "trial", "event", "metal", "judge", "pilot", "pound", "solid", "while", "block", "fifty", "price", "after", "local", "human", "bring", "chair", "upset", "limit", "tried", "those", "pride", "queen", "harry", "extra", "aware", "drill", "forty", "motor", "again", "novel", "water", "sense", "mouse", "blame", "gross", "heavy", "paint", "beach", "terry", "blind", "agent", "chain", "peace", "baker", "depth", "alert", "stone", "leave", "glass", "march", "solve", "today", "phase", "shirt", "would", "spent", "until", "newly", "video", "staff", "plant", "lower", "dress", "place", "focus", "worth", "jones", "noise", "worse", "acute", "dozen", "built", "route", "brief", "light", "found", "model", "month", "state", "press", "bench", "score", "booth", "needs", "wound", "apart", "empty", "dream", "fully", "plate", "prove", "shift", "minus", "among", "pitch", "power", "shoot", "stand", "drink", "elite", "panel", "sugar", "grade", "broke", "cover", "print", "avoid", "maria", "above", "frank", "input", "image", "truck", "speak", "prize", "fleet", "funny", "smith", "along", "strip", "adult", "offer", "watch", "union", "shell", "sight", "layer", "tight", "break", "force", "worst", "curve", "enjoy", "apple", "store", "texas", "stake", "party", "thing", "trust", "refer", "thick", "crowd", "mouth", "throw", "worry", "sized", "boost", "agree", "check", "wheel", "birth", "every", "group", "mayor", "brown", "think", "super", "roger", "spend", "cross", "maybe", "royal", "shall", "laser", "audit", "prior", "brand", "usage", "badly", "young", "never", "teach", "vital", "doing", "faith", "proud", "these", "usual", "henry", "sorry", "fresh", "guard", "drive", "brain", "women", "large", "ocean", "spare", "theme", "three", "steam", "order", "earth", "short", "legal", "fiber", "clear", "stood", "upper", "reach", "table", "audio", "laugh", "quite", "apply", "youth", "going", "cheap", "radio", "chose", "aside", "their", "forth", "stage", "rough", "clean", "front", "touch", "abuse", "meant", "other", "thank", "write", "quiet", "where", "grown", "array", "entry", "later", "storm", "debut", "ought", "allow", "rapid", "threw", "board", "cable", "ratio", "taken", "admit", "whole", "teeth", "delay", "often", "trade", "broad", "breed", "seven", "mixed", "north", "moral", "frame", "stock", "treat", "argue", "dated", "alive", "small", "alone", "final", "tries", "learn", "wrote", "space", "adopt", "flash", "loose", "least", "arise", "value", "plane", "fixed", "court", "inner", "label", "shape", "under", "count", "lunch", "ahead", "chest", "spoke", "total", "trend", "match", "sweet", "guest", "mount", "heart", "calif", "being", "forum", "grass", "fluid", "guess", "valid", "river", "child", "wrong", "known", "range", "tough", "horse", "stuck", "truly", "sixth", "exact", "coach", "craft", "alike", "could", "Angle", "cream", "slide", "arena", "house", "photo", "began", "quick", "whose", "daily", "paper", "taxes", "sleep", "catch", "train", "chart", "first", "actor", "dying", "chase", "theft", "tired", "suite", "fraud", "roman", "draft", "proof", "crash", "guide", "shock", "speed", "still", "buyer", "music", "build", "lucky", "smoke", "round", "coast", "happy", "sharp", "lewis", "there", "unity", "times", "black", "stick", "tower", "rural", "sound", "album", "basic", "scene", "steel", "waste", "ideal", "giant", "alter", "asset", "eager", "death", "peter", "early", "basis", "might", "civil", "lease", "chief", "maker", "index", "smile", "award", "undue", "dealt", "fight", "shown", "movie", "urban", "bases", "doubt", "style", "title", "begun", "hence", "rival", "share", "topic", "false", "angry", "which", "fault", "about", "raise", "nurse", "sixty", "fifth", "crown", "lying", "white", "hotel", "media", "visit", "money", "enemy", "drawn", "minor", "blood", "robin", "sheet", "drama", "joint", "occur", "twice", "piece", "green", "dance", "exist", "equal", "japan", "right", "lives", "bread", "taste", "world", "grant", "cause", "serve", "virus", "shelf", "since", "level", "track", "third", "start", "cycle", "eight", "major"};
 
 // Alphabet for keyboard
 char* ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -231,7 +220,7 @@ int main() {
         int round;
         for (round=0; round<ROWS; round++) {
             
-            printf("\nGuess the Hidden Word\n-> ");
+            printf("\n   Guess the hidden word\n-> ");
             array[round] = (char *)malloc(sizeof(char)*(COLUMNS+1));
             scanf("%5s", array[round]);
             for (int check=(int)strlen(array[round]); check<COLUMNS; check++) {
