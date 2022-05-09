@@ -245,7 +245,7 @@ int main() {
                 printf(YEL "\nYou won, word was" GRN " %s\n" RESET, wordleSolution );
                 break;
             } else if (round == ROWS -1) {
-                printf("\n%sYOU LOST! GG WP, ff15, the word was %s%s%s\n", RED, BYEL, wordleSolution, RESET);
+                printf("\n%sYOU LOST! GG, the word was %s%s%s\n", RED, BYEL, wordleSolution, RESET);
                 break;
             }
         }
