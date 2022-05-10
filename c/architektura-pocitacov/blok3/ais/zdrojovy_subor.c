@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <locale.h>
-#include "hlavickovy_subor.h"
+// #include "hlavickovy_subor.h"
 
 
 // Define
