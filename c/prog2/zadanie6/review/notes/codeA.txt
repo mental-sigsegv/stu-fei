@@ -1,0 +1,16 @@
+Zaporne pointy [-]:
+ak zadam slovo s dlzkou != 5, aj tak mi to vezme round a nezistim, kt. pismena tam su a kt. nie
+ziaden loop na 'nekonecne' hranie (appka na 1 hru)
+ziadna ascii grafika okrem textu (keyboard layout, tabulka)
+terminal sa neclearuje
+
+Kladne pointy [+]:
+simple riesenie
+ako take komenty
+random vyber slov
+pouzivanie funkcii
+
+Tipy:
+zbytocne funkcie na green/yellow/reset -> pouzit makro
+vyber nahodneho slova '% 16' -> '% pocet_slov_v_liste'
+

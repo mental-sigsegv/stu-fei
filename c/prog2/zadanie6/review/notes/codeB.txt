@@ -1,0 +1,22 @@
+Zaporne pointy [-]:
+warning pri kompilacii (zanedbatelne, ale spomeniem)
+terminal sa neclearuje
+ziaden loop na 'nekonecne' hranie (appka na 1 hru)
+neosetrene lowercase (stacilo spravit simple function)
+ak zadam prilis dlhe slovo, automaticky sa to porozdeluje (ako keby som zadal dalsie slova)
+zlte pismenka sa mi zobrazuju na zeleno pri keyboard layout (to ale asi tak bolo myslene)
+zmizne mi pri 2. kole znak 1. kola ? (idk)
+ziadne funkcie na ulahcenie citatelnosti codu
+
+Kladne pointy [+]:
+ascii tabulka
+ako take komenty
+random vyber slov
+keyboard layout
+
+Tipy:
+zbytocne funkcie na green/yellow/reset -> pouzit makro
+vyber nahodneho slova '% 10' -> '% pocet_slov_v_liste'
+
+
+Docela fajn, az na ten input, kt nie je osetreny (dlzka, male pismena)

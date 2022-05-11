@@ -1,0 +1,12 @@
+Zaporne pointy [-]:
+neosetrene velke pismena
+ulahcenie (slova bez opakovania pismena)
+ziadna ascii tabulka, keyboard layout
+ziaden termial clear
+ak nenapisem "Koniec" ale nejake 5pismenove slovo, obidem to a loop nikdy neskonci
+ziadne fukcie, kt. by ulahcili prehladnost
+
+
+Kladne pointy [+]:
+makra
+sposob vyberu random slova
