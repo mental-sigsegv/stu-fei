@@ -191,7 +191,18 @@ int numDigits(int value) {
         Vsimnite si pretazenie funkcie. Tento zdrojovy subor obsahuje 3 funkcie s nazvom 'print'.
 */
 void print(const Date *date, const char *format) {
-    // TODO
+    string text = format;
+
+    if (text.find("M") != string::npos) 
+        text.replace(text.find("M"), 1, to_string(date->month));
+    if (text.find("D") != string::npos)
+        text.replace(text.find("D"), 1, to_string(date->day));
+    if (text.find("Y") != string::npos) {
+        text.replace(text.find("Y"), 1, to_string(date->year));
+
+    }
+
+    cout << text << endl;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -359,7 +370,13 @@ int main() {
     // 1.5 D
     // cout << numDigits(-10) << endl;
 
-    // 1.6 IDK
+    // 1.6 D
+    // Date *newDate01 = create(1, 3, 2000);
+
+    // print(newDate01, "M/D/Y");
+    // print(newDate01, "D. M. Y");
+    // print(newDate01, "D. M.");
+    // print(newDate01, "Pisomka bude D. M. Y, v miestnosti BC 300");
 
     // 1.7 D
     // Date *tempDate;
@@ -382,7 +399,7 @@ int main() {
 
 
 
-    // 1.10
+    // 1.10 D
     // Date *newDate01 = create(-1, 1, 2000);
     // Date *newDate02 = create(1, -1, 2002);
     // Date *newDate03 = create(29, 2, 1601);
