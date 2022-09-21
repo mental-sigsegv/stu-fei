@@ -296,7 +296,24 @@ bool isInLeapYear(const Date *date) {
         Rok v datume je kladne cislo
 */
 bool isValid(const Date *date) {
-    // TODO
+    int year = date->year;
+    int month = date->month;
+    int day = date->day;
+
+    if((month==1 || month==3 || month==5|| month==7|| month==8||month==10||month==12) && day>0 && day<=31)
+        return true;
+
+    if(month==4 || month==6 || month==9|| month==11 && day>0 && day<=30)
+        return true;
+
+    if(month==2) {
+        if((year%400==0 || (year%100!=0 && year%4==0)) && day>0 && day<=29)
+            return true;
+        else if(day>0 && day<=28)
+            return true;
+        else
+            return false;
+        }
     return false; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
@@ -366,6 +383,22 @@ int main() {
 
 
     // 1.10
+    // Date *newDate01 = create(-1, 1, 2000);
+    // Date *newDate02 = create(1, -1, 2002);
+    // Date *newDate03 = create(29, 2, 1601);
+    // Date *newDate04 = create(5, 6, 1520);
+    // Date *newDate05 = create(29, 2, 1600);
+    // Date *newDate06 = create(34, 5, 1500);
+    // Date *newDate07 = create(32, 1, 1500);
+
+    // cout << isValid(newDate01) << endl;
+    // cout << isValid(newDate02) << endl;
+    // cout << isValid(newDate03) << endl;
+    // cout << isValid(newDate04) << endl;
+    // cout << isValid(newDate05) << endl;
+    // cout << isValid(newDate06) << endl;
+    // cout << isValid(newDate07) << endl;
+
 
     // tu mozete doplnit testovaci kod
 
