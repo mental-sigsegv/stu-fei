@@ -152,16 +152,8 @@ int maximum(const int *data, std::size_t length, Result *result) {
         - vstup: -500  => vystup: 4
 */
 int numDigits(int value) {
-    int sum = 0;
-    if (value <= 0) {
-        sum++;
-        value = -value;
-    }
-    while (value > 0) {
-        value /= 10;
-        sum++;
-    }
-    return sum;
+    string sValue = to_string(value);
+    return sValue.length();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -192,20 +184,21 @@ int numDigits(int value) {
 */
 void print(const Date *date, const char *format) {
     string text = format;
+    size_t position;
 
-    if (text.find("M") != string::npos) {
-        text.replace(text.find("M"), 1, to_string(date->month));
+    while ((position = text.find("M")) != string::npos) {
+        text.replace(position, 1, to_string(date->month));
     }
 
-    if (text.find("D") != string::npos) {
-        text.replace(text.find("D"), 1, to_string(date->day));
+    while ((position = text.find("D")) != string::npos) {
+        text.replace(position, 1, to_string(date->day));
     }
 
-    if (text.find("Y") != string::npos) {
-        text.replace(text.find("Y"), 1, to_string(date->year));
+    while ((position = text.find("Y")) != string::npos) {
+        text.replace(position, 1, to_string(date->year));
     }
 
-    cout << format << endl;
+    cout << text << endl;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -250,8 +243,9 @@ Date* create(int day, int month, int year) {
 void destroy(Date **date) {
     if (*date != nullptr) {
         delete(*date);
-        // cout << "pointer deleted";
     }
+
+    *date = nullptr;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -373,15 +367,24 @@ int main() {
     // int result = maximum(sampleData, 5, &enumResult);
     // cout << "Navratova hodnota: " << result << endl;
 
-    // working-on 1.5 -> 0.3b
+    // done 1.5 -> 0.4b
+    // cout << numDigits(18002) << endl;
+    // cout << numDigits(2) << endl;
+    // cout << numDigits(-500) << endl;
     // cout << numDigits(0) << endl;
+    // cout << numDigits(-0) << endl;
 
     // not-done 1.6 -> 0.0b
-    // Date *newDate01 = create(1, 3, 2000);
+    Date *newDate01 = create(1, 3, 2000);
 
-    // print(newDate01, "M/D/Y");
-    // print(newDate01, "D. M. Y");
+    print(newDate01, "M/D/Y");
+    print(newDate01, "D. M. Y");
+    print(newDate01, "Text bez formatu");
     // print(newDate01, "D. M.");
+    // print(newDate01, "D. D.");
+    // print(newDate01, "M.");
+    // print(newDate01, "Y.");
+    // print(newDate01, "Y-M-D");
     // print(newDate01, "Pisomka bude D. M. Y, v miestnosti BC 300");
 
     // done 1.7 -> 0.4b
@@ -389,7 +392,7 @@ int main() {
     // tempDate = create(10, 4, 2002);
     // cout << tempDate->day << ". " << tempDate->month << ". " << tempDate->year << endl;
 
-    // working-on 1.8 -> 0.2b
+    // done 1.8 -> 0.4b
     // destroy(&tempDate);
 
     // done 1.9 -> 0.4b
