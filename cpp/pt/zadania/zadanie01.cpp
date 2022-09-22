@@ -359,24 +359,24 @@ int main() {
 
     // int sampleData[8] = {-10, 0, 10, 12, 13, 55, 32, '\0'};
 
-    // 1.1 D
+    // done 1.1 -> 0.4b
     // print(&samplePosition);
 
-    // 1.2 D
+    // done 1.2 -> 0.4b
     // print(samplePosition);
 
-    // 1.3 D - 0.4b
+    // done 1.3 -> 0.4b
     // readFromStandardInput(&samplePosition);
     // print(samplePosition);
 
-    // 1.4 ND
+    // done 1.4 -> 0.4b
     // int result = maximum(sampleData, 5, &enumResult);
     // cout << "Navratova hodnota: " << result << endl;
 
-    // 1.5 D
+    // working-on 1.5 -> 0.3b
     // cout << numDigits(0) << endl;
 
-    // 1.6 D
+    // not-done 1.6 -> 0.0b
     // Date *newDate01 = create(1, 3, 2000);
 
     // print(newDate01, "M/D/Y");
@@ -384,15 +384,15 @@ int main() {
     // print(newDate01, "D. M.");
     // print(newDate01, "Pisomka bude D. M. Y, v miestnosti BC 300");
 
-    // 1.7 D -> 0.4b
+    // done 1.7 -> 0.4b
     // Date *tempDate;
     // tempDate = create(10, 4, 2002);
     // cout << tempDate->day << ". " << tempDate->month << ". " << tempDate->year << endl;
 
-    // 1.8 D
+    // working-on 1.8 -> 0.2b
     // destroy(&tempDate);
 
-    // 1.9 D -> 0.4b
+    // done 1.9 -> 0.4b
     // Date *newDate01 = create(1, 1, 2000);
     // Date *newDate02 = create(1, 1, 2002);
     // Date *newDate03 = create(1, 1, 1600);
@@ -403,7 +403,7 @@ int main() {
     // cout << isInLeapYear(newDate03) << endl;
     // cout << isInLeapYear(newDate04) << endl;
 
-    // 1.10 D -> 0.4b
+    // done 1.10 -> 0.4b
     // Date *newDate01 = create(-1, 1, 2000);
     // Date *newDate02 = create(1, -1, 2002);
     // Date *newDate03 = create(29, 2, 1601);
