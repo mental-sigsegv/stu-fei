@@ -61,7 +61,7 @@ enum class Result {
         [in] position - pozicia, ktora bude vytlacena
 */
 void print(const Position *position) {
-    cout << "x: " << position->x << " y: " << position->y << endl;
+    cout << "x: " << position->x << ", y: " << position->y;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ void print(const Position *position) {
     Implementujte rovnaku funkcionalitu ako v prvom priklade. Rozdiel je len typ parametra funkcie.
 */
 void print(const Position &position) {
-    cout << "x: " << position.x << " y: " << position.y << endl;
+    cout << "x: " << position.x << ", y: " << position.y;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -119,17 +119,17 @@ void readFromStandardInput(Position *position) {
 */
 int maximum(const int *data, std::size_t length, Result *result) {
     if (length == 0) {
-        // *result = Result::FAILURE; TODO not working
+        *result = Result::FAILURE;  // TODO not working
         return INT_MIN;
     }
 
     int maxValue = data[0];
-    for (int i = 1; i < length; i++) {
+    for (size_t i = 1; i < length; i++) {
         if (data[i] > maxValue) {
             maxValue = data[i];
         }
     }
-    // *result = Result::SUCCESS; TODO not working
+    *result = Result::SUCCESS;  // TODO not working
     return maxValue; 
 }
 
@@ -193,16 +193,19 @@ int numDigits(int value) {
 void print(const Date *date, const char *format) {
     string text = format;
 
-    if (text.find("M") != string::npos) 
+    if (text.find("M") != string::npos) {
         text.replace(text.find("M"), 1, to_string(date->month));
-    if (text.find("D") != string::npos)
-        text.replace(text.find("D"), 1, to_string(date->day));
-    if (text.find("Y") != string::npos) {
-        text.replace(text.find("Y"), 1, to_string(date->year));
-
     }
 
-    cout << text << endl;
+    if (text.find("D") != string::npos) {
+        text.replace(text.find("D"), 1, to_string(date->day));
+    }
+
+    if (text.find("Y") != string::npos) {
+        text.replace(text.find("Y"), 1, to_string(date->year));
+    }
+
+    cout << format << endl;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -245,7 +248,10 @@ Date* create(int day, int month, int year) {
         (*date) ma hodnotu 'nullptr'.
 */
 void destroy(Date **date) {
-    delete *date;
+    if (*date != nullptr) {
+        delete(*date);
+        // cout << "pointer deleted";
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -314,7 +320,7 @@ bool isValid(const Date *date) {
     if((month==1 || month==3 || month==5|| month==7|| month==8||month==10||month==12) && day>0 && day<=31)
         return true;
 
-    if(month==4 || month==6 || month==9|| month==11 && day>0 && day<=30)
+    if((month==4 || month==6 || month==9|| month==11) && (day>0 && day<=30))
         return true;
 
     if(month==2) {
@@ -337,21 +343,21 @@ bool isValid(const Date *date) {
 
 int main() {
     // Create examples of structs
-    Position samplePosition {
-        30,  // X
-        -25,  // y
-    };
+    // Position samplePosition {
+    //     30,  // X
+    //     -25,  // y
+    // };
 
-    Date sampleDate {
-        2022,  // year
-        9,  // month
-        20,  // day
-    };  
+    // Date sampleDate {
+    //     2022,  // year
+    //     9,  // month
+    //     20,  // day
+    // };  
 
-    Result enumResult;
-    int result;
+    // Result enumResult;
+    // int result;
 
-    int sampleData[8] = {-10, 0, 10, 12, 13, 55, 32, '\0'};
+    // int sampleData[8] = {-10, 0, 10, 12, 13, 55, 32, '\0'};
 
     // 1.1 D
     // print(&samplePosition);
@@ -359,16 +365,16 @@ int main() {
     // 1.2 D
     // print(samplePosition);
 
-    // 1.3 D
+    // 1.3 D - 0.4b
     // readFromStandardInput(&samplePosition);
     // print(samplePosition);
 
     // 1.4 ND
-    // result = maximum(sampleData, 5, &enumResult);
+    // int result = maximum(sampleData, 5, &enumResult);
     // cout << "Navratova hodnota: " << result << endl;
 
     // 1.5 D
-    // cout << numDigits(-10) << endl;
+    // cout << numDigits(0) << endl;
 
     // 1.6 D
     // Date *newDate01 = create(1, 3, 2000);
@@ -378,7 +384,7 @@ int main() {
     // print(newDate01, "D. M.");
     // print(newDate01, "Pisomka bude D. M. Y, v miestnosti BC 300");
 
-    // 1.7 D
+    // 1.7 D -> 0.4b
     // Date *tempDate;
     // tempDate = create(10, 4, 2002);
     // cout << tempDate->day << ". " << tempDate->month << ". " << tempDate->year << endl;
@@ -386,7 +392,7 @@ int main() {
     // 1.8 D
     // destroy(&tempDate);
 
-    // 1.9 D
+    // 1.9 D -> 0.4b
     // Date *newDate01 = create(1, 1, 2000);
     // Date *newDate02 = create(1, 1, 2002);
     // Date *newDate03 = create(1, 1, 1600);
@@ -397,9 +403,7 @@ int main() {
     // cout << isInLeapYear(newDate03) << endl;
     // cout << isInLeapYear(newDate04) << endl;
 
-
-
-    // 1.10 D
+    // 1.10 D -> 0.4b
     // Date *newDate01 = create(-1, 1, 2000);
     // Date *newDate02 = create(1, -1, 2002);
     // Date *newDate03 = create(29, 2, 1601);
