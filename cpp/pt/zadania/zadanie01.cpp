@@ -184,21 +184,38 @@ int numDigits(int value) {
 */
 void print(const Date *date, const char *format) {
     string text = format;
-    size_t position;
+    // size_t position;
 
-    while ((position = text.find("M")) != string::npos) {
-        text.replace(position, 1, to_string(date->month));
+    for (auto c : text) {
+        switch (c) {
+            case 'Y':
+                cout << date->year;
+                break;
+            case 'M':
+                cout << date->month;
+                break;
+            case 'D':
+                cout << date->day;
+                break;
+            default:
+                cout << c;
+        }
     }
 
-    while ((position = text.find("D")) != string::npos) {
-        text.replace(position, 1, to_string(date->day));
-    }
 
-    while ((position = text.find("Y")) != string::npos) {
-        text.replace(position, 1, to_string(date->year));
-    }
+    // while ((position = text.find("M")) != string::npos) {
+    //     text.replace(position, 1, to_string(date->month));
+    // }
 
-    cout << text << endl;
+    // while ((position = text.find("D")) != string::npos) {
+    //     text.replace(position, 1, to_string(date->day));
+    // }
+
+    // while ((position = text.find("Y")) != string::npos) {
+    //     text.replace(position, 1, to_string(date->year));
+    // }
+
+    // cout << text << endl;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -375,11 +392,11 @@ int main() {
     // cout << numDigits(-0) << endl;
 
     // not-done 1.6 -> 0.0b
-    Date *newDate01 = create(1, 3, 2000);
+    // Date *newDate01 = create(1, 3, 2000);
 
-    print(newDate01, "M/D/Y");
-    print(newDate01, "D. M. Y");
-    print(newDate01, "Text bez formatu");
+    // print(newDate01, "M/D/Y");
+    // print(newDate01, "D. M. Y");
+    // print(newDate01, "Text bez formatu");
     // print(newDate01, "D. M.");
     // print(newDate01, "D. D.");
     // print(newDate01, "M.");
