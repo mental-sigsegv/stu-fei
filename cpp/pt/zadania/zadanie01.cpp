@@ -184,7 +184,6 @@ int numDigits(int value) {
 */
 void print(const Date *date, const char *format) {
     string text = format;
-    // size_t position;
 
     for (auto c : text) {
         switch (c) {
@@ -202,20 +201,6 @@ void print(const Date *date, const char *format) {
         }
     }
 
-
-    // while ((position = text.find("M")) != string::npos) {
-    //     text.replace(position, 1, to_string(date->month));
-    // }
-
-    // while ((position = text.find("D")) != string::npos) {
-    //     text.replace(position, 1, to_string(date->day));
-    // }
-
-    // while ((position = text.find("Y")) != string::npos) {
-    //     text.replace(position, 1, to_string(date->year));
-    // }
-
-    // cout << text << endl;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -391,7 +376,7 @@ int main() {
     // cout << numDigits(0) << endl;
     // cout << numDigits(-0) << endl;
 
-    // not-done 1.6 -> 0.0b
+    // done 1.6 -> 0.4b
     // Date *newDate01 = create(1, 3, 2000);
 
     // print(newDate01, "M/D/Y");
