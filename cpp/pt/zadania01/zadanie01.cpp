@@ -339,10 +339,10 @@ bool isValid(const Date *date) {
 
 int main() {
     // Create examples of structs
-    // Position samplePosition {
-    //     30,  // X
-    //     -25,  // y
-    // };
+    Position samplePosition {
+        30,  // X
+        -25,  // y
+    };
 
     // Date sampleDate {
     //     2022,  // year
@@ -356,7 +356,7 @@ int main() {
     // int sampleData[8] = {-10, 0, 10, 12, 13, 55, 32, '\0'};
 
     // done 1.1 -> 0.4b
-    // print(&samplePosition);
+    print(&samplePosition);
 
     // done 1.2 -> 0.4b
     // print(samplePosition);
