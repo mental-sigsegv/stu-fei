@@ -339,10 +339,10 @@ bool isValid(const Date *date) {
 
 int main() {
     // Create examples of structs
-    Position samplePosition {
-        30,  // X
-        -25,  // y
-    };
+    // Position samplePosition {
+    //     30,  // X
+    //     -25,  // y
+    // };
 
     // Date sampleDate {
     //     2022,  // year
@@ -356,7 +356,7 @@ int main() {
     // int sampleData[8] = {-10, 0, 10, 12, 13, 55, 32, '\0'};
 
     // done 1.1 -> 0.4b
-    print(&samplePosition);
+    // print(&samplePosition);
 
     // done 1.2 -> 0.4b
     // print(samplePosition);
@@ -415,9 +415,9 @@ int main() {
     // Date *newDate04 = create(5, 6, 1520);
     // Date *newDate05 = create(29, 2, 1600);
     // Date *newDate06 = create(34, 5, 1500);
-    // Date *newDate07 = create(32, 1, 1500);
+    Date *newDate07 = create(32, 1, 14559);
 
-    // cout << isValid(newDate01) << endl;
+    cout << isValid(newDate07) << endl;
     // cout << isValid(newDate02) << endl;
     // cout << isValid(newDate03) << endl;
     // cout << isValid(newDate04) << endl;
