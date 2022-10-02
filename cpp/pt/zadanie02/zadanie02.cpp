@@ -69,7 +69,17 @@ struct ListData {
 */
 
 void appendNode(List *list, const int val) {
-    // TODO
+    Node *appNode = new Node {val, nullptr};
+    if (list->first == nullptr) {
+        list->first = appNode;
+        return;
+    }
+
+    Node *pNode = list->first;
+    while(pNode->next != nullptr) {
+        pNode = pNode->next;
+    }
+    pNode->next = appNode;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -117,8 +127,22 @@ void appendNode(List *list, const int val) {
 */
 
 List *createList(const ListData *listData) {
-    // TODO
-    return nullptr; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    struct List *newList = new List {nullptr};
+    Node *pNode = nullptr;
+    
+    if (listData->len == 0) {
+        return newList;
+    }
+
+    newList->first = new Node {listData->data[0], nullptr};
+    pNode = newList->first;
+
+    for (size_t i = 1; i < listData->len; i++) { 
+        pNode->next = new Node {listData->data[i], nullptr};
+        pNode = pNode->next;
+    }
+
+    return newList;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -155,7 +179,36 @@ List *createList(const ListData *listData) {
 */
 
 void insertNode(List *sortedList, const int val) {
-    // TODO
+    Node *pNodeValue = new Node {val, nullptr};
+    Node *pNode = nullptr;
+
+    if (sortedList->first == nullptr || val < sortedList->first->data) {
+        pNodeValue->next = sortedList->first;
+        sortedList->first = pNodeValue;
+        return;
+    } else if (sortedList->first->next == nullptr) {
+        if (val >= sortedList->first->data) {
+            sortedList->first->next = pNodeValue;
+            return;
+        } else {
+            pNodeValue->next = sortedList->first;
+            sortedList->first = pNodeValue;
+            return;
+        }
+    }
+    pNode = sortedList->first;
+
+    while (pNode->next != nullptr) {
+        if (pNode->data <= val && val <= pNode->next->data) {
+            pNodeValue->next = pNode->next;
+            pNode->next = pNodeValue;
+            return;
+        }
+        pNode++;
+    }
+    pNode->next = pNodeValue;
+
+
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -191,8 +244,21 @@ void insertNode(List *sortedList, const int val) {
 */
 
 List *joinLists(List *list1, List *list2) {
-    // TODO
-    return nullptr; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (list1->first == list2->first && list1->first == nullptr) {
+        return list1;
+    }
+
+    Node *pNode = list1->first;
+    if (pNode == nullptr) {
+        list1->first = list2->first;
+        return list1;
+    }
+    while (pNode->next != nullptr) {
+        pNode++;
+    }
+    pNode->next = list2->first;
+
+    return list1; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -399,11 +465,56 @@ Node *findLastNodeOccurrence(const List *list, const int val) {
 // TESTOVANIE
 //-------------------------------------------------------------------------------------------------
 
+void printLinkedList(const List *list) {
+    cout << "printing list" << endl;
+    Node *pNode = list->first;
+    while(pNode != nullptr) {
+        cout << pNode->data << ", ";
+        pNode = pNode->next;
+
+    }
+}
+
 // tu mozete doplnit pomocne testovacie funkcie a struktury
 
 int main() {
+    // 2.1.
+    struct List *list = new List {nullptr};
+    struct List *list2 = new List {nullptr};
+    // appendNode(list, 15);
+    // printLinkedList(list);
 
-    // tu mozete doplnit testovaci kod
+    // 2.2
+    // int numbers[] = {1,2,3,4,5,6,7};
+    // struct ListData *listData = new ListData {numbers, 5};
 
+    // struct List *list = createList(listData);
+    // printLinkedList(list);
+    
+    // 2.3
+    // appendNode(list, 2);
+    // appendNode(list, 11);
+    // appendNode(list, 15);
+    // appendNode(list, 18);
+    // appendNode(list, 23);
+    // insertNode(list, 105);
+    // printLinkedList(list);
+
+    // 2.4
+    // appendNode(list, 10);
+    // appendNode(list, 20);
+    // appendNode(list, 30);
+    // appendNode(list2, 40);
+    // appendNode(list2, 50);
+    // appendNode(list2, 60);
+
+    // printLinkedList(joinLists(list, list2));
+
+    // 2.5
+    // 2.6
+    // 2.7
+    // 2.8
+    // 2.9
+    // 2.10
     return 0;
 }
