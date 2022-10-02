@@ -19,6 +19,7 @@ POKYNY:
 
 
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -204,7 +205,7 @@ void insertNode(List *sortedList, const int val) {
             pNode->next = pNodeValue;
             return;
         }
-        pNode++;
+        pNode = pNode->next;
     }
     pNode->next = pNodeValue;
 
@@ -254,7 +255,7 @@ List *joinLists(List *list1, List *list2) {
         return list1;
     }
     while (pNode->next != nullptr) {
-        pNode++;
+        pNode = pNode->next;
     }
     pNode->next = list2->first;
 
@@ -286,7 +287,20 @@ List *joinLists(List *list1, List *list2) {
 */
 
 void removeLastNode(List *list) {
-    // TODO
+    if (list->first == nullptr) {
+        return;
+    } else if (list->first->next == nullptr) {
+        list->first = nullptr;
+        return;
+    }
+
+    Node *pNode = list->first;
+
+    while (pNode->next->next != nullptr) {
+        pNode = pNode->next;
+    }
+    free(pNode->next->next);
+    pNode->next = nullptr;    
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -323,8 +337,29 @@ void removeLastNode(List *list) {
 */
 
 bool isPalindrome(const List *list) {
-    // TODO
-    return false; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (list->first == nullptr || list->first->next == nullptr) {
+        return true;
+    }
+
+    Node *pNode = list->first;
+    stack <int> iStack;
+    while (pNode->next != nullptr) {
+        pNode = pNode->next;
+        iStack.push(pNode->data);
+    }
+
+    pNode = list->first;
+    while (pNode->next != nullptr) {
+        int mostTop = iStack.top();
+        iStack.pop();
+        if (mostTop != pNode->data) {
+            return false;
+        }
+        pNode = pNode->next;
+    }
+
+
+    return true;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -356,8 +391,15 @@ bool isPalindrome(const List *list) {
 */
 
 int sumNodes(const List *list, const size_t n) {
-    // TODO
-    return -1; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (n == 0) return 0;
+
+    Node *pNode = list->first;
+    int sum = 0;
+    for (size_t i=0; i < n; i++) {
+        sum += pNode->data;
+        pNode = pNode->next;
+    }
+    return sum;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -393,8 +435,28 @@ int sumNodes(const List *list, const size_t n) {
 */
 
 bool contains(const List *list1, const List *list2) {
-    // TODO
-    return false; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (list2->first == nullptr) {
+        return true;
+    }
+    Node *pNode2 = list2->first;
+    while (pNode2 != nullptr) {
+        bool flag = false;
+        Node *pNode1 = list1->first;
+
+        while (pNode1 != nullptr) {
+            if (pNode2->data == pNode1->data) {
+                flag = true;
+            }
+            pNode1 = pNode1->next;
+        }
+
+        pNode2 = pNode2->next;
+        if (flag == false) {
+            return false;
+        }
+    }
+    return true;
+
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -426,8 +488,21 @@ bool contains(const List *list1, const List *list2) {
 */
 
 List *deepCopyList(const List *list) {
-    // TODO
-    return nullptr; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    List *nList = new List;
+
+    if (list->first == nullptr) {
+        return nList;
+    }
+
+    Node *pNode = list->first;
+    Node *pNode2 = nList->first;
+    while (pNode->next != nullptr) {
+        pNode2->next = new Node {pNode->data, pNode->next};
+        pNode = pNode->next;
+        pNode2 = pNode2->next;
+    }
+
+    return nList; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -457,8 +532,24 @@ List *deepCopyList(const List *list) {
 */
 
 Node *findLastNodeOccurrence(const List *list, const int val) {
-    // TODO
-    return nullptr; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (list->first == nullptr) return nullptr;
+
+    Node *pNode = list->first;
+    Node *lastNode = nullptr;
+
+
+    while (pNode->next != nullptr) {
+        if (pNode->data == val) {
+            lastNode = pNode;
+        }
+        pNode = pNode->next;
+    }
+    if (pNode->data == val) {
+        lastNode = pNode;
+    }
+
+    return lastNode;
+
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -477,21 +568,23 @@ void printLinkedList(const List *list) {
 
 // tu mozete doplnit pomocne testovacie funkcie a struktury
 
+
+
 int main() {
-    // 2.1.
-    struct List *list = new List {nullptr};
-    struct List *list2 = new List {nullptr};
+    // done 2.1. -> 0.4b
+    // struct List *list = new List {nullptr};
+    // struct List *list2 = new List {nullptr};
     // appendNode(list, 15);
     // printLinkedList(list);
 
-    // 2.2
+    // done 2.2 -> 0.4b
     // int numbers[] = {1,2,3,4,5,6,7};
     // struct ListData *listData = new ListData {numbers, 5};
 
     // struct List *list = createList(listData);
     // printLinkedList(list);
     
-    // 2.3
+    // done 2.3 -> 0.4b
     // appendNode(list, 2);
     // appendNode(list, 11);
     // appendNode(list, 15);
@@ -500,7 +593,7 @@ int main() {
     // insertNode(list, 105);
     // printLinkedList(list);
 
-    // 2.4
+    // done 2.4 -> 0.4b
     // appendNode(list, 10);
     // appendNode(list, 20);
     // appendNode(list, 30);
@@ -510,11 +603,54 @@ int main() {
 
     // printLinkedList(joinLists(list, list2));
 
-    // 2.5
-    // 2.6
-    // 2.7
-    // 2.8
+    // done 2.5 -> 0.4b
+    // appendNode(list, 10);
+    // appendNode(list, 12);
+    // appendNode(list, 13);
+    // appendNode(list, 14);
+    // appendNode(list, 10);
+    // removeLastNode(list);
+    // printLinkedList(list);
+
+    // done 2.6 -> 0.4b
+    // appendNode(list, 10);
+    // appendNode(list, 15);
+    // appendNode(list, 12);
+    // cout << isPalindrome(list);
+
+    // done 2.7 -> 0.4b
+    // appendNode(list, 10);
+    // appendNode(list, 10);
+    // appendNode(list, 10);
+    // appendNode(list, 10);
+    // appendNode(list, 10);
+    // cout << sumNodes(list, 5);
+
+    // done 2.8 -> 0.4b
+    // appendNode(list, 1);
+    // appendNode(list, 2);
+    // appendNode(list, 3);
+    // appendNode(list, 4);
+
+    // appendNode(list2, 3);
+    // appendNode(list2, 4);
+
+    // cout << contains(list, list2);
+
     // 2.9
-    // 2.10
+    // appendNode(list, 2);
+    // appendNode(list, 3);
+    // appendNode(list, 4);
+
+    // cout << &list << endl;
+    // cout << deepCopyList(list) << endl;
+    
+    // done 2.10 -> 0.4b
+    // appendNode(list, 1);
+    // appendNode(list, 2);
+    // appendNode(list, 2);
+    // appendNode(list, 2);
+
+    // cout << findLastNodeOccurrence(list, 2);
     return 0;
 }
