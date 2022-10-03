@@ -488,20 +488,37 @@ bool contains(const List *list1, const List *list2) {
 */
 
 List *deepCopyList(const List *list) {
-    List *nList = new List;
+    List *nList = new List {nullptr};
 
     if (list->first == nullptr) {
         return nList;
     }
 
     Node *pNode = list->first;
-    Node *pNode2 = nList->first;
-    while (pNode->next != nullptr) {
-        pNode2->next = new Node {pNode->data, pNode->next};
-        pNode = pNode->next;
-        pNode2 = pNode2->next;
-    }
 
+    Node *pNode2 = nList->first;
+
+    Node *pLastNode = nullptr;
+
+    Node *pHeadNode = nullptr;
+
+    while (pNode != nullptr) {
+  
+
+        pNode2 = new Node {pNode->data, nullptr};
+
+        if (pHeadNode == nullptr) {
+            pHeadNode = pNode2;
+        }
+
+        if (pLastNode != nullptr) {
+            pLastNode->next = pNode2;
+        }
+        pLastNode = pNode2;
+
+        pNode = pNode->next;
+    }
+    nList->first = pHeadNode;
     return nList; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
@@ -571,9 +588,10 @@ void printLinkedList(const List *list) {
 
 
 int main() {
-    // done 2.1. -> 0.4b
-    // struct List *list = new List {nullptr};
+    struct List *list = new List {nullptr};
     // struct List *list2 = new List {nullptr};
+    
+    // done 2.1. -> 0.4b
     // appendNode(list, 15);
     // printLinkedList(list);
 
@@ -637,18 +655,25 @@ int main() {
 
     // cout << contains(list, list2);
 
-    // 2.9
+    // done 2.9 -> 0.4b
     // appendNode(list, 2);
     // appendNode(list, 3);
     // appendNode(list, 4);
+    // appendNode(list, 4);
+    // appendNode(list, 4);
+    // appendNode(list, 4);
+    // appendNode(list, 4);
+
+
+    // List *list2 = deepCopyList(list);
 
     // cout << &list << endl;
-    // cout << deepCopyList(list) << endl;
+    // cout << &list2 << endl;
     
     // done 2.10 -> 0.4b
     // appendNode(list, 1);
     // appendNode(list, 2);
-    // appendNode(list, 2);
+    // appendNode\(list, 2);
     // appendNode(list, 2);
 
     // cout << findLastNodeOccurrence(list, 2);
