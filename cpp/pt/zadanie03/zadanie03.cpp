@@ -68,7 +68,7 @@ void insertionSort(int *data, const size_t length) {
             data[index-1] = data[index];
             data[index] = tmp;
             index--;
-            if (index < 0) {
+            if (index <= 0) {
                 break;
             }
         }
@@ -109,8 +109,7 @@ void insertionSort(int *data, const size_t length) {
 */
 void insertionSort(const char *data[]) {
     if (data[0] == nullptr || data[1] == nullptr) return;
-    strcmp("aa", "bz") > 0;
-
+    
     size_t i = 1;
     while (data[i] != nullptr) {
         int index = i;
@@ -149,42 +148,74 @@ void insertionSort(const char *data[]) {
         vstup: 1->2->2->1,     vystup: 2->2->1->1
         vstup: prazdny zoznam, vystup: prazdny zoznam
 */
+void printLinkedList(const List *list) {
+    cout << "printing list" << endl;
+    Node *pNode = list->first;
+    while(pNode != nullptr) {
+        cout << pNode->data << " add: " << &(pNode->data) << endl;
+        pNode = pNode->next;
+    }
+    // cout << endl;
+}
+
+void insertNode(List *sortedList, Node *node) {
+    Node *pNode = sortedList->first;
+
+    if (node->data < pNode->data) {
+        node->next = pNode;
+        sortedList->first = node;
+        return;
+    }
+
+    while (pNode->next != nullptr) {
+        if (node->data < pNode->next->data) {
+            node->next = pNode->next;
+            pNode->next = node;
+            return;
+        }
+        pNode = pNode->next;
+    }
+    pNode->next = node;
+    node->next = nullptr;
+}
+
 void insertionSort(List * list) {
     if (list->first == nullptr || list->first->next == nullptr) return;
 
     Node *pNode = list->first;
-    Node *pNode2 = nullptr;
     Node *pNodeLast = nullptr;
 
-    while (pNode != nullptr && pNode->next != nullptr) {
-        cout << '-';
-        Node *tmp;
-        if (pNode == list->first && pNode->data > pNode->next->data) {
-            tmp = list->first;
-            list->first = list->first->next;
-            tmp->next = list->first->next;
-            list->first->next = tmp;
-        } 
-        
-        if (pNodeLast != nullptr) {
-            pNode2 = pNode;
-            while (pNode2 != nullptr && pNode2->data < pNode2->next->data) {
-                Node *tmp = pNode2;
-                pNodeLast->next = tmp->next;
-                tmp->next = pNodeLast->next->next;
-                pNodeLast->next->next = tmp;
+    while (pNode != nullptr) {
+        if (pNodeLast == nullptr && pNode->data > pNode->next->data) {
+            list->first = pNode->next;
+            insertNode(list, pNode);
+            pNode = list->first;
+            pNodeLast=nullptr;
 
-                pNodeLast=pNode2;
-                pNode2 = pNode2->next;
-            }
+        } else if (pNode->next == nullptr) {
+            pNodeLast->next = nullptr;
+
+            insertNode(list, pNode);
+            break;
+
+        } else if (pNode->data > pNode->next->data) {
+            pNodeLast->next = pNode->next;
+            
+            insertNode(list, pNode);
+            pNodeLast =  nullptr;;
+            pNode = list->first;
+            
+        } else {
+            pNodeLast = pNode;
+            pNode = pNode->next;
         }
 
 
 
-        pNodeLast = pNode;
-        pNode = pNode->next;
+        printLinkedList(list);
     }
 
+    
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -289,26 +320,19 @@ void appendNode(List *list, const int val) {
     pNode->next = appNode;
 }
 
-void printLinkedList(const List *list) {
-    cout << "printing list" << endl;
-    Node *pNode = list->first;
-    while(pNode != nullptr) {
-        cout << pNode->data << " ";
-        pNode = pNode->next;
-    }
-    cout << endl;
-}
+
 
 
 int main() {
+
+    // printArray(nums02, 6);
+
+    // 3.1 fixed, not tested yet
     // int *numsEmpty;
     // int numsOne[] = {1};
     // int nums01[] = {1,3,2};
     // int nums02[] = {1,2,2,1};
 
-    // printArray(nums02, 6);
-
-    // 3.1
     // insertionSort(numsEmpty, 0);
     // insertionSort(numsOne, 1);
     // insertionSort(nums01, 3);
@@ -319,7 +343,7 @@ int main() {
     // printArray(nums01, 3);
     // printArray(nums02, 4);
 
-    // 3.2
+    // done 3.2 -> 0.8b
     // const char *mena01[] = {"Juraj", "Peter", "Andrej", nullptr};
     // const char *mena02[] = {"Juraj", "Anabela", "Peter", "Andrej", nullptr};
     // const char *mena03[] = {"Andrej", "Juraj", "Andrej", nullptr};
@@ -341,7 +365,7 @@ int main() {
     appendNode(list, 2);
     appendNode(list, 2);
     appendNode(list, 1);
-
+    
     printLinkedList(list);
     insertionSort(list);
     printLinkedList(list);
