@@ -159,16 +159,16 @@ void printLinkedList(const List *list) {
 }
 
 void insertNode(List *sortedList, Node *node) {
-    Node *pNode = sortedList->first;
+    Node *pNode = node;
 
-    if (node->data < pNode->data) {
+    if (node->data > pNode->data) {
         node->next = pNode;
         sortedList->first = node;
         return;
     }
 
     while (pNode->next != nullptr) {
-        if (node->data < pNode->next->data) {
+        if (node->data >= pNode->next->data) {
             node->next = pNode->next;
             pNode->next = node;
             return;
@@ -185,20 +185,14 @@ void insertionSort(List * list) {
     Node *pNode = list->first;
     Node *pNodeLast = nullptr;
 
-    while (pNode != nullptr) {
-        if (pNodeLast == nullptr && pNode->data > pNode->next->data) {
+    while (pNode->next != nullptr) {
+        if (pNodeLast == nullptr && pNode->data < pNode->next->data) {
             list->first = pNode->next;
             insertNode(list, pNode);
             pNode = list->first;
             pNodeLast=nullptr;
 
-        } else if (pNode->next == nullptr) {
-            pNodeLast->next = nullptr;
-
-            insertNode(list, pNode);
-            break;
-
-        } else if (pNode->data > pNode->next->data) {
+        } else if (pNode->data < pNode->next->data) {
             pNodeLast->next = pNode->next;
             
             insertNode(list, pNode);
@@ -210,13 +204,81 @@ void insertionSort(List * list) {
             pNode = pNode->next;
         }
 
+    }
+}
 
 
-        printLinkedList(list);
+
+
+
+
+
+
+
+
+
+
+void printArray(const int *array, const size_t length) {
+    for (size_t i = 0; i < length; i++) {
+        cout  << array[i] << " ";
+    }
+    cout << endl;
+}
+
+void mergeReverse(int array[], int const left, int const mid, int const right) {
+    int arrayL = mid - left + 1;
+    int arrayR = right - mid;
+
+    int *leftArray = new int[arrayL];
+    int *rightArray = new int[arrayR];
+ 
+    for (int i = 0; i < arrayL; i++)
+        leftArray[i] = array[left + i];
+    for (int j = 0; j < arrayR; j++)
+        rightArray[j] = array[mid + 1 + j];
+ 
+    int ioArrayL = 0, ioArrayR = 0; 
+    int ioArray = left;
+ 
+    while (ioArrayL < arrayL && ioArrayR < arrayR) {
+        if (leftArray[ioArrayL] >= rightArray[ioArrayR]) {
+            array[ioArray] = leftArray[ioArrayL];
+            ioArrayL++;
+        }
+        else {
+            array[ioArray] = rightArray[ioArrayR];
+            ioArrayR++;
+        }
+        ioArray++;
     }
 
-    
+    while (ioArrayL < arrayL) {
+        array[ioArray] = leftArray[ioArrayL];
+        ioArrayL++;
+        ioArray++;
+    }
+
+    while (ioArrayR < arrayR) {
+        array[ioArray] = rightArray[ioArrayR];
+        ioArrayR++;
+        ioArray++;
+    }
+
+    delete[] leftArray;
+    delete[] rightArray;
 }
+
+void mergeSort_Reverse(int array[], int const left, int const right)
+{
+    if (left >= right)
+        return;
+ 
+    int middle = left + (right - left) / 2;
+    mergeSort_Reverse(array, left, middle);
+    mergeSort_Reverse(array, middle + 1, right);
+    mergeReverse(array, left, middle, right);
+}
+
 
 //-------------------------------------------------------------------------------------------------
 // 4. ULOHA (0.8 bodu)
@@ -249,7 +311,10 @@ void insertionSort(List * list) {
         output po vykonani funkcie:    (20, 20, 20, 20,  8,  7,  5,  4,  2,  2,  1,  0, 20, 20, 20, 20)
 */
 void mergeNeighbours(int *output, const int *input, const size_t low, const size_t middle, const size_t high) {
-    // TODO
+    for (size_t i = low; i < high; i++) {
+        output[i] = input[i];
+    }
+    mergeSort_Reverse(output, low, high-1);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -280,8 +345,10 @@ void mergeNeighbours(int *output, const int *input, const size_t low, const size
 */
 // void mergeSort(int *arrayA, int *arrayB, const size_t low, const size_t high) { // Priklad deklaracie rekurzivnej funkcie, v pripade pristupu top-down
 // }
+
+
 void mergeSort(int *data, const size_t length) {
-    // TODO
+    mergeSort_Reverse(data, 0, length-1);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -290,12 +357,7 @@ void mergeSort(int *data, const size_t length) {
 
 // tu mozete doplnit pomocne funkcie a struktury
 
-void printArray(const int *array, const size_t length) {
-    for (size_t i = 0; i < length; i++) {
-        cout  << array[i] << " ";
-    }
-    cout << "X" << endl;
-}
+
 
 void printArray(const char *data[]) {
     size_t i = 0;
@@ -326,8 +388,9 @@ void appendNode(List *list, const int val) {
 int main() {
 
     // printArray(nums02, 6);
+    // ! asdas
 
-    // 3.1 fixed, not tested yet
+    // done 3.1 -> 0.8b
     // int *numsEmpty;
     // int numsOne[] = {1};
     // int nums01[] = {1,3,2};
@@ -359,18 +422,47 @@ int main() {
     // printArray(mena03);
     // printArray(mena04);
 
-    // 3.3
-    struct List *list = new List {nullptr};
-    appendNode(list, 1);
-    appendNode(list, 2);
-    appendNode(list, 2);
-    appendNode(list, 1);
+    // done 3.3 -> 0.8b
+    // struct List *list = new List {nullptr};
+    // appendNode(list, 1);
+    // appendNode(list, 2);
+    // appendNode(list, 2);
+    // appendNode(list, 1);
     
-    printLinkedList(list);
-    insertionSort(list);
-    printLinkedList(list);
+    // printLinkedList(list);
+    // insertionSort(list);
+    // printLinkedList(list);
 
-    // 3.4
-    // 3.5
+    // done 3.4 -> 0.8b
+    // int arrayInput[16] = {10, 10, 10, 10,  7,  5,  2,  0,  8,  4,  2,  1, 10, 10, 10, 10};
+    // int arrayOutput[16] = {20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20};
+    // printArray(arrayInput, 16);
+    // printArray(arrayOutput, 16);
+    // mergeNeighbours(arrayOutput, arrayInput, 4, 8, 12);
+    // printArray(arrayOutput, 16);
+
+
+    // working-on 3.5 -> 0.7b alokacia a dealokacia pomocneho pola
+    // int array01[7] = {1,2,3,4,5,6,7};
+    // int array02[6] = {8,5,2,3,9,1};
+    // int array03[6] = {1, 3, 2};
+    // int array04[6] = {1, 2, 2, 1};
+    // int arrayOne[6] = {1};
+    // int arrayEmpty[6] = {};
+    // // mergeSort(array01, 7);
+    // // mergeSort(array02, 6);
+    // mergeSort(array03, 3);
+    // mergeSort(array04, 4);
+    // mergeSort(arrayEmpty, 0);
+    // mergeSort(arrayOne, 1);
+
+    // printArray(array03, 3);
+    // printArray(array04, 4);
+    // printArray(arrayOne, 1);
+    // printArray(arrayEmpty, 0);
+
+    // printArray(array01, 7);
+    // printArray(array02, 6);
+
     return 0;
 }

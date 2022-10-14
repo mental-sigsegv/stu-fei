@@ -588,7 +588,7 @@ void printLinkedList(const List *list) {
 
 
 int main() {
-    struct List *list = new List {nullptr};
+    // struct List *list = new List {nullptr};
     // struct List *list2 = new List {nullptr};
     
     // done 2.1. -> 0.4b
