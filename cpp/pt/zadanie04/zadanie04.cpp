@@ -1,5 +1,5 @@
 /*
-Meno a priezvisko:
+Meno a priezvisko: Martin Klacik
 
 POKYNY:
 (1)  Implementujte funkcie tak, aby splnali popis pri ich deklaraciach.
@@ -52,7 +52,27 @@ struct Weight {
         () -> ()
 */
 void bubbleSort(int *data, const size_t length) {
-    // TODO
+    if (length == 0 || length == 1) return;
+    
+    bool flag = true;
+    size_t i = 0;
+    while (1) {
+
+        if (data[i] < data[i+1]) {
+            int tmp = data[i];
+            data[i] = data[i+1];
+            data[i+1] = tmp;
+            flag = false;
+        }
+
+        if (i == length-2) {
+            i = 0;
+            if (flag) return;
+            flag = true;
+        } else {
+            i++;
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -88,8 +108,40 @@ void bubbleSort(int *data, const size_t length) {
         Weight baliky[] = {{10, 1}, {20, 2}, {5,2}};
         Weight baliky[] = {{.product = 10, .packing = 1}, {.product = 20, .packing = 2}, {.product = 5, .packing = 2}}; // od C++ 20
 */
+
+void print(Weight *data, const size_t length) {
+    for (size_t i = 0; i < length; i++) {
+        cout << "{" << data[i].product << ", " << data[i].packing << "} ";
+    }
+    cout << endl;
+}
+
+int getWeight(Weight balik) {
+    return balik.product + balik.packing;
+}
+
 void bubbleSort(Weight *data, const size_t length) {
-    // TODO
+    if (length == 0 || length == 1) return;
+    
+    bool flag = true;
+    size_t i = 0;
+    while (1) {
+
+        if (getWeight(data[i]) < getWeight(data[i+1])) {
+            Weight tmp = data[i];
+            data[i] = data[i+1];
+            data[i+1] = tmp;
+            flag = false;
+        }
+
+        if (i == length-2) {
+            i = 0;
+            if (flag) return;
+            flag = true;
+        } else {
+            i++;
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -128,8 +180,16 @@ void bubbleSort(Weight *data, const size_t length) {
 */
 size_t getPivotIndex(const int *data, const size_t low, const size_t high)
 {
-    // TODO
-    return ~0; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    size_t a = data[low];
+    size_t b = data[(high+low)/2];
+    size_t c = data[high-1];
+
+    if (a < b && b < c)
+        return (high+low)/2;
+    else if (b < a && a < c)
+        return low;
+    else
+        return high-1;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -201,9 +261,72 @@ void quickSort(int *data, const size_t low, const size_t high)
 
 // tu mozete doplnit pomocne funkcie a struktury
 
+void print(int *data, const size_t length) {
+    for (size_t i = 0; i < length; i++) {
+        cout << data[i] << " ";
+    }
+    cout << endl;
+}
+
 int main() {
 
-    // tu mozete doplnit testovaci kod
+    // 4.1
+    // int data01[] = {1,3,2};
+    // int data02[] = {1,2,2,1};
+    // int data03[] = {1};
+    // int *data04;
+
+    // bubbleSort(data01, 3);  
+    // bubbleSort(data02, 4); 
+    // bubbleSort(data03, 1);  
+    // bubbleSort(data04, 0);
+
+    // print(data01, 3);  
+    // print(data02, 4);  
+    // print(data03, 1); 
+    // print(data04, 0); 
+    
+
+    // 4.2
+    // Weight baliky01[] = {{10, 1}, {20, 2}, {5,2}};
+    // Weight baliky02[] = {{10, 1}, {20, 2}, {5, 2}};
+    // Weight baliky03[] = {{11, 1}, {2, 1}, {10, 2}, {15, 7}};
+
+    // bubbleSort(baliky01, 3);
+    // bubbleSort(baliky02, 3);
+    // bubbleSort(baliky03, 4);
+
+    // print(baliky01, 3);
+    // print(baliky02, 3);
+    // print(baliky03, 4);
+
+    // 4.3
+    // int data01[] = {10, 20, 2000, 30, 1000, 40, 5000, 50, 60, 70};
+    // int data02[] = {10, 20, 1000, 30, 2000, 40, 5000, 50, 60, 70};
+    // int data03[] = {10, 20, 5000, 30, 1000, 40, 2000, 50, 60, 70};
+
+    // int data04[] = {10, 20, 1000, 30, 40, 2000, 50, 5000, 60, 70};
+
+    // int data05[] = {10, 20, 1000, 2000, 30, 40, 50};
+    // int data06[] = {10, 20, 2000, 1000, 30, 40, 50};
+
+    // int data07[] = {10, 20, 1000, 30, 40};
+
+    // cout << getPivotIndex(data01, 2, 7) << endl;
+    // cout << getPivotIndex(data02, 2, 7) << endl;
+    // cout << getPivotIndex(data03, 2, 7) << endl;
+
+    // cout << getPivotIndex(data04, 2, 8) << endl;
+
+    // cout << getPivotIndex(data05, 2, 4) << endl;
+    // cout << getPivotIndex(data06, 2, 4) << endl;
+
+    // cout << getPivotIndex(data07, 2, 3) << endl;
+
+    // 4.4
+
+    
+    // 4.5
 
     return 0;
 }
