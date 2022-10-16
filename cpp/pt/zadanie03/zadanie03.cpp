@@ -441,7 +441,7 @@ int main() {
     // printArray(arrayOutput, 16);
 
 
-    // working-on 3.5 -> 0.7b alokacia a dealokacia pomocneho pola
+    // done 3.5 -> 0.7b alokacia a dealokacia pomocneho pola
     // int array01[7] = {1,2,3,4,5,6,7};
     // int array02[6] = {8,5,2,3,9,1};
     // int array03[6] = {1, 3, 2};
