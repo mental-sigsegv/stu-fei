@@ -180,16 +180,19 @@ void bubbleSort(Weight *data, const size_t length) {
 */
 size_t getPivotIndex(const int *data, const size_t low, const size_t high)
 {
-    size_t a = data[low];
-    size_t b = data[(high+low)/2];
-    size_t c = data[high-1];
+    int a = data[low];
+    int b = data[(high+low)/2];
+    int c = data[high-1];
 
-    if (a < b && b < c)
+    if (((a <= b) && (b <= c)) || ((a >= b) && (b >= c))) {
         return (high+low)/2;
-    else if (b < a && a < c)
+    }
+    else if (((b <= a) && (a <= c)) || ((b >= a) && (a >= c))) {
         return low;
-    else
+    }
+    else {
         return high-1;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -225,10 +228,37 @@ size_t getPivotIndex(const int *data, const size_t low, const size_t high)
             vstup:  data: (10, 20, 30, 40, 50, 60, 70, 50, 80, 90), pivot: 4, low: 2, high: 8
             vystup: data: (10, 20, 50, 60, 70, 50, 30, 40, 80, 90), return 5
 */
+
+void print(int *data, int len) {
+    for (int i = 0; i < len; i++) {
+        cout << data[i] << " ";
+    }
+    cout << endl;
+}
+
+void swap(int *data, size_t a, size_t b) {
+    int tmp = data[a];
+    data[a] = data[b];
+    data[b] = tmp;
+}
+
 size_t partition(int *data, const size_t pivot, const size_t low, const size_t high)
 {
-    // TODO
-    return ~0; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    size_t i=low, j=low;
+
+    swap(data, pivot, high - 1);
+
+    while (j < high - 1) {
+        if (data[j] < data[high-1]) {
+            j++;
+        } else {
+            swap(data, i, j);
+            i++;
+            j++;
+        }
+    }
+    swap(data, i ,high-1);
+    return i;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -252,7 +282,14 @@ size_t partition(int *data, const size_t pivot, const size_t low, const size_t h
 */
 void quickSort(int *data, const size_t low, const size_t high)
 {
-    // TODO
+    int pivot = getPivotIndex(data, low, high);
+    pivot = partition(data, pivot, low, high);
+    if (pivot - low > 1) {
+        quickSort(data, low, pivot);
+    }
+    if (high - 1 - pivot > 1) {
+        quickSort(data, pivot + 1, high);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -270,7 +307,7 @@ void print(int *data, const size_t length) {
 
 int main() {
 
-    // 4.1
+    // done 4.1 -> 0.8
     // int data01[] = {1,3,2};
     // int data02[] = {1,2,2,1};
     // int data03[] = {1};
@@ -287,7 +324,7 @@ int main() {
     // print(data04, 0); 
     
 
-    // 4.2
+    // done 4.2 -> 0.8
     // Weight baliky01[] = {{10, 1}, {20, 2}, {5,2}};
     // Weight baliky02[] = {{10, 1}, {20, 2}, {5, 2}};
     // Weight baliky03[] = {{11, 1}, {2, 1}, {10, 2}, {15, 7}};
@@ -300,7 +337,7 @@ int main() {
     // print(baliky02, 3);
     // print(baliky03, 4);
 
-    // 4.3
+    // done 4.3 -> 0.8
     // int data01[] = {10, 20, 2000, 30, 1000, 40, 5000, 50, 60, 70};
     // int data02[] = {10, 20, 1000, 30, 2000, 40, 5000, 50, 60, 70};
     // int data03[] = {10, 20, 5000, 30, 1000, 40, 2000, 50, 60, 70};
@@ -323,10 +360,22 @@ int main() {
 
     // cout << getPivotIndex(data07, 2, 3) << endl;
 
-    // 4.4
+    // done 4.4 -> 0.8
+    // int data01[] = {10, 20, 30, 40, 50, 60, 70, 80, 90};
+    // int data02[] = {10, 20, 30, 40, 50, 60, 70, 50, 80, 90};
 
-    
-    // 4.5
+    // cout << partition(data01, 5, 2, 7) << endl;
+    // cout << partition(data02, 4, 2, 8) << endl;
+
+    // print(data01, 9);
+    // print(data02, 10);
+
+    // done 4.5 -> 0.8
+    // int data01[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    // quickSort(data01, 2, 7);
+
+    // print(data01, 9);
 
     return 0;
 }

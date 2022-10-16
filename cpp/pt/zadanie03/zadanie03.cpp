@@ -388,7 +388,6 @@ void appendNode(List *list, const int val) {
 int main() {
 
     // printArray(nums02, 6);
-    // ! asdas
 
     // done 3.1 -> 0.8b
     // int *numsEmpty;

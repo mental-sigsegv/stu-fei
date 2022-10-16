@@ -9,6 +9,8 @@
                 "c++17",
                 "-fdiagnostics-color=always",
                 "-g",
+                "-Wall",
+                "-Wextra",
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
