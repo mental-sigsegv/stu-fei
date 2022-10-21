@@ -53,9 +53,31 @@ using namespace std;
         vstup:  data = (3, 4, 10, 5), addIndex = 0
         vystup: data = (3, 4, 10, 5)
 */
-void siftUp(int data[], const size_t addIndex)
-{
-    
+
+void print(int data[], int length) {
+    for (int i=0; i< length; i++) {
+        cout << data[i] << " ";
+    }
+    cout << endl;
+}
+
+
+void swap(int data[], const int indexA, const int indexB) {
+    int tmp = data[indexA];
+    data[indexA] = data[indexB];
+    data[indexB] = tmp;
+}
+
+void siftUp(int data[], const size_t addIndex) {
+    int currentIndex = addIndex;
+    if (currentIndex == 0) return;
+
+    while (currentIndex > 0) {
+        int previousIndex = (currentIndex+1)/2 - 1;
+        if (data[currentIndex] >= data[previousIndex]) return;
+        swap(data, currentIndex, previousIndex);
+        currentIndex = previousIndex;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -182,8 +204,22 @@ void heapSort(int data[], const size_t length)
 // tu mozete doplnit pomocne testovacie funkcie a struktury
 
 int main() {
+    // 5.1
+    int data01[] = {2, 4, 10, 7, 1, 2, 5, 0, 3, -1, 11, 12, 1};
+    int data02[] = {3, 4, 10, 5, 5, 11, 15, 7, 8, 9, 10, 14,  8, 1, 2};
+    int data03[] = {3, 4, 10, 5};
 
-    // tu mozete doplnit testovaci kod
+    siftUp(data01, 4);
+    siftUp(data02, 12);
+    siftUp(data03, 0);
 
+    print(data01, 13);
+    print(data02, 15);
+    print(data03, 4);
+
+    // 5.2
+    // 5.3
+    // 5.4
+    // 5.5
     return 0;
 }
