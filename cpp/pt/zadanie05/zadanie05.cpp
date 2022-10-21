@@ -105,7 +105,9 @@ void siftUp(int data[], const size_t addIndex) {
 */
 void buildHeapSiftUp(int data[], const size_t length)
 {
-    // TODO
+    for (size_t i = 0; i<length; i++) {
+        siftUp(data, i);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -137,9 +139,43 @@ void buildHeapSiftUp(int data[], const size_t length)
         vstup:  data = (100, 8, 2, 1, 0, 5, 6, 7, 4, 2, 3, 11, 12, 13, 14, 15, 16, 17), topIndex = 1, length = 18
         vystup: data = (100, 0, 2, 1, 2, 5, 6, 7, 4, 8, 3, 11, 12, 13, 14, 15, 16, 17)
 */
+
+bool isLower(int data[], int child, int parent) {
+    if ((data[child] < data[parent]) || (data[child+1] < data[parent])) return true;
+    return false;
+}
+
+int getLowerIndex(const int data[], int child) {
+    return (data[child] < data[child+1]) ? child : child+1;
+}
+
+bool isParentBranch(int parent, int topIndex) {
+    while (parent > topIndex) {
+        parent /= 2;
+    }
+    return (parent == topIndex) ? true : false;
+}
+
 void siftDown(int data[], const size_t topIndex, const size_t length)
 {
-    // TODO
+    for (size_t parent = topIndex; parent < length; parent++) {
+        if (isParentBranch(parent, topIndex)) {
+            while ((parent+1)*2-1 < length) {
+                size_t leftChild = (parent+1)*2 - 1;
+                size_t rightChild = (parent+1)*2;
+
+                if ((rightChild < length) && isLower(data, leftChild, parent)) {
+                    swap(data, parent, getLowerIndex(data, leftChild));
+                    parent = getLowerIndex(data, leftChild);
+                } else if (data[leftChild] < data[parent]) {
+                    swap(data, leftChild, parent);
+                    parent = leftChild;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -167,7 +203,9 @@ void siftDown(int data[], const size_t topIndex, const size_t length)
 */
 void buildHeapSiftDown(int data[], const size_t length)
 {
-    // TODO
+    for (size_t i = 0; i < length; i++) {
+        siftDown(data, i, length);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -192,9 +230,11 @@ void buildHeapSiftDown(int data[], const size_t length)
         vstup:  data = (7, 2, 1, 2, 8, 5, 3, 4, 2, 2, 6), length = 11
         vystup: data = (8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 1)
 */
+
+
 void heapSort(int data[], const size_t length)
 {
-    // TODO
+    return;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -204,22 +244,49 @@ void heapSort(int data[], const size_t length)
 // tu mozete doplnit pomocne testovacie funkcie a struktury
 
 int main() {
-    // 5.1
-    int data01[] = {2, 4, 10, 7, 1, 2, 5, 0, 3, -1, 11, 12, 1};
-    int data02[] = {3, 4, 10, 5, 5, 11, 15, 7, 8, 9, 10, 14,  8, 1, 2};
-    int data03[] = {3, 4, 10, 5};
+    // done 5.1 -> 0.8b
+    // int data01[] = {2, 4, 10, 7, 1, 2, 5, 0, 3, -1, 11, 12, 1};
+    // int data02[] = {3, 4, 10, 5, 5, 11, 15, 7, 8, 9, 10, 14,  8, 1, 2};
+    // int data03[] = {3, 4, 10, 5};
 
-    siftUp(data01, 4);
-    siftUp(data02, 12);
-    siftUp(data03, 0);
+    // siftUp(data01, 4);
+    // siftUp(data02, 12);
+    // siftUp(data03, 0);
 
-    print(data01, 13);
-    print(data02, 15);
-    print(data03, 4);
+    // print(data01, 13);
+    // print(data02, 15);
+    // print(data03, 4);
 
-    // 5.2
-    // 5.3
-    // 5.4
-    // 5.5
+    // done 5.2 -> 0.8b
+    // int data04[] = {7, 2, 1, 2, 8, 5, 3, 4, 2, 2, 6};
+
+    // buildHeapSiftUp(data04, 11);
+
+    // print(data04, 11);
+
+    // working-on 5.3 -> 0b
+    int data05[] = {55, 20, 10, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140};
+    int data06[] = {100, 8, 2, 1, 0, 5, 6, 7, 4, 2, 3, 11, 12, 13, 14, 15, 16, 17};
+
+    siftDown(data05, 0, 15);
+    siftDown(data06, 1, 18);
+
+    print(data05, 15);
+    print(data06, 18);
+    
+    // working-on 5.4 -> 0b
+    // int data07[] = {7, 2, 1, 2, 8, 5, 3, 4, 2, 2, 6};
+
+    // buildHeapSiftDown(data07, 11);
+
+    // print(data07, 11);
+
+    // not-done 5.5
+    // int data08[] = {7, 2, 1, 2, 8, 5, 3, 4, 2, 2, 6};
+    
+    // heapSort(data08, 11);
+    
+    // print(data08, 11);
+
     return 0;
 }
