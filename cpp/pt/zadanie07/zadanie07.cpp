@@ -1,5 +1,5 @@
 /*
-Meno a priezvisko:
+Meno a priezvisko: Martin Klacik
 
 POKYNY:
 (1)  Implementujte funkcie tak, aby splnali popis pri ich deklaraciach.
@@ -29,6 +29,15 @@ POKYNY:
 
 using namespace std;
 
+void print(queue<int> q) {
+    cout << endl;
+    size_t size = q.size();
+    for (size_t i = 0; i < size; i++) {
+        cout << q.front() << " ";
+        q.pop();
+    }
+}
+
 //-------------------------------------------------------------------------------------------------
 // 1. ULOHA (0.4 bodu)
 //-------------------------------------------------------------------------------------------------
@@ -46,8 +55,11 @@ using namespace std;
 */
 
 queue<int> reverse(const list<int> & data) noexcept {
-    // TODO
-    return queue<int>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    queue<int> newQueue;
+    for (list<int>::const_reverse_iterator it = data.rbegin(); it != data.rend(); it++) {
+        newQueue.emplace(*it);
+    }
+    return newQueue; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -65,7 +77,20 @@ queue<int> reverse(const list<int> & data) noexcept {
 */
 
 void reverse(queue<int> & data) noexcept {
-    // TODO
+    stack<int> sData;
+
+    size_t s = data.size();
+    for (size_t x=0; x<s; x++) {
+        sData.push(data.front());
+        data.pop();
+    }
+    
+     for (size_t x=0; x<s; x++) {
+        data.push(sData.top());
+        sData.pop();
+    }
+
+    // print(data);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -92,8 +117,18 @@ void reverse(queue<int> & data) noexcept {
 */
 
 vector<vector<int>> create2dVector(const size_t size1, const size_t size2, const int value) noexcept {
-    // TODO
-    return vector<vector<int>>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    vector<vector<int>> matrix;
+    vector<int> dimension;
+
+    for (size_t i = 0; i < size2; i++) {
+        dimension.emplace_back(value);
+    }
+
+    for (size_t i = 0; i < size1; i++) {
+        matrix.emplace_back(dimension);
+    }
+
+    return matrix; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -120,8 +155,7 @@ vector<vector<int>> create2dVector(const size_t size1, const size_t size2, const
 */
 
 string connectWithSpace(const string & text, const int number) noexcept {
-    // TODO
-    return string(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    return text + " " + to_string(number); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -148,8 +182,18 @@ string connectWithSpace(const string & text, const int number) noexcept {
 */
 
 int sum(istringstream & text) noexcept {
-    // TODO
-    return -1; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    int sum = 0;
+    int tmp;
+
+    while (text.good()) {
+        text >> tmp;
+        if (text.fail()) {
+            break;
+        }
+        sum += tmp;
+    }   
+
+    return sum; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -193,8 +237,18 @@ int sum(istringstream & text) noexcept {
 */
 
 list<string> translate(const map<string, string> & translator, const list<string> & sentence) noexcept {
-    // TODO
-    return list<string>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    list<string> result;
+	
+    for (const string &word : sentence) {
+		try {
+			result.push_back(translator.at(word));
+		}
+		catch (const out_of_range &) {
+			result.push_back("?");
+		}
+	}
+
+    return result; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -224,8 +278,31 @@ list<string> translate(const map<string, string> & translator, const list<string
 */
 
 bool areParenthesisPaired(const string & mathExpression) noexcept {
-    // TODO
-    return false; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+	stack<char> brackets;
+    map<char, char> bracketsPairs = {{ ')', '('}, { '}', '{'}, { ']', '['}, { '>', '<'}};
+
+	for (char letter : mathExpression) {
+		switch (letter) {
+            case '(':
+            case '{':
+            case '[':
+            case '<':
+                brackets.push(letter);
+                break;
+
+            case ')':
+            case '}':
+            case ']':
+            case '>':
+                if (brackets.empty() || brackets.top() != bracketsPairs.at(letter)) {
+                    return false;
+                }
+
+                brackets.pop();
+                break;
+        }
+	}
+    return brackets.empty(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -270,8 +347,7 @@ int maxValue(int a, int b) noexcept {
 }
 
 int execute(int (*function)(int, int), int parameter1, int parameter2) {
-    // TODO
-    return -1; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    return function(parameter1, parameter2); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -316,8 +392,27 @@ enum class ExceptionType {
 };
 
 ExceptionType thrownException(void (*function)()) noexcept {
-    // TODO
-    return ExceptionType::NO_EXCEPTION; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    try {
+        function();
+        // cout << "no exc";
+        return ExceptionType::NO_EXCEPTION;
+    }
+
+    catch (const std::invalid_argument & exception) {
+        // cout << "inv exc";
+        return ExceptionType::INVALID_ARGUMENT;
+    }
+
+    catch (const std::bad_alloc & exception) {
+        // cout <<"bad alloc exc";
+        return ExceptionType::BAD_ALLOC;
+    }
+
+    catch (...) {
+        // cout << "idk exc";
+        return ExceptionType::UNKNOWN_EXCEPTION;
+	}
+    // return ExceptionType::NO_EXCEPTION; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -384,8 +479,20 @@ public:
 };
 
 list<int> createList(const list<int>::size_type length, const list<int>::size_type indexOfOne) {
-    // TODO
-    return list<int>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (indexOfOne >= length) {
+		throw IndexOutOfRangeException(length, indexOfOne);
+	}
+
+	list<int> result(length, 0);
+	list<int>::iterator it = result.begin();
+
+	for (list<int>::size_type i = 0; i < indexOfOne; i++) {
+		it++;
+	}
+
+	(*it) = 1;
+
+    return result; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -396,7 +503,49 @@ list<int> createList(const list<int>::size_type length, const list<int>::size_ty
 
 int main() {
 
-    // tu mozete doplnit testovaci kod
+    // done 7.1 -> 0.4b
+    // list<int> list01 = {1,2,3,4,5};
+    // queue<int> qList01;
+    // qList01 = reverse(list01);
+    // print(qList01);
+
+    // done 7.2 -> 0.4b
+    // reverse(qList01);
+
+    // done 7.3 -> 0.4b
+    // create2dVector(2, 5, 10);
+
+    // done 7.4 -> 0.4b
+    // cout << connectWithSpace(" abc ", 10);
+
+    // done 7.5 -> 0.4b
+    // ?
+
+    // done 7.6 -> 0.4b
+    // for (string s : translate({{"read", "citat"},{"write", "pisat"},{"book", "kniha"},{"I", "ja"},{"you", "ty"},{"he", "on"},{"she", "ona"},{"it", "ono"},{"a", ""},{"an", ""},{"the", ""}}, {"I", "am", "reading", "a", "book"})) {
+    //     cout << s << " ";
+    // }
+
+    // done 7.7 -> 0.4b
+    // cout << areParenthesisPaired("ab - (c< d > 1) + {[23 ( [ 45] ) 6] 7} 8 ");
+    // cout << areParenthesisPaired("(");
+    // cout << areParenthesisPaired("())");
+    // cout << areParenthesisPaired("{ >");
+    // cout << areParenthesisPaired("");
+    
+    // done 7.8 -> 0.4b
+    // cout << execute(multiply, 20, 50);
+
+    // done 7.9 -> 0.4b
+    // thrownException(doNotThrow);
+    // thrownException(throwInvalidArgument);
+    // thrownException(throwBadAlloc);
+    // thrownException(throwOutOfRange);
+
+    // done 7.10 -> 0.4b
+    for (int x : createList(5, 1)) {
+        cout << x << " ";
+    }
 
     return 0;
 }
