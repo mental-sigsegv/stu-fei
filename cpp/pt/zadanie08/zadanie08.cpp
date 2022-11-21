@@ -1,5 +1,5 @@
 /*
-Meno a priezvisko:
+Meno a priezvisko: Martin Klacik
 
 POKYNY:
 (1)  Implementujte funkcie tak, aby splnali popis pri ich deklaraciach.
@@ -49,8 +49,13 @@ using namespace std;
 */
 
 double average(const initializer_list<int> & data) {
-    // TODO
-    return -1.0; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (data.size() == 0) {
+        throw std::invalid_argument("inicializacny zoznam je prazdny");
+    } else {
+        double sum = std::accumulate(data.begin(), data.end(), 0);
+        sum /= (double)data.size();
+        return sum; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -72,8 +77,7 @@ double average(const initializer_list<int> & data) {
 */
 
 list<int>::const_iterator findValue(const list<int> & data, int value) noexcept {
-    // TODO
-    return data.cend(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    return std::find(data.cbegin(), data.cend(), value); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -98,8 +102,7 @@ bool isInRange200to400(const int element) noexcept {
 }
 
 list<int>::const_iterator findInRange200to400(const list<int> & data) noexcept {
-    // TODO
-    return data.cend(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    return std::find_if(data.cbegin(), data.cend(), isInRange200to400); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -116,7 +119,7 @@ list<int>::const_iterator findInRange200to400(const list<int> & data) noexcept {
 */
 
 void replace200to400by5(list<int> & data) noexcept {
-    // TODO
+    std::replace_if(data.begin(), data.end(), isInRange200to400, 5);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -137,7 +140,7 @@ int increment(int element) noexcept {
 }
 
 void incrementAll(list<int> & data) noexcept {
-    // TODO
+    std::transform(data.cbegin(), data.cend(), data.begin(), increment);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -180,7 +183,7 @@ int incrementPointsIfItHelps(int points) noexcept {
 }
 
 void helpAfterExam1(list<int> & points) noexcept {
-    // TODO
+    std::transform(points.begin(), points.end(), points.begin(), incrementPointsIfItHelps);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -192,7 +195,9 @@ void helpAfterExam1(list<int> & points) noexcept {
 */
 
 void helpAfterExam2(list<int> & points) noexcept {
-    // TODO
+    for (int & person : points) {
+        person = incrementPointsIfItHelps(person);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -227,8 +232,9 @@ void helpAfterExam2(list<int> & points) noexcept {
 */
 
 list<int> add(const list<int> & data1, const list<int> & data2) noexcept {
-    // TODO
-    return list<int>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    list<int> output(data1.size());
+    std::transform(data1.begin(), data1.end(), data2.begin(), output.begin(), std::plus<int>());
+    return output; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -244,7 +250,7 @@ list<int> add(const list<int> & data1, const list<int> & data2) noexcept {
 */
 
 void sort1(vector<int> & data) noexcept {
-    // TODO
+    std::stable_sort(data.begin(), data.end(), std::greater<int>());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -260,7 +266,7 @@ void sort1(vector<int> & data) noexcept {
 */
 
 void sort2(vector<int> & data) noexcept {
-    // TODO
+    std::stable_sort(data.rbegin(), data.rend(), std::less<int>());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -269,9 +275,72 @@ void sort2(vector<int> & data) noexcept {
 
 // tu mozete doplnit pomocne testovacie funkcie a struktury
 
-int main() {
+void print(list<int> & data) noexcept {
+    for (int x : data) {
+        cout << x << " ";
+    }
+}
 
+void print(vector<int> & data) noexcept {
+    for (int x : data) {
+        cout << x << " ";
+    }
+}
+
+int main() {
     // tu mozete doplnit testovaci kod
+    
+    // done 8.1 -> 0.4b
+    // initializer_list<int> list01 = {0,1,2,3,4,5,6};
+    // cout << average(list01);
+
+    // initializer_list<int> listEmpty;
+    // cout << average(listEmpty);
+
+    // done 8.2 -> 0.4b
+    // list<int> list02 = {0,1,2,3,4,2,6};
+    // cout << *findValue(list02, 2) << endl;
+    // cout << *findValue(list02, 7);
+
+    // done 8.3 -> 0.4b
+    // list<int> list03 = {0,1,200,3,4,2,6};
+    // cout << *findInRange200to400(list03);
+
+    // done 8.4 -> 0.4b
+    // list<int> list04 = {0,1,200,3,4,2,6};
+    // replace200to400by5(list04);
+    // print(list04)
+
+    // done 8.5 -> 0.4b
+    // list<int> list05 = {0,1,200,3,4,2,6};
+    // incrementAll(list05);
+    // print(list05); 
+
+    // done 8.6 -> 0.4b
+    // list<int> list06 = { 100, 90, 91, 92, 93, 53, 54, 55, 56, 57, 91, 92 };
+    // helpAfterExam1(list06);
+    // print(list06);
+
+    // done 8.7 -> 0.4b
+    // list<int> list07 = { 100, 90, 91, 92, 93, 53, 54, 55, 56, 57, 91, 92 };
+    // helpAfterExam2(list07);
+    // print(list07);
+
+    // done 8.8 -> 0.4b
+    // list<int> data1 = { 2, 1, 1, 4, 5 };
+    // list<int> data2 = { 1, 0, 4, 6, 2 };
+    // list<int> data3 = add(data1, data2);
+    // print(data3);
+
+    // done 8.9 -> 0.4b
+    // vector<int> vector01 = {1,4,5,6,2};
+    // sort1(vector01);
+    // print(vector01);
+
+    // done 8.10 -> 0.4b
+    vector<int> vector02 = {1,4,5,6,2};
+    sort2(vector02);
+    print(vector02);
 
     return 0;
 }
