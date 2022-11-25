@@ -338,9 +338,9 @@ int main() {
     // print(vector01);
 
     // done 8.10 -> 0.4b
-    vector<int> vector02 = {1,4,5,6,2};
-    sort2(vector02);
-    print(vector02);
+    // vector<int> vector02 = {1,4,5,6,2};
+    // sort2(vector02);
+    // print(vector02);
 
     return 0;
 }
