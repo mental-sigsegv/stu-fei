@@ -1,5 +1,5 @@
 /*
-Meno a priezvisko:
+Meno a priezvisko: Martin Klacik
 
 POKYNY:
 (1)  Implementujte funkcie tak, aby splnali popis pri ich deklaraciach.
@@ -82,8 +82,18 @@ class ValueNotExistsException : public std::exception {
 */
 
 int min(const BinarySearchTree *tree) {
-    // TODO
-    return -1; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (tree->root == nullptr) {
+        throw ValueNotExistsException();
+    }
+    int minimum = tree->root->value;
+    Node *pRootNode = tree->root;
+
+    while (pRootNode) {
+        minimum = pRootNode->value;
+        pRootNode = pRootNode->smaller;
+    }
+
+    return minimum; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -106,8 +116,27 @@ int min(const BinarySearchTree *tree) {
 */
 
 unsigned depth(const BinarySearchTree *tree, int value) {
-    // TODO
-    return 0; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    unsigned deep  = 0;
+    Node *pRootNode = tree->root;
+
+    if (pRootNode->value == value)
+        return deep;
+
+    while (pRootNode) {
+        if (pRootNode->value > value) {
+            deep++;
+            pRootNode = pRootNode->smaller;
+        } else if (pRootNode->value < value) {
+            deep++;
+            pRootNode = pRootNode->greater;
+        } else {
+            return deep;
+        }
+    }
+
+    throw ValueNotExistsException();
+
+    // return 0; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -144,8 +173,23 @@ unsigned depth(const BinarySearchTree *tree, int value) {
 */
 
 list<int> path(const BinarySearchTree *tree, int value) noexcept {
-    // TODO
-    return list<int>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    list<int> values;
+
+    Node *pRootNode = tree->root;
+
+    while (pRootNode) {
+        if (pRootNode->value > value) {
+            pRootNode = pRootNode->smaller;
+        } else if (pRootNode->value < value) {
+            pRootNode = pRootNode->greater;
+        } else {
+            return values;
+        }
+
+        values.push_back(pRootNode->value);
+    }
+
+    return values; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -160,10 +204,18 @@ list<int> path(const BinarySearchTree *tree, int value) noexcept {
     NAVRATOVA HODNOTA:
         pocet uzlov stromu
 */
+size_t countRecursive(Node *root, int value) {
+    if (root) {
+        value++;
+        value = countRecursive(root->smaller, value);
+        value = countRecursive(root->greater, value);
+    }
+
+    return value;
+}
 
 size_t count(const BinarySearchTree *tree) noexcept {
-    // TODO
-    return 0; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    return countRecursive(tree->root, 0); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -182,9 +234,19 @@ size_t count(const BinarySearchTree *tree) noexcept {
         hodnoty uzlov, v poradi od najmensej po najvacsiu
 */
 
+list<int> allRecursive(const Node* node, list<int> tmp) {
+    if (node) {
+        tmp = allRecursive(node->smaller, tmp);
+        tmp.push_back(node->value);
+        tmp = allRecursive(node->greater, tmp);
+    }
+
+    return tmp;
+}
+
 list<int> all(const BinarySearchTree *tree) noexcept {
-    // TODO
-    return list<int>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    list<int> result;
+    return allRecursive(tree->root, result); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -201,9 +263,19 @@ list<int> all(const BinarySearchTree *tree) noexcept {
         pocet uzlov s hodnotou vacsou ako 'value'
 */
 
+size_t countGreaterRecursive(const Node *node, size_t counter, int compareValue) {
+    if (node) {
+        if (node->value > compareValue) {
+            counter++;
+        }
+        counter = countGreaterRecursive(node->smaller, counter, compareValue);
+        counter = countGreaterRecursive(node->greater, counter, compareValue);
+    }
+    return counter;
+}
+
 size_t countGreater(const BinarySearchTree *tree, int value) noexcept {
-    // TODO
-    return 0; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    return countGreaterRecursive(tree->root, 0, value) ; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -222,8 +294,17 @@ size_t countGreater(const BinarySearchTree *tree, int value) noexcept {
         'tree->root' je nulovy smernik
 */
 
+void clearRecursive(Node * node) {
+    if (node) {
+        clearRecursive(node->smaller);
+        clearRecursive(node->greater);
+        delete node;
+    }
+}
+
 void clear(BinarySearchTree *tree) noexcept {
-    // TODO
+    clearRecursive(tree->root);
+    tree->root = nullptr;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -258,8 +339,29 @@ void clear(BinarySearchTree *tree) noexcept {
 */
 
 unsigned contains(const vector<int> & data, int value) noexcept {
-    // TODO
-    return 0; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (data.size() == 0)
+        return 0;
+
+    unsigned counter = 1;
+    auto low = data.begin();
+    auto up = data.end() - 1;
+
+    while (low <= up) {
+       auto mid = low + (up - low)/2;
+
+       if (value == *mid) {
+           return counter;
+       }
+
+       if (value < *mid) {
+           up = mid - 1;
+           counter++;
+       } else if(value>*mid) {
+           low = mid + 1;
+           counter++;
+       }
+    }
+    return counter; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -294,8 +396,19 @@ unsigned contains(const vector<int> & data, int value) noexcept {
 */
 
 map<string, size_t> histogram(const vector<string> & data) noexcept {
-    // TODO
-    return map<string, size_t>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    map<string, size_t> result;
+    for (const string &word : data) {
+        try {
+            int value = result.at(word);
+            value++;
+            result.erase(word);
+            result.insert({word, value});
+        } catch (const out_of_range &) {
+            result.insert({word, 0});
+        }
+    }
+
+    return result; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -330,8 +443,22 @@ map<string, size_t> histogram(const vector<string> & data) noexcept {
 */
 
 map<string, set<size_t>> index(const vector<string> & data) noexcept {
-    // TODO
-    return map<string, set<size_t>>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    map<string, set<size_t>> result;
+    int index = 0;
+    for (const string &word : data) {
+        try {
+            set<size_t> values = result.at(word);
+            values.insert(index);
+            result.erase(word);
+            result.insert({word, values});
+        } catch (const out_of_range &) {
+            set<size_t> tmp;
+            tmp.insert(index);
+            result.insert({word, tmp});
+        }
+        index++;
+    }
+    return result; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
