@@ -119,6 +119,9 @@ unsigned depth(const BinarySearchTree *tree, int value) {
     unsigned deep  = 0;
     Node *pRootNode = tree->root;
 
+    if (!pRootNode)
+        throw ValueNotExistsException();
+
     if (pRootNode->value == value)
         return deep;
 
@@ -179,14 +182,15 @@ list<int> path(const BinarySearchTree *tree, int value) noexcept {
 
     while (pRootNode) {
         if (pRootNode->value > value) {
+            values.push_back(pRootNode->value);
             pRootNode = pRootNode->smaller;
         } else if (pRootNode->value < value) {
+            values.push_back(pRootNode->value);
             pRootNode = pRootNode->greater;
         } else {
+            values.push_back(pRootNode->value);
             return values;
         }
-
-        values.push_back(pRootNode->value);
     }
 
     return values; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
@@ -275,7 +279,9 @@ size_t countGreaterRecursive(const Node *node, size_t counter, int compareValue)
 }
 
 size_t countGreater(const BinarySearchTree *tree, int value) noexcept {
-    return countGreaterRecursive(tree->root, 0, value) ; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    if (!tree->root)
+        return 0;
+    return countGreaterRecursive(tree->root->smaller, 0, value) + countGreaterRecursive(tree->root->greater, 0, value) ; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -356,7 +362,7 @@ unsigned contains(const vector<int> & data, int value) noexcept {
        if (value < *mid) {
            up = mid - 1;
            counter++;
-       } else if(value>*mid) {
+       } else if(value > *mid) {
            low = mid + 1;
            counter++;
        }
@@ -399,10 +405,8 @@ map<string, size_t> histogram(const vector<string> & data) noexcept {
     map<string, size_t> result;
     for (const string &word : data) {
         try {
-            int value = result.at(word);
-            value++;
-            result.erase(word);
-            result.insert({word, value});
+            auto mapExtract = result.extract(word);
+            mapExtract.key() = result.at(word)++;
         } catch (const out_of_range &) {
             result.insert({word, 0});
         }
