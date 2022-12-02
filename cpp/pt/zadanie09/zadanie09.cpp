@@ -266,22 +266,31 @@ list<int> all(const BinarySearchTree *tree) noexcept {
     NAVRATOVA HODNOTA:
         pocet uzlov s hodnotou vacsou ako 'value'
 */
-
-size_t countGreaterRecursive(const Node *node, size_t counter, int compareValue) {
-    if (node) {
-        if (node->value > compareValue) {
-            counter++;
-        }
-        counter = countGreaterRecursive(node->smaller, counter, compareValue);
-        counter = countGreaterRecursive(node->greater, counter, compareValue);
-    }
-    return counter;
-}
-
+#include <queue>
 size_t countGreater(const BinarySearchTree *tree, int value) noexcept {
-    if (!tree->root)
+     if (!tree->root){
         return 0;
-    return countGreaterRecursive(tree->root->smaller, 0, value) + countGreaterRecursive(tree->root->greater, 0, value) ; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    }
+
+    size_t counter = 0;
+    queue<Node *> que;
+    que.push(tree->root);
+
+    while (que.size() > 0) {
+        Node *pNode = que.front();
+        que.pop();
+        if (!pNode) {
+            if(pNode->value > value) {
+                counter++;
+            }
+            que.push(pNode->greater);
+
+            if (pNode->smaller->value > value) {
+                que.push(pNode->smaller);
+            }    
+        }
+    }
+    return counter ; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -345,28 +354,30 @@ void clear(BinarySearchTree *tree) noexcept {
 */
 
 unsigned contains(const vector<int> & data, int value) noexcept {
-    if (data.size() == 0)
+    if (data.empty())
         return 0;
 
-    unsigned counter = 1;
-    auto low = data.begin();
-    auto up = data.end() - 1;
+    unsigned counter = 0;
+    int mid, low = 0 ;
+    int high = data.size()-1;
 
-    while (low <= up) {
-       auto mid = low + (up - low)/2;
+    while (low <= high) {
+        mid = low + (high - low) / 2;
 
-       if (value == *mid) {
-           return counter;
-       }
+        if (data[mid] == value) {
+            counter++;
+            return counter;
+        }
 
-       if (value < *mid) {
-           up = mid - 1;
-           counter++;
-       } else if(value > *mid) {
-           low = mid + 1;
-           counter++;
-       }
+        if (data[mid] < value) {
+            counter++;
+            low = mid + 1;
+        } else {
+            counter++;
+            high = mid - 1;
+        }
     }
+
     return counter; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
@@ -404,11 +415,12 @@ unsigned contains(const vector<int> & data, int value) noexcept {
 map<string, size_t> histogram(const vector<string> & data) noexcept {
     map<string, size_t> result;
     for (const string &word : data) {
-        try {
-            auto mapExtract = result.extract(word);
-            mapExtract.key() = result.at(word)++;
-        } catch (const out_of_range &) {
-            result.insert({word, 0});
+        map<string,size_t>::iterator it = result.find(word);
+
+        if (it != result.end()) {
+            it->second++;
+        } else {
+            result.insert({word, 1});
         }
     }
 
@@ -477,10 +489,10 @@ int main() {
     // done 9.3 -> 0.4b
     // done 9.4 -> 0.4b
     // done 9.5 -> 0.4b
-    // 9.6
+    //not-done 9.6 -> 0.0b
     // done 9.7 -> 0.4b
-    // 9.8
-    // 9.9
+    // done 9.8 -> 0.4b
+    // done 9.9 -> 0.4b
     // done 9.10 -> 0.4b
 
 
