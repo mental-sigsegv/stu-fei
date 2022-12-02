@@ -472,6 +472,17 @@ map<string, set<size_t>> index(const vector<string> & data) noexcept {
 // tu mozete doplnit pomocne funkcie a struktury
 
 int main() {
+    // done 9.1 -> 0.4b
+    // done 9.2 -> 0.4b
+    // done 9.3 -> 0.4b
+    // done 9.4 -> 0.4b
+    // done 9.5 -> 0.4b
+    // 9.6
+    // done 9.7 -> 0.4b
+    // 9.8
+    // 9.9
+    // done 9.10 -> 0.4b
+
 
     // tu mozete doplnit testovaci kod
 
