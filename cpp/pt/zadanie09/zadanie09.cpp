@@ -266,31 +266,17 @@ list<int> all(const BinarySearchTree *tree) noexcept {
     NAVRATOVA HODNOTA:
         pocet uzlov s hodnotou vacsou ako 'value'
 */
-#include <queue>
+int numGreaterThan(const Node *head, int value) {
+    if(head == nullptr)return 0;
+
+    size_t tmp = numGreaterThan(head->greater, value);
+    if (value < head->value)
+        tmp += 1 + numGreaterThan(head->smaller, value);
+    return tmp;
+}
+
 size_t countGreater(const BinarySearchTree *tree, int value) noexcept {
-     if (!tree->root){
-        return 0;
-    }
-
-    size_t counter = 0;
-    queue<Node *> que;
-    que.push(tree->root);
-
-    while (que.size() > 0) {
-        Node *pNode = que.front();
-        que.pop();
-        if (!pNode) {
-            if(pNode->value > value) {
-                counter++;
-            }
-            que.push(pNode->greater);
-
-            if (pNode->smaller->value > value) {
-                que.push(pNode->smaller);
-            }    
-        }
-    }
-    return counter ; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    return numGreaterThan(tree->root, value) ; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
