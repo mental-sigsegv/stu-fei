@@ -1,10 +1,9 @@
 /*
 Meno a priezvisko: Martin Klacik
-
 POKYNY:
 (1)  Implementujte funkcie tak, aby splnali popis pri ich deklaraciach.
 (2)  Cela implementacia musi byt v tomto jednom subore.
-(3)  Odovzdajte len tento zdrojovy subor (s vypracovanymi rieseniami).
+(3)  Odovzdajte len tento zdrojovy subor (dopleny o riesenia).
 (4)  Program musi byt kompilovatelny.
 (5)  Globalne a staticke premenne su zakazane.
 (6)  V ziadnom pripade nemente deklaracie funkcii, ktore mate za ulohu naprogramovat
@@ -29,6 +28,7 @@ POKYNY:
 #include <deque>
 #include <algorithm>
 #include <limits>
+#include <ostream>
 
 using namespace std;
 
@@ -43,13 +43,15 @@ using namespace std;
 
 class T {
 public:
-    void met() {}
+    void met() const {
+        cout << "----- 1. uloha (metoda nemeni stav objektu) ------------------------------------" << endl;
+    }
 };
 
 void testUloha1() {
-    cout << "----- 1. uloha (metoda nemeni stav objektu) ------------------------------------" << endl;
+    //cout << "----- 1. uloha (metoda nemeni stav objektu) ------------------------------------" << endl;
     const T o;
-//    o.met(); // odkomentujte
+    o.met(); // odkomentujte
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -65,9 +67,9 @@ class Number {
 private:
     int number;
 public:
-    explicit Number(int value) : number(value){
+    Number(int value) : number(value){
     }
-    int getValue() const {
+    int getValue() const  {
         return number;
     }
 };
@@ -96,8 +98,15 @@ void testUloha2() {
 
 class A {
 public:
-    char met() const {
+    virtual char met() const {
         return 'a';
+    }
+};
+
+class B : public A {
+public:
+    virtual char met() const {
+        return 'b';
     }
 };
 
@@ -105,15 +114,15 @@ void testUloha3() {
     cout << "----- 3. uloha (volanie spravnej metody) ---------------------------------------" << endl;
 
     A a;
-//    B b;
-//
-//    A *pa  = &a;
-//    A *pab = &b;
-//    B* pb  = &b;
-//
-//    assert(pa->met()  == 'a'); // volanie A::met()
-//    assert(pab->met() == 'b'); // volanie B::met()
-//    assert(pb->met()  == 'b'); // volanie B::met()
+    B b;
+
+   A *pa  = &a;
+   A *pab = &b;
+   B* pb  = &b;
+
+    assert(pa->met()  == 'a'); // volanie A::met()
+    assert(pab->met() == 'b'); // volanie B::met()
+    assert(pb->met()  == 'b'); // volanie B::met()
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -130,14 +139,14 @@ void testUloha3() {
 
 class C {
 public:
-    ~C() {
+    virtual ~C() {
         cout << "C::~C()" << endl;
     }
 };
 
 class D : public C {
 public:
-    ~D() {
+   virtual  ~D() {
         cout << "D::~D()" << endl;
     }
 };
@@ -158,14 +167,15 @@ void testUloha4() {
     Pre kontrolu odkomentujte riadky v testovacom kode, kde je priklad pouzitia operatora.
 */
 
+//operator overloading
 class Complex {
 private:
     int real;
     int imaginary;
 public:
     Complex(int realPart, int imaginaryPart)
-    : real(realPart)
-    , imaginary(imaginaryPart) {
+            : real(realPart)
+            , imaginary(imaginaryPart) {
     }
     int getRealPart() const {
         return real;
@@ -174,6 +184,11 @@ public:
         return imaginary;
     }
     // TODO tu pridajte operator +=
+    Complex &operator += (Complex &obj){
+    this->real += obj.real;
+    this->imaginary += obj.imaginary;
+    return * this;
+    }
 };
 
 void testUloha5() {
@@ -184,7 +199,7 @@ void testUloha5() {
     Complex c(100, 200);
 
 //    c += b += a;
-//
+
 //    assert(a.getRealPart() == 1);
 //    assert(a.getImaginaryPart() == 2);
 //    assert(b.getRealPart() == 11);
@@ -206,13 +221,24 @@ void testUloha5() {
 
 // TODO tu definujte operator <<
 
+ostream& operator<< (ostream &a, Complex &obj) noexcept{
+    if(obj.getImaginaryPart() >= 0) {
+        a << obj.getRealPart() << "+" << obj.getImaginaryPart() << "i";
+    }
+    else {
+        a << obj.getRealPart() << obj.getImaginaryPart() << "i";
+    }
+    return a;
+}
+
+
 void testUloha6() {
     cout << "----- 6. uloha (operator << ) --------------------------------------------------" << endl;
 
     Complex a( 1, 2);
     Complex b(-3,-4);
 //    cout << "a = " << a << ", b = " << b << endl;
-//
+
 //    ostringstream stream;
 //    stream << a << " " << b;
 //    assert(stream.str() == "1+2i -3-4i");
@@ -237,12 +263,13 @@ struct Tree {
     explicit Tree(Node *root = nullptr) : root(root) {}
 };
 
+
 //-------------------------------------------------------------------------------------------------
 // 7. ULOHA (0.4 bodu)
 //-------------------------------------------------------------------------------------------------
 /*
     Funkcia vrati zoznam vsetkych hodnot uzlov v strome 'tree', ktorych hodnotou je velke pismeno.
-    Pouzite algoritmus hladania DO HLBKY.
+    Pouzite algoritmus hladania DO HLBKY (styl pre-order).
     Pouzite iterativnu implementaciu.
     Doporucenie: pre identifikaciu velkych pismen pouzite funkciu 'std::isupper'
 
@@ -253,15 +280,40 @@ struct Tree {
         zoznam velkych pismen, ktore su hodnotami uzlov v strome 'tree'
 
     VYSTUPNA PODMIENKA:
-        Poradie vo vystupnom zozname musi zodpovedat postupnosti prehladavania algoritmom DO HLBKY.
+        Poradie vo vystupnom zozname musi zodpovedat postupnosti prehladavania algoritmom DO HLBKY, styl PRE-ORDER.
 
     PRIKLAD:
-        na obrazku
+        obrazok na webe
 */
 
 list<char> depthFirstSearchUpperCases(const Tree *tree) {
-    // TODO
-    return list<char>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    list<char>zoznam;
+    if (tree->root == nullptr) {
+        return zoznam;
+    }
+    list<Node*> check;
+    bool b = true;
+    stack<Node*> zasobnik;
+    zasobnik.push(tree->root);
+    while(!zasobnik.empty()){
+        if (isupper(zasobnik.top()->value)){
+            zoznam.push_back(zasobnik.top()->value);
+        }
+        Node* curr = zasobnik.top();
+        zasobnik.pop();
+        for(Node* checked : check){
+            if (curr->value == checked->value)
+                b = false;
+        }
+        if (b){
+            check.push_back(curr);
+            for(Node* inCurr : curr->children){
+                zasobnik.push(inCurr);
+            }
+        }
+        b = true;
+    }
+    return zoznam;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -283,12 +335,35 @@ list<char> depthFirstSearchUpperCases(const Tree *tree) {
         Poradie vo vystupnom zozname musi zodpovedat postupnosti prehladavania algoritmom DO SIRKY.
 
     PRIKLAD:
-        na obrazku
+        obrazok na webe
 */
 
 list<char> breadthFirstSearchUpperCases(const Tree *tree) {
-    // TODO
-    return list<char>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    list<char>zoznam;
+    if (tree->root == nullptr) return zoznam;
+    list<Node*> check;
+    bool b = true;
+    queue<Node*> zasobnik;
+    zasobnik.push(tree->root);
+    while(!zasobnik.empty()){
+        if (isupper(zasobnik.front()->value)){
+            zoznam.push_back(zasobnik.front()->value);
+        }
+        Node* curr = zasobnik.front();
+        zasobnik.pop();
+        for(Node* checked : check){
+            if (curr->value == checked->value)
+                b = false;
+        }
+        if (b){
+            check.push_back(curr);
+            for(Node* inCurr : curr->children){
+                zasobnik.push(inCurr);
+            }
+        }
+        b = true;
+    }
+    return zoznam;
 }
 
 //=================================================================================================
@@ -348,8 +423,8 @@ struct RoadTo {
 
     // Mozete doplnit dalsi konstruktor alebo metody, ale tento konstruktor nemente
     RoadTo(City *city, unsigned length)
-    : city(city)
-    , length(length) {
+            : city(city)
+            , length(length) {
     }
 };
 
@@ -369,7 +444,7 @@ class CityNotExistsException : exception {
     string cityName; // nazov obce
 public:
     explicit CityNotExistsException(string name)
-    : cityName(move(name)) {
+            : cityName(move(name)) {
     }
     const char * what() const noexcept override { // vrati nazov neexistujucej obce
         return cityName.c_str();
@@ -400,7 +475,7 @@ public:
         Poradie vo vystupnom zozname musi zodpovedat postupnosti prehladavania algoritmom DO SIRKY.
 
     PRIKLAD:
-        na obrazku
+        obrazok na webe
 
     POZNAMKA:
         Ak v implementacii pouziteje 'City::searchData',
@@ -408,11 +483,40 @@ public:
         aj aby bolo osetrene viacnasobne volanie algoritmu s tym istym objektom 'planet'.
 */
 
-list<string> breadthFirstSearchReachable(Planet * planet, const string & startCity) {
-    // TODO
-    return list<string>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+City *getVertex(Planet *g, const string &name) {
+    list<City>::iterator it = find_if(g->cities.begin(), g->cities.end(), [&name](City& v) {
+        return v.name == name;
+    });
+    if (it != g->cities.end()) {
+        return &(*it);
+    }
+    return nullptr;
 }
 
+list<string> breadthFirstSearchReachable(Planet * planet, const string & startCity) {
+    list<string> zoznam;
+    City* v1 = getVertex(planet, startCity);
+    if(!v1) throw CityNotExistsException(startCity);
+    queue<City*> q;
+    map<City*,bool> visited;
+    for(City& v2 : planet->cities){
+        visited[&v2] = false;
+    }
+    visited[v1] = true;
+    zoznam.push_back(v1->name);
+    q.push(v1);
+    while(!q.empty()){
+        for(RoadTo& x : q.front()->roads){
+            if(!visited[x.city]){
+                visited[x.city] = true;
+                zoznam.push_back(x.city->name);
+                q.push(x.city);
+            }
+        }
+        q.pop();
+    }
+    return zoznam;
+}
 //-------------------------------------------------------------------------------------------------
 // 10. ULOHA (0.4 bodu)
 //-------------------------------------------------------------------------------------------------
@@ -436,7 +540,7 @@ list<string> breadthFirstSearchReachable(Planet * planet, const string & startCi
         Navratova hodnota obsahuje aj vzdialenost do 'startCity' (nula).
 
     PRIKLAD:
-        na obrazku
+        obrazok na webe
 
     POZNAMKA:
         Ak v implementacii pouziteje 'City::searchData',
@@ -445,10 +549,38 @@ list<string> breadthFirstSearchReachable(Planet * planet, const string & startCi
 */
 
 map<string, unsigned> dijkstra(Planet * planet, const string & startCity) {
-    // TODO
-    return map<string, unsigned>(); // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    planet->clearSearchData();
+    map<string, unsigned> zoznam;
+    City *v1 = getVertex(planet, startCity);
+    if (!v1) throw CityNotExistsException(startCity);
+    list<City *> q;
+    v1->searchData.distance = 0;
+    for (City &v2: planet->cities) {
+        q.push_back(&v2);
+    }
+    City *curr;
+    while (!q.empty()) {
+        curr = q.front();
+        for (City *mesto: q) {
+            if (curr->searchData.distance > mesto->searchData.distance) {
+                curr = mesto;
+            }
+        }
+        if (curr->searchData.distance != numeric_limits<unsigned>::max()) {
+            for (RoadTo mesto: curr->roads) {
+                City *temp = getVertex(planet, mesto.city->name);
+                if (curr->searchData.distance + mesto.length < temp->searchData.distance) {
+                    temp->searchData.distance = curr->searchData.distance + mesto.length;
+                }
+            }
+        }
+        if (zoznam.count(curr->name) == 0 && curr->searchData.distance != numeric_limits<unsigned>::max()) {
+            zoznam.emplace(curr->name, curr->searchData.distance);
+        }
+        q.remove(curr);
+    }
+    return zoznam; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
-
 //-------------------------------------------------------------------------------------------------
 // TESTOVANIE
 //-------------------------------------------------------------------------------------------------
